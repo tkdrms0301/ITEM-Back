@@ -1,9 +1,6 @@
 package kit.item.dto.request.auth;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import kit.item.domain.mysql.member.Member;
+import kit.item.domain.member.Member;
 import kit.item.enums.RoleType;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;

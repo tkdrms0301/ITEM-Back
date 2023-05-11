@@ -1,4 +1,4 @@
-package kit.item.dto.response.member;
+package kit.item.dto.entity.member;
 
 import kit.item.enums.RoleType;
 import lombok.*;
@@ -10,8 +10,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class ResponseLoginMemberDto {
-    private Long memberId;
-    private String name;
+public class MemberLoginInfoDto {
+    private Long id;
+    private String nickname;
     private RoleType roleType;
 }

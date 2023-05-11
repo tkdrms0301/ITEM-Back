@@ -1,6 +1,6 @@
 package kit.item.dto.response.auth;
 
-import kit.item.domain.mysql.member.Member;
+import kit.item.domain.member.Member;
 import kit.item.enums.RoleType;
 import lombok.*;
 

@@ -42,11 +42,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<MsgDto> login(@RequestBody RequestLoginDto requestLoginDto) {
         ResponseLoginDto responseLoginDto = authService.login(requestLoginDto);
-        if(responseLoginDto.getAccessToken() != null && responseLoginDto.getRefreshToken() != null){
+        if(responseLoginDto.getAccessToken() != null){
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
-            httpHeaders.add(JwtFilter.REFRESH_TOKEN, HEADER + responseLoginDto.getRefreshToken());
-
             return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.loginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
         }
         return ResponseEntity.ok(new MsgDto(false, "로그인 실패", null));
@@ -58,26 +56,10 @@ public class AuthController {
                 .refreshToken(refreshToken.replace(HEADER, ""))
                 .build();
         try {
-            authService.logout(requestLogoutDto);
+            //authService.logout(requestLogoutDto);
             return ResponseEntity.ok(new MsgDto(true, "로그아웃 성공", ResponseLogoutDto.builder().isLogout(true)));
         }catch (RuntimeException e) {
             return ResponseEntity.ok(new MsgDto(false, "로그아웃 실패", ResponseLogoutDto.builder().isLogout(false)));
         }
     }
-
-//    @PostMapping(value = "/reissue")
-//    public ResponseEntity<MsgDto> reissue(@RequestHeader(value = "X-AUTH-TOKEN") String refreshToken) {
-//        RequestReissueDto requestReissueDto = RequestReissueDto.builder()
-//                .refreshToken(refreshToken.replace(HEADER, ""))
-//                .build();
-//        try {
-//            ResponseReissueDto responseReissueDto = authService.reissue(requestReissueDto);
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.add(JwtFilter.ACCESS_TOKEN, HEADER + responseReissueDto.getAccessToken());
-//            httpHeaders.add(JwtFilter.REFRESH_TOKEN, HEADER + responseReissueDto.getRefreshToken());
-//            return new ResponseEntity<>(new MsgDto(true, "토큰 재발급 성공", null), httpHeaders, HttpStatus.OK);
-//        }catch (RuntimeException e) {
-//            return ResponseEntity.ok(new MsgDto(false, "토큰 재발급 실패", null));
-//        }
-//    }
 }

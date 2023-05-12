@@ -61,13 +61,13 @@ public class SecurityConfig {
                 .sameOrigin()
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/file/**").permitAll()
+                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/file/**", "/repair/**").permitAll()
                 .requestMatchers("/api/member").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
                 .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")

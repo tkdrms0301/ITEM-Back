@@ -11,8 +11,4 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 public class RequestLoginDto {
     private String email;
     private String password;
-
-    public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(email, password);
-    }
 }

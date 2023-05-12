@@ -1,20 +1,15 @@
 package kit.item.service.member;
 
-import kit.item.domain.mysql.member.Member;
+import kit.item.domain.member.Member;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
-import kit.item.dto.response.auth.ResponseLoginDto;
 import kit.item.dto.response.auth.ResponseSignupDto;
 import kit.item.dto.response.member.ResponseLoginMemberDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
-import kit.item.repository.mysql.member.MemberRepository;
+import kit.item.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

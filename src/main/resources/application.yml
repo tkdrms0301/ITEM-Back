@@ -15,23 +15,17 @@ spring:
   #    password: 1q2w3e4r1!
   #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    jdbc-url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
     username: root
     password: sk002760
     driver-class-name: com.mysql.cj.jdbc.Driver
-  second-datasource:
-    jdbc-url: jdbc:h2:tcp://localhost/~/test
-    username: root
-    password: sk002760
-    driver-class-name: org.h2.Driver
   jpa:
-    datasource:
-      dialect: org.hibernate.dialect.MySQL8Dialect
-    second-datasource:
-      dialect: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create
-      format_sql: true
-      show_sql: true
-      highlight_sql : true
-    generate-ddl: true
+
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+        highlight_sql : true

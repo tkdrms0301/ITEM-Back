@@ -33,3 +33,5 @@ application.yml
 /.gradle/
 /gradle/
 /out/
+src/main/resources/application.yml
+src/test/resources/application.yml

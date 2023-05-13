@@ -17,11 +17,12 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
     username: root
-    password: sk002760
+    password: tkd5957!@#
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
 
     properties:
       hibernate:
@@ -29,3 +30,7 @@ spring:
         show_sql: true
         use_sql_comments: true
         highlight_sql : true
+    generate-ddl: true
+  sql:
+    init:
+      mode: always

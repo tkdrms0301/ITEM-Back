@@ -26,12 +26,9 @@ replay_pid*
 *.xml
 .idea/gradle.xml
 
-application.yml
 .class
 /build/
 /.idea/
 /.gradle/
 /gradle/
 /out/
-src/main/resources/application.yml
-src/test/resources/application.yml

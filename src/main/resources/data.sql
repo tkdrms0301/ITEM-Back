@@ -1,9 +1,9 @@
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address', 'test', 'test', 'test', '$2a$10$FznX7x3ej8eZvHqiPQhJ3.L5Jqr42hMon6XFV62DpmIFhXfKVXicS', '010-8765-1234', 0, 'MEMBER');
+VALUES ('test address1', 'test1', 'test1', 'test1', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'MEMBER');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address2', 'test2', 'test2', 'test2', '$2a$10$FznX7x3ej8eZvHqiPQhJ3.L5Jqr42hMon6XFV62DpmIFhXfKVXicS', '010-8765-1234', 0, 'SELLER');
+VALUES ('test address2', 'test2', 'test2', 'test2', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 0, 'SELLER');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address3', 'test3', 'test3', 'test3', '$2a$10$FznX7x3ej8eZvHqiPQhJ3.L5Jqr42hMon6XFV62DpmIFhXfKVXicS', '010-8765-1234', 0, 'MECHANIC');
+VALUES ('test address3', 'test3', 'test3', 'test3', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 0, 'MECHANIC');
 
 INSERT INTO kind(name) VALUES ('그래픽카드');
 INSERT INTO kind(name) VALUES ('cpu');

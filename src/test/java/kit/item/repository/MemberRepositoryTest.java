@@ -1,7 +1,7 @@
 package kit.item.repository;
 
 import kit.item.domain.member.Member;
-import kit.item.dto.entity.member.MemberDTO;
+import kit.item.dto.entity.member.MemberInfoDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +34,8 @@ public class MemberRepositoryTest {
     @Test
     @DisplayName("전체 사용자 조회 - 기본정보")
     void findAllBasicInfo() {
-        List<MemberDTO> members = memberRepository.findAllMemberBasicInfo();
-        for(MemberDTO member : members) {
+        List<MemberInfoDto> members = memberRepository.findAllMemberBasicInfo();
+        for(MemberInfoDto member : members) {
             System.out.println("memberDTO.get().getEmail() = " + member.toString());
         }
     }

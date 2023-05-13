@@ -3,13 +3,10 @@ package kit.item.controller;
 import kit.item.dto.common.MsgDto;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestLogoutDto;
-import kit.item.dto.request.auth.RequestReissueDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.response.auth.ResponseLoginDto;
 import kit.item.dto.response.auth.ResponseLogoutDto;
-import kit.item.dto.response.auth.ResponseReissueDto;
 import kit.item.dto.response.auth.ResponseSignupDto;
-import kit.item.dto.response.member.ResponseLoginMemberDto;
 import kit.item.exception.DuplicateMemberException;
 import kit.item.service.auth.AuthService;
 import kit.item.service.member.MemberService;
@@ -45,7 +42,7 @@ public class AuthController {
         if(responseLoginDto.getAccessToken() != null){
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(JwtFilter.ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
-            return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.loginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.getLoginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
         }
         return ResponseEntity.ok(new MsgDto(false, "로그인 실패", null));
     }

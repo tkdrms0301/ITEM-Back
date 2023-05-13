@@ -1,28 +1,33 @@
 package kit.item.controller;
 
-import kit.item.domain.member.Member;
+import kit.item.dto.common.MsgDto;
+import kit.item.dto.request.member.RequestGetMemberInfoDto;
+import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
+import kit.item.dto.response.member.ResponseGetMemberInfoDto;
+import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping("/hello")
-    public String test() {
-        return "hello";
+    @GetMapping("/info")
+    public ResponseEntity<MsgDto> getMemberInfo(RequestGetMemberInfoDto requestMemberDto) {
+        return new ResponseEntity<>(new MsgDto(true, "회원 조회", memberService.getMemberInfo(requestMemberDto.getId())), HttpStatus.OK);
     }
 
-    @GetMapping("/all-members")
-    public List<Member> findAllMembers() {
-        return memberService.findAllMember();
+    @PostMapping("/update")
+    public ResponseEntity<MsgDto> updateMemberInfo(@RequestBody RequestUpdateMemberInfoDto requestUpdateMemberInfoDto) {
+        ResponseUpdateMemberInfoDto responseUpdateMemberInfoDto = memberService.updateMemberInfo(requestUpdateMemberInfoDto);
+        if(responseUpdateMemberInfoDto.isSuccess())
+            return new ResponseEntity<>(new MsgDto(true, "회원 정보 수정 성공", responseUpdateMemberInfoDto), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "회원 정보 수정 실패", responseUpdateMemberInfoDto), HttpStatus.OK);
     }
 
     @GetMapping("/member")

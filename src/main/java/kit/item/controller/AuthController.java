@@ -1,9 +1,7 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.request.auth.RequestLoginDto;
-import kit.item.dto.request.auth.RequestLogoutDto;
-import kit.item.dto.request.auth.RequestSignupDto;
+import kit.item.dto.request.auth.*;
 import kit.item.dto.response.auth.ResponseLoginDto;
 import kit.item.dto.response.auth.ResponseLogoutDto;
 import kit.item.dto.response.auth.ResponseSignupDto;
@@ -58,5 +56,23 @@ public class AuthController {
         }catch (RuntimeException e) {
             return ResponseEntity.ok(new MsgDto(false, "로그아웃 실패", ResponseLogoutDto.builder().isLogout(false)));
         }
+    }
+
+    @PostMapping("/email-check")
+    public ResponseEntity<MsgDto> emailCheck(@RequestBody RequestEmailCheckDto requestEmailCheckDto) {
+        boolean isExistEmail = memberService.emailCheck(requestEmailCheckDto.getEmail());
+        if (isExistEmail) {
+            return ResponseEntity.ok(new MsgDto(isExistEmail, "이메일 사용 가능", null));
+        }
+        return ResponseEntity.ok(new MsgDto(isExistEmail, "중복된 이메일", null));
+    }
+
+    @PostMapping("/nickname-check")
+    public ResponseEntity<MsgDto> nicknameCheck(@RequestBody RequestNicknameCheckDto requestNicknameCheckDto) {
+        boolean isExistNickname = memberService.nicknameCheck(requestNicknameCheckDto.getNickname());
+        if (isExistNickname) {
+            return ResponseEntity.ok(new MsgDto(isExistNickname, "닉네임 확인 성공", null));
+        }
+        return ResponseEntity.ok(new MsgDto(isExistNickname, "닉네임 확인 실패", null));
     }
 }

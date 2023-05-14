@@ -14,7 +14,6 @@ import lombok.*;
 public class ResponseGetMemberInfoDto {
     private Long id;
     private String email;
-    private String password;
     private String name;
     private String nickname;
     private String phoneNumber;
@@ -26,7 +25,6 @@ public class ResponseGetMemberInfoDto {
         return ResponseGetMemberInfoDto.builder()
                 .id(memberDto.getId())
                 .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
                 .name(memberDto.getName())
                 .nickname(memberDto.getNickname())
                 .phoneNumber(memberDto.getPhoneNumber())

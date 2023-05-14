@@ -48,6 +48,16 @@ public class MemberService implements UserDetailsService {
         return ResponseSignupDto.of(memberRepository.save(member));
     }
 
+    public boolean emailCheck(String email) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByEmail(email);
+    }
+
+    public boolean nicknameCheck(String nickname) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByNickname(nickname);
+    }
+
     public MemberLoginInfoDto getLoginInfo(RequestLoginDto requestLoginDto) {
         log.info("MemberService.getLoginInfo");
         Optional<MemberLoginInfoDto> memberInfoDto = memberRepository.findMemberInfoByEmail(requestLoginDto.getEmail());
@@ -73,16 +83,21 @@ public class MemberService implements UserDetailsService {
     public ResponseUpdateMemberInfoDto updateMemberInfo(RequestUpdateMemberInfoDto requestUpdateMemberInfoDto) {
         log.info("MemberService.updateMemberInfo");
         log.info(requestUpdateMemberInfoDto.getId().toString());
-        Optional<Member> member = memberRepository.findById(requestUpdateMemberInfoDto.getId());
-        if(member.isPresent()) {
-            member.get().setAddress(requestUpdateMemberInfoDto.getAddress());
-            member.get().setNickname(requestUpdateMemberInfoDto.getNickname());
-            member.get().setName(requestUpdateMemberInfoDto.getName());
-            member.get().setPhoneNumber(requestUpdateMemberInfoDto.getPhoneNumber());
-            memberRepository.save(member.get());
-            return ResponseUpdateMemberInfoDto.builder()
-                    .isSuccess(true)
-                    .build();
+        if(requestUpdateMemberInfoDto.getNewPassword().equals(requestUpdateMemberInfoDto.getValidPassword())){
+            Optional<Member> member = memberRepository.findById(requestUpdateMemberInfoDto.getId());
+            if(member.isPresent()) {
+                if(passwordEncoder.matches(requestUpdateMemberInfoDto.getCurrentPassword(), member.get().getPassword())){
+                    member.get().setAddress(requestUpdateMemberInfoDto.getAddress());
+                    member.get().setNickname(requestUpdateMemberInfoDto.getNickname());
+                    member.get().setPassword(passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()));
+                    member.get().setName(requestUpdateMemberInfoDto.getName());
+                    member.get().setPhoneNumber(requestUpdateMemberInfoDto.getPhoneNumber());
+                    memberRepository.save(member.get());
+                    return ResponseUpdateMemberInfoDto.builder()
+                            .isSuccess(true)
+                            .build();
+                }
+            }
         }
         return ResponseUpdateMemberInfoDto.builder()
                 .isSuccess(false)

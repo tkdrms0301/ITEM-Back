@@ -26,7 +26,6 @@ public class ResponseGetMemberInfoDto {
         return ResponseGetMemberInfoDto.builder()
                 .id(memberDto.getId())
                 .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
                 .name(memberDto.getName())
                 .nickname(memberDto.getNickname())
                 .phoneNumber(memberDto.getPhoneNumber())

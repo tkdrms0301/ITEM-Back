@@ -11,6 +11,9 @@ public class RequestUpdateMemberInfoDto {
     private Long id;
     private String name;
     private String nickname;
+    private String currentPassword;
+    private String newPassword;
+    private String validPassword;
     private String phoneNumber;
     private String address;
 }

@@ -1,9 +1,9 @@
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'MEMBER');
+VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 15000, 'MEMBER');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 0, 'SELLER');
+VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address3', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 0, 'MECHANIC');
+VALUES ('test address3', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 5000, 'MECHANIC');
 
 INSERT INTO kind(name) VALUES ('그래픽카드');
 INSERT INTO kind(name) VALUES ('cpu');
@@ -219,3 +219,9 @@ INSERT INTO product(product_name, role_type, kind_id) VALUES ('2017 맥북프로
 INSERT INTO product(product_name, role_type, kind_id) VALUES ('2016 맥북프로13 MLVP2KH/A', true, 22);
 INSERT INTO product(product_name, role_type, kind_id) VALUES ('2016 맥북프로15 MLH32KH/A', true, 22);
 
+
+# 포인트 이용내역
+set @now = '';
+SELECT NOW() into @now;
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '아이폰12 구매', '상품 구매', 1);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 10000, '리뷰 추천 누적 10회', '리뷰 추천 누적', 1);

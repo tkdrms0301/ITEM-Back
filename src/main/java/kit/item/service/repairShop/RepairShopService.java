@@ -1,9 +1,12 @@
 package kit.item.service.repairShop;
 
 import kit.item.domain.member.RepairShop;
+import kit.item.domain.repair.OfficialRepairShop;
 import kit.item.domain.repair.RepairService;
 import kit.item.dto.entity.repairShop.RepairServiceDto;
 import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
+import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
+import kit.item.repository.repairShop.OfficialRepairShopRepository;
 import kit.item.repository.repairShop.RepairShopRepository;
 import kit.item.repository.repairShop.RepairShopServiceRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import java.util.List;
 public class RepairShopService {
     private final RepairShopServiceRepository repairShopServiceRepository;
     private final RepairShopRepository repairShopRepository;
+    private final OfficialRepairShopRepository officialRepairShopRepository;
 
     public List<ResponsePrivateRepairShopDto> findAllPrivateRepairShops() {
 
@@ -45,5 +49,26 @@ public class RepairShopService {
 
         });
         return responsePrivateRepairShopDtos;
+    }
+
+    public List<ResponsePublicRepairShopDto> findAllPublicRepairShops() {
+
+        List<ResponsePublicRepairShopDto> responsePublicRepairShopDtos = new ArrayList<>();
+        List<OfficialRepairShop> officialRepairShops = officialRepairShopRepository.findAll();
+
+        officialRepairShops.stream().forEach(officialRepairShop -> {
+
+            responsePublicRepairShopDtos.add(
+                    ResponsePublicRepairShopDto.builder()
+                            .officeShopId(officialRepairShop.getId())
+                            .shopName(officialRepairShop.getName())
+                            .shopAddress(officialRepairShop.getAddress())
+                            .shopPhoneNumber(officialRepairShop.getPhoneNumber())
+                            .description(officialRepairShop.getDescription())
+                            .build()
+            );
+        });
+
+        return responsePublicRepairShopDtos;
     }
 }

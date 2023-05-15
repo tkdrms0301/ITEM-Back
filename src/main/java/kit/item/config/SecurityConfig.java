@@ -67,7 +67,7 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/file/**", "/repair/**").permitAll()
+                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/file/**").permitAll()
                 .requestMatchers("/api/member").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
                 .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")

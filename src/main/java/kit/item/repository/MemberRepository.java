@@ -1,8 +1,10 @@
 package kit.item.repository;
 
 import kit.item.domain.member.Member;
+import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
+import kit.item.dto.entity.member.SellerInfoDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,10 +18,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
     boolean existsByNickname(String nickname);
 
-    @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.id, m.nickname, m.roleType) from MEMBER m where m.email like :email")
+    @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);
 
-    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.point,  m.roleType, m.subscription.startDate) from MEMBER m where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.point, m.roleType) from MEMBER m where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);
-
 }

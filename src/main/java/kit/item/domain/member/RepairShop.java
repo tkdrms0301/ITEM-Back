@@ -5,15 +5,15 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import kit.item.domain.repair.RepairService;
 import kit.item.domain.repair.RepairServiceReview;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "REPAIR_SHOP")
 @ToString(callSuper = true)
 public class RepairShop extends Member{

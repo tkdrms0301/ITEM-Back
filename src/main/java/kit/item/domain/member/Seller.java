@@ -5,27 +5,27 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import kit.item.domain.market.SaleProduct;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "SELLER")
 @ToString(callSuper = true)
 public class Seller extends Member{
     @Column(name = "company_number")
-    private Long companyNumber;
+    private String companyNumber;
     @Column(name = "company_name")
     private String companyName;
     @Column(name = "company_phone_number")
     private String companyPhoneNumber;
     private String description;
-    @Column(name = "shop_address")
-    private String shopAddress;
+    @Column(name = "company_address")
+    private String companyAddress;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "seller")
     @ToString.Exclude

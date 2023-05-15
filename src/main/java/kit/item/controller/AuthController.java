@@ -25,13 +25,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<MsgDto> signup(@RequestBody RequestSignupDto requestSignupDto) {
-        ResponseSignupDto responseSignupDto;
         try{
-            responseSignupDto = authService.signup(requestSignupDto);
+            authService.signup(requestSignupDto);
         }catch (DuplicateMemberException e) {
-            return ResponseEntity.ok(new MsgDto(false, e.getMessage(), null));
+            return ResponseEntity.ok(new MsgDto(false, "회원가입 실패", null));
         }
-        return ResponseEntity.ok(new MsgDto(true, "회원가입 성공", responseSignupDto));
+        return ResponseEntity.ok(new MsgDto(true, "회원가입 성공", null));
     }
 
     @PostMapping("/login")

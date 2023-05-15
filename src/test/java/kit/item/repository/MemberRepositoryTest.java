@@ -30,13 +30,4 @@ public class MemberRepositoryTest {
             System.out.println("memberDTO.get().getEmail() = " + member.toString());
         }
     }
-
-    @Test
-    @DisplayName("전체 사용자 조회 - 기본정보")
-    void findAllBasicInfo() {
-        List<MemberInfoDto> members = memberRepository.findAllMemberBasicInfo();
-        for(MemberInfoDto member : members) {
-            System.out.println("memberDTO.get().getEmail() = " + member.toString());
-        }
-    }
 }

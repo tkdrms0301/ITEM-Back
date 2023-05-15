@@ -24,9 +24,9 @@ public class MemberController {
     public ResponseEntity<MsgDto> getMemberInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetMemberInfoDto requestMemberDto) {
         accessToken = tokenProvider.resolveToken(accessToken);
         if (tokenProvider.getId(accessToken).equals(requestMemberDto.getId())){
-            return new ResponseEntity<>(new MsgDto(true, "회원 조회 성공", memberService.getMemberInfo(requestMemberDto.getId())), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "회원 정보 조회 성공", memberService.getMemberInfo(requestMemberDto.getId())), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "회원 조회 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "회원 정보 조회 실패", null), HttpStatus.OK);
     }
 
     @PostMapping("/update")

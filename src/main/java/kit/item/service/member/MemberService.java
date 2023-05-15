@@ -1,8 +1,10 @@
 package kit.item.service.member;
 
 import kit.item.domain.member.Member;
+import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
+import kit.item.dto.entity.member.SellerInfoDto;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
@@ -10,8 +12,11 @@ import kit.item.dto.response.auth.ResponseLoginDto;
 import kit.item.dto.response.auth.ResponseSignupDto;
 import kit.item.dto.response.member.ResponseGetMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
+import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
+import kit.item.repository.MechanicRepository;
 import kit.item.repository.MemberRepository;
+import kit.item.repository.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,6 +32,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
+    private final SellerRepository sellerRepository;
+    private final MechanicRepository mechanicRepository;
     private final PasswordEncoder passwordEncoder;
 
     // Member가 DB에 존재할 시 Member 객체 반환
@@ -63,7 +70,6 @@ public class MemberService implements UserDetailsService {
         Optional<MemberLoginInfoDto> memberInfoDto = memberRepository.findMemberInfoByEmail(requestLoginDto.getEmail());
         if(memberInfoDto.isPresent()) {
             return MemberLoginInfoDto.builder()
-                    .id(memberInfoDto.get().getId())
                     .nickname(memberInfoDto.get().getNickname())
                     .roleType(memberInfoDto.get().getRoleType())
                     .build();
@@ -74,8 +80,24 @@ public class MemberService implements UserDetailsService {
     public ResponseGetMemberInfoDto getMemberInfo(Long memberId) {
         log.info("MemberService.getMemberInfo");
         Optional<MemberInfoDto> memberDto = memberRepository.findMemberById(memberId);
+        ResponseGetMemberInfoDto responseGetMemberInfoDto = null;
         if(memberDto.isPresent()) {
-            return ResponseGetMemberInfoDto.to(memberDto.get());
+            responseGetMemberInfoDto = ResponseGetMemberInfoDto.to(memberDto.get());
+            if (memberDto.get().getRoleType().equals(RoleType.MEMBER)) {
+                return responseGetMemberInfoDto;
+            } else if (memberDto.get().getRoleType().equals(RoleType.MECHANIC)) {
+                Optional<MechanicInfoDto> mechanicInfoDto = mechanicRepository.findMechanicByMemberId(memberId);
+                if (mechanicInfoDto.isPresent()) {
+                    responseGetMemberInfoDto.setMechanicInfoDto(mechanicInfoDto.get());
+                }
+                return responseGetMemberInfoDto;
+            } else if (memberDto.get().getRoleType().equals(RoleType.SELLER)) {
+                Optional<SellerInfoDto> sellerInfoDto = sellerRepository.findSellerByMemberId(memberId);
+                if (sellerInfoDto.isPresent()) {
+                    responseGetMemberInfoDto.setSellerInfoDto(sellerInfoDto.get());
+                }
+                return responseGetMemberInfoDto;
+            }
         }
         return new ResponseGetMemberInfoDto();
     }

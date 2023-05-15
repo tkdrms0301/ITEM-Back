@@ -1,6 +1,8 @@
 package kit.item.dto.response.member;
 
+import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
+import kit.item.dto.entity.member.SellerInfoDto;
 import kit.item.enums.RoleType;
 import lombok.*;
 
@@ -20,6 +22,8 @@ public class ResponseGetMemberInfoDto {
     private String address;
     private Long point;
     private RoleType roleType;
+    private SellerInfoDto sellerInfoDto;
+    private MechanicInfoDto mechanicInfoDto;
 
     public static ResponseGetMemberInfoDto to(MemberInfoDto memberDto){
         return ResponseGetMemberInfoDto.builder()

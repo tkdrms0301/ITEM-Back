@@ -5,6 +5,11 @@ VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
 VALUES ('test address3', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 0, 'MECHANIC');
 
+INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
+VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
+INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
+VALUES ('mechanic description', 'shop_name', 'shop_phone_number', 3);
+
 INSERT INTO kind(name) VALUES ('그래픽카드');
 INSERT INTO kind(name) VALUES ('cpu');
 INSERT INTO kind(name) VALUES ('프린터기');

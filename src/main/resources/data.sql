@@ -13,6 +13,9 @@ VALUES ('test service1', 3);
 INSERT INTO repair_service(name, repair_shop_id)
 VALUES ('test service2', 3);
 
+INSERT INTO official_repair_shop(address, description, name, phone_number)
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
+
 
 INSERT INTO kind(name) VALUES ('그래픽카드');
 INSERT INTO kind(name) VALUES ('cpu');

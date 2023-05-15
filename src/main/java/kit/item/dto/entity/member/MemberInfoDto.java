@@ -3,6 +3,8 @@ package kit.item.dto.entity.member;
 import kit.item.enums.RoleType;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,4 +21,5 @@ public class MemberInfoDto {
     private String address;
     private Long point;
     private RoleType roleType;
+    private LocalDateTime subscriptionStartDate;
 }

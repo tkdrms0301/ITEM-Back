@@ -14,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.time.LocalDateTime;
@@ -27,20 +28,19 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
    private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+   private static final String AUTHORIZATION = "Bearer ";
+   private static final String MEMBER_ID = "id";
    private static final String ROLE_TYPE = "roleType";
    private static final String CREATION_TIME = "start";
    private final String secret;
-   private final long accessTokenValidityInMilliseconds;
-   private final long refreshTokenValidityInMilliseconds;
+   private final long tokenValidityInMilliseconds;
    private Key key;
 
    public TokenProvider(
       @Value("${jwt.secret}") String secret,
-      @Value("${jwt.access-token-validity-in-seconds}") long accessTokenValidityInMilliseconds,
-      @Value("${jwt.refresh-token-validity-in-seconds}") long refreshTokenValidityInMilliseconds) {
+      @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds) {
       this.secret = secret;
-      this.accessTokenValidityInMilliseconds = accessTokenValidityInMilliseconds * 1000;
-      this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds * 1000;
+      this.tokenValidityInMilliseconds = tokenValidityInMilliseconds * 1000;
    }
 
    @Override
@@ -55,7 +55,7 @@ public class TokenProvider implements InitializingBean {
          .collect(Collectors.joining(","));
 
       long now = (new Date()).getTime();
-      Date validity = new Date(now + this.accessTokenValidityInMilliseconds);
+      Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
       return Jwts.builder()
          .setSubject(authentication.getName())
@@ -64,24 +64,6 @@ public class TokenProvider implements InitializingBean {
          .signWith(key, SignatureAlgorithm.HS512)
          .setExpiration(validity)
          .compact();
-   }
-
-   public String createRefreshToken(Authentication authentication) {
-      String authorities = authentication.getAuthorities().
-              stream()
-              .map(GrantedAuthority::getAuthority)
-              .collect(Collectors.joining(","));
-
-      long now = (new Date()).getTime();
-      Date validity = new Date(now + this.refreshTokenValidityInMilliseconds);
-
-      return Jwts.builder()
-              .setSubject(authentication.getName())
-              .claim(ROLE_TYPE, authorities)
-              .claim(CREATION_TIME, LocalDateTime.now().toString())
-              .signWith(key, SignatureAlgorithm.HS512)
-              .setExpiration(validity)
-              .compact();
    }
 
    public Authentication getAuthentication(String token) {
@@ -102,7 +84,7 @@ public class TokenProvider implements InitializingBean {
       return new UsernamePasswordAuthenticationToken(principal, token, authorities);
    }
 
-   public boolean validateToken(String token) throws ExpiredJwtException {
+   public boolean validateToken(String token) {
       try {
          Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
          return true;
@@ -116,5 +98,33 @@ public class TokenProvider implements InitializingBean {
          logger.info("JWT 토큰이 잘못되었습니다.");
       }
       return false;
+   }
+
+   public Long getId(String token) {
+      Claims claims = Jwts
+              .parserBuilder()
+              .setSigningKey(key)
+              .build()
+              .parseClaimsJws(token)
+              .getBody();
+      String memberId = (String) claims.get(MEMBER_ID);
+      return Long.valueOf(memberId);
+   }
+
+   public String getRoleType(String token) {
+      Claims claims = Jwts
+              .parserBuilder()
+              .setSigningKey(key)
+              .build()
+              .parseClaimsJws(token)
+              .getBody();
+      return (String) claims.get(ROLE_TYPE);
+   }
+
+   public String resolveToken(String token) {
+      if (StringUtils.hasText(token) && token.startsWith(AUTHORIZATION)) {
+         return token.substring(7);
+      }
+      return null;
    }
 }

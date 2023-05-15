@@ -1,5 +1,7 @@
 package kit.item.dto.response.member;
 
+import kit.item.domain.member.RepairShop;
+import kit.item.domain.member.Seller;
 import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.SellerInfoDto;
@@ -16,21 +18,19 @@ import lombok.*;
 public class ResponseGetMemberInfoDto {
     private Long id;
     private String email;
-    private String password;
     private String name;
     private String nickname;
     private String phoneNumber;
     private String address;
     private Long point;
     private RoleType roleType;
-    private SellerInfoDto sellerInfoDto;
-    private MechanicInfoDto mechanicInfoDto;
+    private Seller seller;
+    private RepairShop repairShop;
 
     public static ResponseGetMemberInfoDto to(MemberInfoDto memberDto){
         return ResponseGetMemberInfoDto.builder()
                 .id(memberDto.getId())
                 .email(memberDto.getEmail())
-                .password(memberDto.getPassword())
                 .name(memberDto.getName())
                 .nickname(memberDto.getNickname())
                 .phoneNumber(memberDto.getPhoneNumber())

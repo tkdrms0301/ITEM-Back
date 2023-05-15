@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     boolean existsByEmail(String email);
+    boolean existsByNickname(String nickname);
 
     @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);

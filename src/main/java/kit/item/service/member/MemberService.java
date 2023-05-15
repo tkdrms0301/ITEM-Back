@@ -1,6 +1,8 @@
 package kit.item.service.member;
 
 import kit.item.domain.member.Member;
+import kit.item.domain.member.RepairShop;
+import kit.item.domain.member.Seller;
 import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
@@ -55,6 +57,16 @@ public class MemberService implements UserDetailsService {
         return ResponseSignupDto.of(memberRepository.save(member));
     }
 
+    public boolean emailCheck(String email) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByEmail(email);
+    }
+
+    public boolean nicknameCheck(String nickname) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByNickname(nickname);
+    }
+
     public MemberLoginInfoDto getLoginInfo(RequestLoginDto requestLoginDto) {
         log.info("MemberService.getLoginInfo");
         Optional<MemberLoginInfoDto> memberInfoDto = memberRepository.findMemberInfoByEmail(requestLoginDto.getEmail());
@@ -76,15 +88,15 @@ public class MemberService implements UserDetailsService {
             if (memberDto.get().getRoleType().equals(RoleType.MEMBER)) {
                 return responseGetMemberInfoDto;
             } else if (memberDto.get().getRoleType().equals(RoleType.MECHANIC)) {
-                Optional<MechanicInfoDto> mechanicInfoDto = mechanicRepository.findMechanicByMemberId(memberId);
+                Optional<RepairShop> mechanicInfoDto = mechanicRepository.findById(memberId);
                 if (mechanicInfoDto.isPresent()) {
-                    responseGetMemberInfoDto.setMechanicInfoDto(mechanicInfoDto.get());
+                    responseGetMemberInfoDto.setRepairShop(mechanicInfoDto.get());
                 }
                 return responseGetMemberInfoDto;
             } else if (memberDto.get().getRoleType().equals(RoleType.SELLER)) {
-                Optional<SellerInfoDto> sellerInfoDto = sellerRepository.findSellerByMemberId(memberId);
+                Optional<Seller> sellerInfoDto = sellerRepository.findById(memberId);
                 if (sellerInfoDto.isPresent()) {
-                    responseGetMemberInfoDto.setSellerInfoDto(sellerInfoDto.get());
+                    responseGetMemberInfoDto.setSeller(sellerInfoDto.get());
                 }
                 return responseGetMemberInfoDto;
             }
@@ -95,16 +107,21 @@ public class MemberService implements UserDetailsService {
     public ResponseUpdateMemberInfoDto updateMemberInfo(RequestUpdateMemberInfoDto requestUpdateMemberInfoDto) {
         log.info("MemberService.updateMemberInfo");
         log.info(requestUpdateMemberInfoDto.getId().toString());
-        Optional<Member> member = memberRepository.findById(requestUpdateMemberInfoDto.getId());
-        if(member.isPresent()) {
-            member.get().setAddress(requestUpdateMemberInfoDto.getAddress());
-            member.get().setNickname(requestUpdateMemberInfoDto.getNickname());
-            member.get().setName(requestUpdateMemberInfoDto.getName());
-            member.get().setPhoneNumber(requestUpdateMemberInfoDto.getPhoneNumber());
-            memberRepository.save(member.get());
-            return ResponseUpdateMemberInfoDto.builder()
-                    .isSuccess(true)
-                    .build();
+        if(requestUpdateMemberInfoDto.getNewPassword().equals(requestUpdateMemberInfoDto.getValidPassword())){
+            Optional<Member> member = memberRepository.findById(requestUpdateMemberInfoDto.getId());
+            if(member.isPresent()) {
+                if(passwordEncoder.matches(requestUpdateMemberInfoDto.getCurrentPassword(), member.get().getPassword())){
+                    member.get().setAddress(requestUpdateMemberInfoDto.getAddress());
+                    member.get().setNickname(requestUpdateMemberInfoDto.getNickname());
+                    member.get().setPassword(passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()));
+                    member.get().setName(requestUpdateMemberInfoDto.getName());
+                    member.get().setPhoneNumber(requestUpdateMemberInfoDto.getPhoneNumber());
+                    memberRepository.save(member.get());
+                    return ResponseUpdateMemberInfoDto.builder()
+                            .isSuccess(true)
+                            .build();
+                }
+            }
         }
         return ResponseUpdateMemberInfoDto.builder()
                 .isSuccess(false)

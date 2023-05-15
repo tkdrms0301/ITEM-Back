@@ -22,4 +22,6 @@ public class MemberInfoDto {
     private Long point;
     private RoleType roleType;
     private LocalDateTime subscriptionStartDate;
+    private SellerInfoDto sellerInfoDto;
+    private MechanicInfoDto mechanicInfoDto;
 }

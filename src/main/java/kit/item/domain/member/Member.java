@@ -1,6 +1,7 @@
 package kit.item.domain.member;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import kit.item.domain.market.*;
 import kit.item.domain.it.ItDevice;
 import kit.item.domain.point.PointHistory;
@@ -18,6 +19,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,11 +39,14 @@ public class Member implements UserDetails {
     @Column(name = "member_id", nullable = false)
     private Long id;
 
+    @NotBlank
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+    @NotBlank
     @Column(name = "password", nullable = false)
     private String password;
     private String name;
+    @NotBlank
     @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
     @Column(name = "phone_number")
@@ -49,6 +54,7 @@ public class Member implements UserDetails {
     private String address;
     private Long point;
 
+    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type")
     private RoleType roleType;

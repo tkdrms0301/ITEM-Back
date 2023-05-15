@@ -42,5 +42,4 @@ public class PointController {
         return new ResponseEntity<>(new MsgDto(true, "포인트 이용내역 삭제", pointService.getPointHistoryDelete(requestGetPointHistoryDto.getId())), HttpStatus.OK);
     }
 
-
 }

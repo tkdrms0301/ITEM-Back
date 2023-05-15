@@ -11,4 +11,5 @@ import lombok.*;
 @ToString
 public class ResponseUpdateMemberInfoDto {
     private boolean isSuccess;
+    private String msg;
 }

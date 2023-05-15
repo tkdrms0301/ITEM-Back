@@ -39,10 +39,8 @@ public class Member implements UserDetails {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "password", nullable = false)
     private String password;
     private String name;
-    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
     @Column(name = "phone_number")
     private String phoneNumber;

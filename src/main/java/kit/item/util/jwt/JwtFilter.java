@@ -20,6 +20,7 @@ public class JwtFilter extends GenericFilterBean {
    private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
    public static final String ACCESS_TOKEN = "ACCESS-TOKEN";
    public static final String X_AUTH_TOKEN = "X-AUTH-TOKEN";
+   public static final String MEMBER_ID = "MEMBER_ID";
    public static final String AUTHORIZATION = "Bearer ";
    private final TokenProvider tokenProvider;
 

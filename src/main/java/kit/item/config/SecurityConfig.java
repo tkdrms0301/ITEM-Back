@@ -71,7 +71,6 @@ public class SecurityConfig {
                 .requestMatchers("/api/member").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
                 .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")
-                .requestMatchers("/api/all-members", "/hello/hello","/api/hello", "/api/authenticate").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

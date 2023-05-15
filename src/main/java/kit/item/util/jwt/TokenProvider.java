@@ -3,6 +3,7 @@ package kit.item.util.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kit.item.domain.member.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -54,12 +55,14 @@ public class TokenProvider implements InitializingBean {
          .map(GrantedAuthority::getAuthority)
          .collect(Collectors.joining(","));
 
+      Member member = (Member) authentication.getPrincipal();
       long now = (new Date()).getTime();
       Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
       return Jwts.builder()
          .setSubject(authentication.getName())
          .claim(ROLE_TYPE, authorities)
+         .claim(MEMBER_ID, member.getId())
          .claim(CREATION_TIME, LocalDateTime.now().toString())
          .signWith(key, SignatureAlgorithm.HS512)
          .setExpiration(validity)
@@ -107,7 +110,7 @@ public class TokenProvider implements InitializingBean {
               .build()
               .parseClaimsJws(token)
               .getBody();
-      String memberId = (String) claims.get(MEMBER_ID);
+      String memberId = String.valueOf(claims.get(MEMBER_ID));
       return Long.valueOf(memberId);
    }
 

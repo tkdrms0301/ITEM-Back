@@ -24,8 +24,8 @@ public class ResponseGetMemberInfoDto {
     private String address;
     private Long point;
     private RoleType roleType;
-    private Seller seller;
-    private RepairShop repairShop;
+    private SellerInfoDto sellerInfoDto;
+    private MechanicInfoDto mechanicInfoDto;
 
     public static ResponseGetMemberInfoDto to(MemberInfoDto memberDto){
         return ResponseGetMemberInfoDto.builder()

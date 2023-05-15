@@ -21,7 +21,4 @@ public class MemberInfoDto {
     private String address;
     private Long point;
     private RoleType roleType;
-    private LocalDateTime subscriptionStartDate;
-    private SellerInfoDto sellerInfoDto;
-    private MechanicInfoDto mechanicInfoDto;
 }

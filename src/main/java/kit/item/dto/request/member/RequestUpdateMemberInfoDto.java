@@ -1,5 +1,7 @@
 package kit.item.dto.request.member;
 
+import kit.item.dto.entity.member.MechanicInfoDto;
+import kit.item.dto.entity.member.SellerInfoDto;
 import lombok.*;
 
 @Getter
@@ -8,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestUpdateMemberInfoDto {
-    private Long id;
     private String name;
     private String nickname;
     private String currentPassword;
@@ -16,4 +17,7 @@ public class RequestUpdateMemberInfoDto {
     private String validPassword;
     private String phoneNumber;
     private String address;
+
+    private SellerInfoDto sellerInfoDto;
+    private MechanicInfoDto mechanicInfoDto;
 }

@@ -9,5 +9,4 @@ import lombok.*;
 @NoArgsConstructor
 public class ResponseLoginDto {
     private String accessToken;
-    private String refreshToken;
 }

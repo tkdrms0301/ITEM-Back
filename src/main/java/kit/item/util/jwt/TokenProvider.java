@@ -103,15 +103,15 @@ public class TokenProvider implements InitializingBean {
       return false;
    }
 
-   public Long getId(String token) {
+   public String getId(String token) {
       Claims claims = Jwts
               .parserBuilder()
               .setSigningKey(key)
               .build()
               .parseClaimsJws(token)
               .getBody();
-      String memberId = String.valueOf(claims.get(MEMBER_ID));
-      return Long.valueOf(memberId);
+      Object o = claims.get(MEMBER_ID);
+      return String.valueOf(o) ;
    }
 
    public String getRoleType(String token) {

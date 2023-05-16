@@ -52,9 +52,9 @@ public class Member implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type")
     private RoleType roleType;

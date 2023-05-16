@@ -146,6 +146,7 @@ public class MemberService implements UserDetailsService {
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
                     requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     memberId
             );
         }else if (member.get().getRoleType().equals(RoleType.SELLER)) {
@@ -155,6 +156,7 @@ public class MemberService implements UserDetailsService {
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
                     requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyAddress(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyPhoneNumber(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyName(),
@@ -169,6 +171,7 @@ public class MemberService implements UserDetailsService {
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
                     requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopName(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopPhoneNumber(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getDescription(),

@@ -23,6 +23,7 @@ public class RequestSignupDto {
     private String phoneNumber;
     private String address;
     private RoleType roleType;
+    private String account;
     private SellerInfoDto sellerInfoDto;
     private MechanicInfoDto mechanicInfoDto;
 
@@ -36,6 +37,7 @@ public class RequestSignupDto {
                 .address(address)
                 .point(0L)
                 .roleType(RoleType.MEMBER)
+                .account(account)
                 .build();
     }
 
@@ -49,6 +51,7 @@ public class RequestSignupDto {
         seller.setAddress(address);
         seller.setPoint(0L);
         seller.setRoleType(RoleType.SELLER);
+        seller.setAccount(account);
         seller.setCompanyName(sellerInfoDto.getCompanyName());
         seller.setCompanyNumber(sellerInfoDto.getCompanyNumber());
         seller.setCompanyPhoneNumber(sellerInfoDto.getCompanyPhoneNumber());
@@ -67,6 +70,7 @@ public class RequestSignupDto {
         repairShop.setAddress(address);
         repairShop.setPoint(0L);
         repairShop.setRoleType(RoleType.MECHANIC);
+        repairShop.setAccount(account);
         repairShop.setShopName(mechanicInfoDto.getShopName());
         repairShop.setShopPhoneNumber(mechanicInfoDto.getShopPhoneNumber());
         repairShop.setDescription(mechanicInfoDto.getDescription());

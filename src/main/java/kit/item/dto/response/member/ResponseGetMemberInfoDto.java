@@ -22,6 +22,7 @@ public class ResponseGetMemberInfoDto {
     private String nickname;
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
     private RoleType roleType;
     private SellerInfoDto sellerInfoDto;
@@ -35,6 +36,7 @@ public class ResponseGetMemberInfoDto {
                 .nickname(memberDto.getNickname())
                 .phoneNumber(memberDto.getPhoneNumber())
                 .address(memberDto.getAddress())
+                .account(memberDto.getAccount())
                 .point(memberDto.getPoint())
                 .roleType(memberDto.getRoleType())
                 .build();

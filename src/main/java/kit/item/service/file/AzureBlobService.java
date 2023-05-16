@@ -30,7 +30,7 @@ public class AzureBlobService {
 		BlobClient blob = blobContainerClient.getBlobClient(multipartFile.getOriginalFilename());
 		blob.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
 
-		return multipartFile.getOriginalFilename();
+		return blob.getBlobUrl();
 	}
 
 	public byte[] getFile(String fileName) throws URISyntaxException {

@@ -31,11 +31,11 @@ public class PointService {
         return pointHistoryDtos;
     }
 
-    public boolean getPointHistoryDelete(Long historyId) {
+    public boolean getPointHistoryDelete(Long historyId, Long memberId) {
         log.info("PointService.getPointHistoryDelete");
-        Optional<PointHistory> pointHistoryDto = pointRepository.findById(historyId);
+        boolean isExist = pointRepository.existsByMemberIdAndHistoryId(memberId, historyId);
 
-        if(pointHistoryDto.isPresent()){
+        if(isExist){
             pointRepository.deleteById(historyId);
             return true;
         }

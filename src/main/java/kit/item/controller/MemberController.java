@@ -1,6 +1,8 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
+import kit.item.dto.request.auth.RequestCompanyNumber;
+import kit.item.dto.request.auth.RequestPasswordCheckDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.service.member.MemberService;
@@ -32,6 +34,25 @@ public class MemberController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         ResponseUpdateMemberInfoDto responseUpdateMemberInfoDto = memberService.updateMemberInfo(requestUpdateMemberInfoDto, memberId);
         return new ResponseEntity<>(new MsgDto(responseUpdateMemberInfoDto.isSuccess(), responseUpdateMemberInfoDto.getMsg(), null), HttpStatus.OK);
+    }
+
+    @PostMapping("/password-check")
+    public ResponseEntity<MsgDto> passwordCheck(
+            @RequestHeader(value = X_AUTH_TOKEN) String accessToken,
+            @RequestBody RequestPasswordCheckDto requestPasswordCheck) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if(memberService.passwordCheck(memberId, requestPasswordCheck.getPassword())) {
+            return new ResponseEntity<>(new MsgDto(true, "비밀번호 확인", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "동일한 비밀번호 입력", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/company-number-check")
+    public ResponseEntity<MsgDto> companyNumberCheck(@RequestBody RequestCompanyNumber requestCompanyNumber) {
+        if(!memberService.companyNumberCheck(requestCompanyNumber.getCompanyNumber())) {
+            return new ResponseEntity<>(new MsgDto(true, "사업자 번호 확인", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "동일한 사업자 번호 입력", null), HttpStatus.OK);
     }
 
     @GetMapping("/member")

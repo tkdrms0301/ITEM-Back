@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestGetPointHistoryDateDto {
-    private Long id;
     private String startDate;
     private String endDate;
 }

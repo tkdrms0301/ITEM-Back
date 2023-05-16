@@ -3,12 +3,23 @@ VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
 VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type)
-VALUES ('test address3', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 5000, 'MECHANIC');
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 5000, 'MECHANIC');
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
 VALUES ('mechanic description', 'shop_name', 'shop_phone_number', 3);
+
+
+INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
+VALUES ('test description1', 'test shop1', '010-1234-5678', 3);
+INSERT INTO repair_service(name, repair_shop_id)
+VALUES ('test service1', 3);
+INSERT INTO repair_service(name, repair_shop_id)
+VALUES ('test service2', 3);
+
+INSERT INTO official_repair_shop(address, description, name, phone_number)
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
 
 INSERT INTO kind(name) VALUES ('그래픽카드');
 INSERT INTO kind(name) VALUES ('cpu');

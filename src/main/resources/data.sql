@@ -8,10 +8,6 @@ VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
-VALUES ('mechanic description', 'shop_name', 'shop_phone_number', 3);
-
-
-INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
 VALUES ('test description1', 'test shop1', '010-1234-5678', 3);
 INSERT INTO repair_service(name, repair_shop_id)
 VALUES ('test service1', 3);

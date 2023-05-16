@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface MechanicRepository extends JpaRepository<RepairShop, Long> {
     @Modifying
     @Query("update REPAIR_SHOP r set " +
-            "r.address=:address, r.nickname=:nickname, r.password=:password, r.name=:name, r.phoneNumber=:phoneNumber," +
+            "r.address=:address, r.nickname=:nickname, r.password=:password, r.name=:name, r.phoneNumber=:phoneNumber, r.account=:account, " +
             "r.shopName=:shopName, r.shopPhoneNumber=:shopPhoneNumber, r.description=:description" +
             " where r.id=:id")
     void updateMechanicById(@Param("address") String address,
@@ -19,6 +19,7 @@ public interface MechanicRepository extends JpaRepository<RepairShop, Long> {
                          @Param("password") String password,
                          @Param("name") String name,
                          @Param("phoneNumber") String phoneNumber,
+                         @Param("account") String account,
                          @Param("shopName") String shopName,
                          @Param("shopPhoneNumber") String shopPhoneNumber,
                          @Param("description") String description,

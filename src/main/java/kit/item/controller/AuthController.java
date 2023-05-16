@@ -7,12 +7,13 @@ import kit.item.dto.response.auth.ResponseLogoutDto;
 import kit.item.exception.DuplicateMemberException;
 import kit.item.service.auth.AuthService;
 import kit.item.service.member.MemberService;
-import kit.item.util.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static kit.item.util.prefix.ConstPrefix.ACCESS_TOKEN;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,23 +38,10 @@ public class AuthController {
         ResponseLoginDto responseLoginDto = authService.login(requestLoginDto);
         if(responseLoginDto.getAccessToken() != null){
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
+            httpHeaders.add(ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
             return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.getLoginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
         }
         return ResponseEntity.ok(new MsgDto(false, "로그인 실패", null));
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<MsgDto> logout(@RequestHeader(value = "X-AUTH-TOKEN") String refreshToken) {
-        RequestLogoutDto requestLogoutDto = RequestLogoutDto.builder()
-                .refreshToken(refreshToken.replace(HEADER, ""))
-                .build();
-        try {
-            //authService.logout(requestLogoutDto);
-            return ResponseEntity.ok(new MsgDto(true, "로그아웃 성공", ResponseLogoutDto.builder().isLogout(true)));
-        }catch (RuntimeException e) {
-            return ResponseEntity.ok(new MsgDto(false, "로그아웃 실패", ResponseLogoutDto.builder().isLogout(false)));
-        }
     }
 
     @PostMapping("/email-check")

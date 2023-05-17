@@ -6,6 +6,8 @@ import kit.item.domain.repair.RepairService;
 import kit.item.dto.entity.repairShop.RepairServiceDto;
 import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
 import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
+import kit.item.dto.response.repairShop.ResponseServiceListDto;
+import kit.item.enums.ServiceType;
 import kit.item.repository.repairShop.OfficialRepairShopRepository;
 import kit.item.repository.repairShop.RepairShopRepository;
 import kit.item.repository.repairShop.RepairShopServiceRepository;
@@ -34,7 +36,10 @@ public class RepairShopService {
             servicesByRepairShopId.stream().forEach(repairService -> {
                 repairServiceDtos.add(
                         RepairServiceDto.builder()
+                                .serviceId(repairService.getId())
                                 .serviceName(repairService.getServiceName())
+                                .serviceType(String.valueOf(repairService.getServiceType()))
+                                .description(repairService.getDescription())
                                 .build());
             });
 
@@ -49,6 +54,35 @@ public class RepairShopService {
 
         });
         return responsePrivateRepairShopDtos;
+    }
+
+    public List<ResponseServiceListDto> getServiceListByShopID(Long shopId){
+
+        List<RepairService> serviceList = repairShopServiceRepository.findByRepairShopId(shopId);
+
+        List<ResponseServiceListDto> responseServiceListDtos = new ArrayList<>();
+
+        serviceList.stream().forEach(repairService -> {
+            responseServiceListDtos.add(ResponseServiceListDto.builder()
+                    .serviceId(repairService.getId())
+                    .serviceName(repairService.getServiceName())
+                    .serviceType(String.valueOf(repairService.getServiceType()))
+                    .description(repairService.getDescription())
+                    .build());
+
+        });
+        return responseServiceListDtos;
+    }
+
+    public boolean deleteServiceByServiceId(Long memberId, Long serviceId){
+
+        boolean isExist = repairShopServiceRepository.existsByMemberIdAndServiceId(memberId, serviceId);
+
+        if(isExist){
+            repairShopServiceRepository.deleteById(serviceId);
+            return true;
+        }
+        return false;
     }
 
     public List<ResponsePublicRepairShopDto> findAllPublicRepairShops() {

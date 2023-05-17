@@ -22,13 +22,13 @@ public class PointController {
 
     @GetMapping("/history")
     public ResponseEntity<MsgDto> getPointHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
-        Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return new ResponseEntity<>(new MsgDto(true, "포인트 이용내역 조회", pointService.getPointHistory(memberId)), HttpStatus.OK);
     }
 
     @GetMapping("/history/date")
     public ResponseEntity<MsgDto> getPointHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetPointHistoryDateDto requestGetPointHistoryDateDto) {
-        Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         LocalDateTime startDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getStartDate());
         LocalDateTime endDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getEndDate())
                 .withHour(23)
@@ -40,7 +40,7 @@ public class PointController {
 
     @DeleteMapping("/history")
     public ResponseEntity<MsgDto> getPointHistoryDelete(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetPointHistoryDto requestGetPointHistoryDto) {
-        Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return new ResponseEntity<>(new MsgDto(true, "포인트 이용내역 삭제", pointService.getPointHistoryDelete(requestGetPointHistoryDto.getId(), memberId)), HttpStatus.OK);
     }
 

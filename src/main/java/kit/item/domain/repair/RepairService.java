@@ -2,6 +2,7 @@ package kit.item.domain.repair;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.RepairShop;
+import kit.item.enums.ServiceType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,7 +20,14 @@ public class RepairService {
     @Column(name = "repair_service_id", nullable = false)
     private Long id;
 
-    private String name;
+    @Column(name = "service_name", nullable = false)
+    private String serviceName;
+
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "service_type", nullable = false)
+    private ServiceType serviceType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repair_shop_id")

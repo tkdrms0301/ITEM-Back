@@ -34,7 +34,7 @@ public class RepairShopService {
             servicesByRepairShopId.stream().forEach(repairService -> {
                 repairServiceDtos.add(
                         RepairServiceDto.builder()
-                                .serviceName(repairService.getName())
+                                .serviceName(repairService.getServiceName())
                                 .build());
             });
 

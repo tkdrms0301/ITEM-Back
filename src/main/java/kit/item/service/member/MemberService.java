@@ -14,9 +14,9 @@ import kit.item.dto.response.member.ResponseGetMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
-import kit.item.repository.MechanicRepository;
-import kit.item.repository.MemberRepository;
-import kit.item.repository.SellerRepository;
+import kit.item.repository.member.MechanicRepository;
+import kit.item.repository.member.MemberRepository;
+import kit.item.repository.member.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,6 +79,22 @@ public class MemberService implements UserDetailsService {
     public boolean nicknameCheck(String nickname) {
         log.info("MemberService.emailCheck");
         return memberRepository.existsByNickname(nickname);
+    }
+
+    public boolean companyNumberCheck(String companyNumber) {
+        log.info("MemberService.companyNumberCheck");
+        boolean result = sellerRepository.existsByCompanyNumber(companyNumber);
+        log.info(String.valueOf(result));
+        return result;
+    }
+
+    public boolean passwordCheck(Long memberId, String password) {
+        log.info("MemberService.passwordCheck");
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            return passwordEncoder.matches(password, member.get().getPassword());
+        }
+        return false;
     }
 
     public MemberLoginInfoDto getLoginInfo(RequestLoginDto requestLoginDto) {
@@ -144,7 +160,6 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
                     requestUpdateMemberInfoDto.getAccount(),
                     memberId
@@ -154,7 +169,6 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
                     requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyAddress(),
@@ -169,7 +183,6 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
                     requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopName(),

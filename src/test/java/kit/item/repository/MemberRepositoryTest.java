@@ -1,7 +1,7 @@
 package kit.item.repository;
 
 import kit.item.domain.member.Member;
-import kit.item.dto.entity.member.MemberInfoDto;
+import kit.item.repository.member.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

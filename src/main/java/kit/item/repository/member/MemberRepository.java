@@ -1,4 +1,4 @@
-package kit.item.repository;
+package kit.item.repository.member;
 
 import kit.item.domain.member.Member;
 import kit.item.dto.entity.member.MechanicInfoDto;
@@ -32,11 +32,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<SellerInfoDto> findSellerById(@Param("id") Long id);
 
     @Modifying
-    @Query("update MEMBER m set m.address=:address, m.nickname=:nickname, m.password=:password, m.name=:name, m.phoneNumber=:phoneNumber, m.account=:account where m.id=:id")
+    @Query("update MEMBER m set m.address=:address, m.nickname=:nickname, m.password=:password, m.phoneNumber=:phoneNumber, m.account=:account where m.id=:id")
     void updateMemberById(@Param("address") String address,
                          @Param("nickname") String nickname,
                          @Param("password") String password,
-                         @Param("name") String name,
                          @Param("phoneNumber") String phoneNumber,
                          @Param("account") String account,
                          @Param("id") Long id);

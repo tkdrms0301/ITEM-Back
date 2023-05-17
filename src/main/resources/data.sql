@@ -14,6 +14,8 @@ INSERT INTO repair_service(description, service_name, service_type, repair_shop_
 VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', 'INSPECTION', 3);
 INSERT INTO repair_service(description, service_name, service_type, repair_shop_id)
 VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결', 'SOFTWARE_ERROR', 3);
+INSERT INTO repair_service(description, service_name, service_type, repair_shop_id)
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리', 'REPAIR', 3);
 
 INSERT INTO official_repair_shop(address, description, name, phone_number)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');

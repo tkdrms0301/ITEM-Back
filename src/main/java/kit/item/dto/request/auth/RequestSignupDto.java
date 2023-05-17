@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class RequestSignupDto {
     private String email;
     private String password;
+    private String validPassword;
     private String name;
     private String nickname;
     private String phoneNumber;
@@ -72,6 +73,7 @@ public class RequestSignupDto {
         repairShop.setRoleType(RoleType.MECHANIC);
         repairShop.setAccount(account);
         repairShop.setShopName(mechanicInfoDto.getShopName());
+        repairShop.setShopAddress(mechanicInfoDto.getShopAddress());
         repairShop.setShopPhoneNumber(mechanicInfoDto.getShopPhoneNumber());
         repairShop.setDescription(mechanicInfoDto.getDescription());
         return repairShop;

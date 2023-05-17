@@ -83,9 +83,7 @@ public class MemberService implements UserDetailsService {
 
     public boolean companyNumberCheck(String companyNumber) {
         log.info("MemberService.companyNumberCheck");
-        boolean result = sellerRepository.existsByCompanyNumber(companyNumber);
-        log.info(String.valueOf(result));
-        return result;
+        return sellerRepository.existsByCompanyNumber(companyNumber);
     }
 
     public boolean passwordCheck(Long memberId, String password) {

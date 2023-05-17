@@ -1,7 +1,6 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.request.auth.RequestCompanyNumber;
 import kit.item.dto.request.auth.RequestPasswordCheckDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
@@ -45,14 +44,6 @@ public class MemberController {
             return new ResponseEntity<>(new MsgDto(true, "비밀번호 확인", null), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "동일한 비밀번호 입력", null), HttpStatus.OK);
-    }
-
-    @PostMapping("/company-number-check")
-    public ResponseEntity<MsgDto> companyNumberCheck(@RequestBody RequestCompanyNumber requestCompanyNumber) {
-        if(!memberService.companyNumberCheck(requestCompanyNumber.getCompanyNumber())) {
-            return new ResponseEntity<>(new MsgDto(true, "사업자 번호 확인", null), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new MsgDto(false, "동일한 사업자 번호 입력", null), HttpStatus.OK);
     }
 
     @GetMapping("/member")

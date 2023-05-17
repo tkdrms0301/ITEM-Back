@@ -7,6 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestCompanyNumber {
+public class RequestCompanyNumberCheckDto {
     private String companyNumber;
 }

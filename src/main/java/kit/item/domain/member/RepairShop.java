@@ -1,5 +1,6 @@
 package kit.item.domain.member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
@@ -20,6 +21,8 @@ public class RepairShop extends Member{
     private String shopName;
     private String shopPhoneNumber;
     private String description;
+    @Column(name = "shop_address")
+    private String shopAddress;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairShop")
     @ToString.Exclude

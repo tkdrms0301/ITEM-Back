@@ -11,11 +11,11 @@ INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id)
 VALUES ('test description1', 'test shop1', '010-1234-5678', 3);
 
 INSERT INTO repair_service(description, service_name, service_type, repair_shop_id)
-VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', 'INSPECTION', 3);
+VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', '점검', 3);
 INSERT INTO repair_service(description, service_name, service_type, repair_shop_id)
-VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결', 'SOFTWARE_ERROR', 3);
+VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결', '교환', 3);
 INSERT INTO repair_service(description, service_name, service_type, repair_shop_id)
-VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리', 'REPAIR', 3);
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리', '수리', 3);
 
 INSERT INTO official_repair_shop(address, description, name, phone_number)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
@@ -241,3 +241,5 @@ SELECT NOW() into @now;
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '아이폰12 구매', '상품 구매', 1);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 10000, '리뷰 추천 누적 10회', '리뷰 추천 누적', 1);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 2);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '그래픽카드 GTX1060 부품 구매', '상품 구매', 3);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 3);

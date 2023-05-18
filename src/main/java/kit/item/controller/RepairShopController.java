@@ -1,6 +1,7 @@
 package kit.item.controller;
 
 import kit.item.domain.member.Member;
+import kit.item.dto.request.repair.RequestServiceCreateInfo;
 import kit.item.dto.request.repair.RequestServiceUpdateInfo;
 import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
 import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
@@ -38,16 +39,11 @@ public class RepairShopController {
         return repairShopService.getServiceListByShopID(memberId);
     }
 
-    @GetMapping("/serviceList/info")
-    public ResponseServiceDto getServiceInfo(Long serviceId){
-        System.out.println("serviceId = " + serviceId);
-        return repairShopService.getServiceInfo(serviceId);
-    }
-
-    @PutMapping("/serviceList/info")
-    public ResponseServiceDto updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo){
+    @PostMapping("/serviceList")
+    public boolean createServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceCreateInfo requestServiceCreateInfo){
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+
+        return repairShopService.createServiceList(memberId, requestServiceCreateInfo);
     }
 
     @DeleteMapping("/serviceList")
@@ -56,5 +52,18 @@ public class RepairShopController {
 
         return repairShopService.deleteServiceByServiceId(memberId, serviceId);
     }
+
+    @GetMapping("/serviceList/info")
+    public ResponseServiceDto getServiceInfo(Long serviceId){
+        System.out.println("serviceId = " + serviceId);
+        return repairShopService.getServiceInfo(serviceId);
+    }
+
+    @PutMapping("/serviceList/info")
+    public boolean updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo){
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+    }
+
 
 }

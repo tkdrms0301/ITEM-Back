@@ -4,11 +4,11 @@ import kit.item.domain.member.RepairShop;
 import kit.item.domain.repair.OfficialRepairShop;
 import kit.item.domain.repair.RepairService;
 import kit.item.dto.entity.repairShop.RepairServiceDto;
+import kit.item.dto.request.repair.RequestServiceCreateInfo;
 import kit.item.dto.request.repair.RequestServiceUpdateInfo;
 import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
 import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
 import kit.item.dto.response.repairShop.ResponseServiceDto;
-import kit.item.enums.ServiceType;
 import kit.item.repository.repairShop.OfficialRepairShopRepository;
 import kit.item.repository.repairShop.RepairShopRepository;
 import kit.item.repository.repairShop.RepairShopServiceRepository;
@@ -42,7 +42,7 @@ public class RepairShopService {
                         RepairServiceDto.builder()
                                 .serviceId(repairService.getId())
                                 .serviceName(repairService.getServiceName())
-                                .serviceType(String.valueOf(repairService.getServiceType()))
+                                .serviceType(repairService.getServiceType())
                                 .description(repairService.getDescription())
                                 .build());
             });
@@ -127,13 +127,14 @@ public class RepairShopService {
         return false;
     }
 
-    public ResponseServiceDto updateServiceByServiceId(Long memberId, RequestServiceUpdateInfo requestServiceUpdateInfo) {
+    public boolean updateServiceByServiceId(Long memberId, RequestServiceUpdateInfo requestServiceUpdateInfo) {
 
-        ResponseServiceDto responseServiceDto = null;
         boolean isExist = repairShopServiceRepository.existsByMemberIdAndServiceId(memberId, requestServiceUpdateInfo.getServiceId());
 
-        if(isExist){
-            Optional<RepairService> repairService = repairShopServiceRepository.findById(requestServiceUpdateInfo.getServiceId());
+        if(isExist && !(requestServiceUpdateInfo.getServiceName() == ""
+                || requestServiceUpdateInfo.getServiceName() == null
+                || requestServiceUpdateInfo.getDescription() == ""
+                || requestServiceUpdateInfo.getDescription() == null)){
 
             repairShopServiceRepository.updateServiceDetails(
                     requestServiceUpdateInfo.getServiceId(),
@@ -141,19 +142,32 @@ public class RepairShopService {
                     requestServiceUpdateInfo.getServiceName(),
                     requestServiceUpdateInfo.getDescription()
             );
-
-            repairShopServiceRepository.save(repairService.get());
-
-            if(repairService.isPresent()){
-                responseServiceDto = ResponseServiceDto.builder()
-                        .serviceId(repairService.get().getId())
-                        .serviceType(String.valueOf(repairService.get().getServiceType()))
-                        .serviceName(repairService.get().getServiceName())
-                        .description(repairService.get().getDescription())
-                        .build();
-            }
+            return true;
         }
+        return false;
+    }
 
-        return responseServiceDto;
+    public boolean createServiceList(Long memberId, RequestServiceCreateInfo requestServiceCreateInfo) {
+        Optional<RepairShop> repairShop = repairShopRepository.findById(memberId);
+
+        if(requestServiceCreateInfo.getServiceName() == ""
+                || requestServiceCreateInfo.getServiceName() == null
+                || requestServiceCreateInfo.getDescription() == ""
+                || requestServiceCreateInfo.getDescription() == null)
+            return false;
+
+        if(repairShop.isPresent()){
+            RepairService repairService = RepairService.builder()
+                            .serviceType(requestServiceCreateInfo.getServiceType())
+                            .serviceName(requestServiceCreateInfo.getServiceName())
+                            .description(requestServiceCreateInfo.getDescription())
+                            .repairShop(repairShop.get()).build();
+
+            repairShopServiceRepository.save(repairService);
+
+            return true;
+
+        }else
+            return false;
     }
 }

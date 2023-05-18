@@ -2,6 +2,7 @@ package kit.item.domain.it;
 
 import jakarta.persistence.*;
 import kit.item.domain.data.PosAndNeg;
+import kit.item.enums.ProductType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,9 +21,14 @@ public class Product {
     @Column(name = "product_name")
     private String name;
 
-    /* true : 부품, false : 완제품 */
-    @Column(name = "is_component")
-    private boolean isComponent;
+    /*
+     * 완제품 COMPLETE_PRODUCT
+     * 완본체 FINISHED_PRODUCT
+     * 부품 COMPONENT
+     */
+    @Column(name = "product_type")
+    @Enumerated(EnumType.STRING)
+    private ProductType productType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<PosAndNeg> posAndNegs = new ArrayList<>();

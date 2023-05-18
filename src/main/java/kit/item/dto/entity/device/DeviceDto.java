@@ -1,6 +1,9 @@
 package kit.item.dto.entity.device;
 
+import kit.item.enums.ProductType;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,5 +20,19 @@ public class DeviceDto {
     private String brandName;
     private String productName;
     private String directlyRegisterProductName;
-    private boolean isComponent;
+    private ProductType productType;
+    private List<DeviceDto> components;
+
+public DeviceDto(Long id, Long categoryId, Long brandId, Long productId, Long memberId, String categoryName, String brandName, String productName, String directlyRegisterProductName, ProductType productType) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.brandId = brandId;
+        this.productId = productId;
+        this.memberId = memberId;
+        this.categoryName = categoryName;
+        this.brandName = brandName;
+        this.productName = productName;
+        this.directlyRegisterProductName = directlyRegisterProductName;
+        this.productType = productType;
+    }
 }

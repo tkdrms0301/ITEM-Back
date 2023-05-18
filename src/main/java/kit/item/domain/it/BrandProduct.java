@@ -29,9 +29,6 @@ public class BrandProduct {
     private Product product;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "brandProduct")
-    private List<ItDevice> itDevices = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brandProduct")
     private List<Data> datas = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "brandProduct")

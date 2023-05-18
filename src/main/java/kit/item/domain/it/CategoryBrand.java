@@ -23,4 +23,7 @@ public class CategoryBrand {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryBrand")
+    private List<Product> products = new ArrayList<>();
 }

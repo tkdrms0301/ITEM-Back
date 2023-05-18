@@ -2,7 +2,7 @@ package kit.item.repository.it;
 
 import kit.item.domain.it.CategoryBrand;
 import kit.item.dto.entity.device.BrandDto;
-import kit.item.dto.entity.device.CategoryBrandDto;
+import kit.item.dto.entity.device.ProductDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,8 +13,8 @@ public interface CategoryBrandRepository extends JpaRepository<CategoryBrand, Lo
     @Query("select new kit.item.dto.entity.device.BrandDto (cb.brand.id, cb.brand.name) from CATEGORY_BRAND cb where cb.category.id=:categoryId")
     List<BrandDto> findBrandByCategoryId(@Param(value = "categoryId") Long categoryId);
 
-    @Query("select new kit.item.dto.entity.device.CategoryBrandDto (cb.id, cb.category.id, cb.brand.id) from CATEGORY_BRAND cb where cb.category.id=:categoryId and cb.brand.id=:brandId")
-    CategoryBrandDto findCategoryBrandByCategoryIdAndBrandId(@Param(value = "categoryId") Long categoryId, @Param(value = "brandId") Long brandId);
-
-    List<CategoryBrand> findByCategoryIdAndBrandId(Long categoryId, Long brandId);
+    @Query("select new kit.item.dto.entity.device.ProductDto (p.id, p.name) from PRODUCT p " +
+            "INNER join fetch CATEGORY_BRAND cb " +
+            "where p.categoryBrand.brand.id=:brandId and p.categoryBrand.category.id=:categoryBrandId and p.categoryBrand.id=cb.id")
+    List<ProductDto> findProductByCategoryIdAndBrandId(@Param(value = "categoryBrandId") Long categoryBrandId, @Param(value = "brandId") Long brandId);
 }

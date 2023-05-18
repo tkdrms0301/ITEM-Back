@@ -1,8 +1,8 @@
 package kit.item.domain.market;
 
 import jakarta.persistence.*;
+import kit.item.domain.it.Product;
 import kit.item.domain.member.Seller;
-import kit.item.domain.it.BrandProduct;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -37,9 +37,9 @@ public class SaleProduct {
     private Seller seller;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_product_id")
+    @JoinColumn(name = "product_id")
     @ToString.Exclude
-    private BrandProduct brandProduct;
+    private Product product;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "saleProduct")
     @ToString.Exclude
@@ -77,8 +77,8 @@ public class SaleProduct {
         this.imageDetails = imageDetails;
     }
 
-    public void setBrandProduct(BrandProduct brandProduct) {
-        this.brandProduct = brandProduct;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public void setSeller(Seller seller) {

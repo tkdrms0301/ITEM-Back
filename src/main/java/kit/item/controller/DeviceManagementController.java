@@ -1,15 +1,21 @@
 package kit.item.controller;
 
+import kit.item.domain.it.Product;
 import kit.item.dto.common.MsgDto;
+import kit.item.dto.entity.device.ProductDto;
 import kit.item.dto.request.device.RequestCreateDeviceDto;
 import kit.item.dto.request.device.RequestDeleteDeviceDto;
 import kit.item.dto.request.device.RequestUpdateDeviceDto;
+import kit.item.repository.it.CategoryBrandRepository;
 import kit.item.service.device.DeviceManagementService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static kit.item.util.prefix.ConstPrefix.X_AUTH_TOKEN;
 
@@ -33,7 +39,11 @@ public class DeviceManagementController {
 
     @GetMapping("/product")
     public ResponseEntity<MsgDto> getProduct(@RequestParam Long category, @RequestParam Long brand) {
-        return new ResponseEntity<>(new MsgDto(true, "제품 조회 성공", deviceManagementService.getProductList(category, brand)), HttpStatus.OK);
+        List<ProductDto> productDtos = deviceManagementService.getProductList(category, brand);
+        if(productDtos.isEmpty()) {
+            return new ResponseEntity<>(new MsgDto(false, "조회된 제품이 없음", new ArrayList<ProductDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "제품 조회 성공", productDtos), HttpStatus.OK);
     }
 
     @GetMapping("/get-device")

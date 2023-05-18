@@ -12,4 +12,5 @@ public class MechanicInfoDto {
     private String description;
     private String shopName;
     private String shopPhoneNumber;
+    private String shopAddress;
 }

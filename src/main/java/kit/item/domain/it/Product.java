@@ -20,18 +20,15 @@ public class Product {
     @Column(name = "product_name")
     private String name;
 
-    /* true : 완제품, false : 부품 */
-    @Column(name = "role_type")
-    private boolean role;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "completeProduct")
-    private List<Component> completeComponents = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "partProduct")
-    private List<Component> partComponents = new ArrayList<>();
+    /* true : 부품, false : 완제품 */
+    @Column(name = "is_component")
+    private boolean isComponent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<PosAndNeg> posAndNegs = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<ItDevice> itDevices = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kind_id")

@@ -72,7 +72,7 @@ public class SecurityConfig {
                         "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops").permitAll()
                 .requestMatchers("/api/member").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
-                .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")
+                .requestMatchers("/api/repair/serviceList", "/api/repair/serviceList/info").hasAuthority("MECHANIC")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

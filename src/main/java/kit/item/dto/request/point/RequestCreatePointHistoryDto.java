@@ -1,7 +1,9 @@
-package kit.item.dto.response.repairShop;
-
+package kit.item.dto.request.point;
 
 import lombok.*;
+
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -9,9 +11,10 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class ResponseServiceListDto {
-    private Long serviceId;
+public class RequestCreatePointHistoryDto {
+
     private String serviceName;
     private String serviceType;
-    private String description;
+    private Long point;
+    private LocalDateTime date;
 }

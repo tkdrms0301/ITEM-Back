@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops").permitAll()
                 .requestMatchers("/api/member").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
-                .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")
+                .requestMatchers("/api/repair/serviceList", "/api/repair/serviceList/info").hasAuthority("MECHANIC")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

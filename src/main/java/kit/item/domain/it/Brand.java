@@ -20,9 +20,6 @@ public class Brand {
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
-    private List<BrandProduct> brandProducts = new ArrayList<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
     private List<CategoryBrand> categoryBrands = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")

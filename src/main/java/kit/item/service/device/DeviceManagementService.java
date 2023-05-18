@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static kit.item.util.prefix.ConstPrefix.IS_COMPONENT;
 
@@ -29,7 +30,6 @@ public class DeviceManagementService {
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
     private final CategoryBrandRepository categoryBrandRepository;
-    private final BrandProductRepository brandProductRepository;
     private final ItDeviceRepository itDeviceRepository;
     private final MemberRepository memberRepository;
 
@@ -48,50 +48,30 @@ public class DeviceManagementService {
     // brandId -> product
     public List<ProductDto> getProductList(Long categoryId, Long brandId) {
         log.info("DeviceManagementService.getProductList");
-        CategoryBrandDto categoryBrands = categoryBrandRepository.findCategoryBrandByCategoryIdAndBrandId(categoryId, brandId);
-        return brandProductRepository.findProductByCategoryIdAndBrandId(categoryBrands.getCategoryId(), categoryBrands.getBrandId());
+        return categoryBrandRepository.findProductByCategoryIdAndBrandId(categoryId, brandId);
+    }
+
+    private List<DeviceDto> getDeviceList(Long memberId, Long categoryId) {
+        log.info("DeviceManagementService.getDeviceList");
+        List<DeviceDto> selectDevices = itDeviceRepository.findSelectDeviceByMemberId(memberId, categoryId);
+        for (DeviceDto deviceDto : selectDevices) {
+            if (deviceDto.getProductType().equals(ProductType.COMPONENT)) {
+                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
+                deviceDto.setComponents(components);
+            }
+            deviceDto.setComponents(new ArrayList<>());
+        }
+        return selectDevices;
     }
 
     // my device get list
     public ResponseGetMyDeviceInfo getMyDeviceList(Long memberId) {
         log.info("DeviceManagementService.getMyDeviceList");
-        List<DeviceDto> computers = itDeviceRepository.findSelectDeviceByMemberId(memberId, 1L);
-        for (DeviceDto computer : computers) {
-            if (computer.getProductType().equals(ProductType.COMPONENT)) {
-                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, computer.getId());
-                computer.setComponents(components);
-            }
-            computer.setComponents(new ArrayList<>());
-        }
-        List<DeviceDto> notebooks = itDeviceRepository.findSelectDeviceByMemberId(memberId, 2L);
-        for (DeviceDto notebook : notebooks) {
-            if (notebook.getProductType().equals(ProductType.COMPONENT)) {
-                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, notebook.getId());
-                notebook.setComponents(components);
-            }
-            notebook.setComponents(new ArrayList<>());
-        }
-        List<DeviceDto> smartPhones = itDeviceRepository.findSelectDeviceByMemberId(memberId, 3L);
-        for (DeviceDto smartPhone : smartPhones) {
-            if(smartPhone.getProductType().equals(ProductType.COMPONENT)){
-                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, smartPhone.getId());
-                smartPhone.setComponents(components);
-            }
-            smartPhone.setComponents(new ArrayList<>());
-        }
-        List<DeviceDto> tablets = itDeviceRepository.findSelectDeviceByMemberId(memberId, 4L);
-        for (DeviceDto tablet : tablets) {
-            if(tablet.getProductType().equals(ProductType.COMPONENT)){
-                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, tablet.getId());
-                tablet.setComponents(components);
-            }
-            tablet.setComponents(new ArrayList<>());
-        }
         return ResponseGetMyDeviceInfo.builder()
-                .computers(computers)
-                .notebooks(notebooks)
-                .smartPhones(smartPhones)
-                .tablets(tablets)
+                .computers(getDeviceList(memberId, 1L))
+                .notebooks(getDeviceList(memberId, 2L))
+                .smartPhones(getDeviceList(memberId, 3L))
+                .tablets(getDeviceList(memberId, 4L))
                 .build();
     }
 

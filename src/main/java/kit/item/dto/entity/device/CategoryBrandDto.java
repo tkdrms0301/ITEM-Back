@@ -8,8 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class CategoryDto {
+public class CategoryBrandDto {
+    private Long categoryBrandId;
     private Long categoryId;
-    private String url;
-    private String categoryName;
+    private Long brandId;
 }

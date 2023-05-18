@@ -15,8 +15,6 @@ public class ItDevice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "it_device_id", nullable = false)
     private Long id;
-
-    private Long registrationSeq;
     private String directlyRegisteredName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,6 +26,7 @@ public class ItDevice {
     @JoinColumn(name = "brand_product_id")
     @ToString.Exclude
     private BrandProduct brandProduct;
+    @Column(name = "directly_registered_name")
 
     public void setBrandProduct(BrandProduct brandProduct) {
         this.brandProduct = brandProduct;

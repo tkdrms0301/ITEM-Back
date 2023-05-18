@@ -22,8 +22,6 @@ public class ItDevice {
     private Long id;
     @Column(name = "directly_registered_name")
     private String directlyRegisteredName;
-    @Column(name = "is_component")
-    private boolean isComponent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

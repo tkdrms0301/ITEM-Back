@@ -9,6 +9,6 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class BrandDto {
-    Long brandId;
-    String brandName;
+    Long id;
+    String name;
 }

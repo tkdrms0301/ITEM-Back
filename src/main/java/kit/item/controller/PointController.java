@@ -2,6 +2,7 @@ package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
 import kit.item.dto.request.member.RequestGetMemberInfoDto;
+import kit.item.dto.request.point.RequestCreatePointHistoryDto;
 import kit.item.dto.request.point.RequestGetPointHistoryDateDto;
 import kit.item.dto.request.point.RequestGetPointHistoryDto;
 import kit.item.service.point.PointService;
@@ -29,6 +30,8 @@ public class PointController {
     @GetMapping("/history/date")
     public ResponseEntity<MsgDto> getPointHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetPointHistoryDateDto requestGetPointHistoryDateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+
+        System.out.println("requestGetPointHistoryDateDto = " + requestGetPointHistoryDateDto.getStartDate());
         LocalDateTime startDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getStartDate());
         LocalDateTime endDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getEndDate())
                 .withHour(23)

@@ -1,18 +1,16 @@
-package kit.item.dto.entity.repairShop;
+package kit.item.dto.request.repair;
 
 import kit.item.enums.ServiceType;
 import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@ToString
-@Builder
-public class RepairServiceDto {
+public class RequestServiceUpdateInfo {
     private Long serviceId;
-    private String serviceName;
     private ServiceType serviceType;
+    private String serviceName;
     private String description;
 }

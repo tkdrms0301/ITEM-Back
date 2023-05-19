@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestUpdateMemberInfoDto {
-    private String name;
     private String nickname;
     private String currentPassword;
     private String newPassword;
@@ -18,7 +17,6 @@ public class RequestUpdateMemberInfoDto {
     private String phoneNumber;
     private String address;
     private String account;
-
     private SellerInfoDto sellerInfoDto;
     private MechanicInfoDto mechanicInfoDto;
 }

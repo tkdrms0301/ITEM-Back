@@ -1,8 +1,7 @@
-package kit.item.dto.entity.repairShop;
+package kit.item.dto.response.repairShop;
 
-import kit.item.enums.ServiceType;
+
 import lombok.*;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -10,9 +9,9 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class RepairServiceDto {
+public class ResponseServiceDto {
     private Long serviceId;
     private String serviceName;
-    private ServiceType serviceType;
+    private String serviceType;
     private String description;
 }

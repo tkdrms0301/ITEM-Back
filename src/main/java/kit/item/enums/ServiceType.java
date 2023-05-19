@@ -1,9 +1,7 @@
 package kit.item.enums;
 
 public enum ServiceType {
-
-    SOFTWARE_ERROR,
-    REPAIR,
-    INSPECTION;
-
+    교환,
+    수리,
+    점검;
 }

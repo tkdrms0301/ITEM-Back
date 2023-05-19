@@ -2,14 +2,14 @@ package kit.item.domain.point;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity(name = "POINT_HISTORY")
 @ToString(callSuper = true)
 public class PointHistory {

@@ -46,10 +46,14 @@ INSERT INTO kind(name) VALUES ('노트북');
 INSERT INTO kind(name) VALUES ('휴대폰');
 INSERT INTO kind(name) VALUES ('태블릿');
 
-INSERT INTO category(category_name, image_url) VALUES ('컴퓨터', 'https://item0container.blob.core.windows.net/image/computer.webp');
-INSERT INTO category(category_name) VALUES ('노트북');
-INSERT INTO category(category_name) VALUES ('휴대폰');
-INSERT INTO category(category_name) VALUES ('테블릿');
+INSERT INTO category(category_name, image_url)
+VALUES ('컴퓨터', 'https://item0container.blob.core.windows.net/image/computer.webp');
+INSERT INTO category(category_name, image_url)
+VALUES ('노트북', 'https://item0container.blob.core.windows.net/image/noteBook.png');
+INSERT INTO category(category_name, image_url)
+VALUES ('휴대폰', 'https://item0container.blob.core.windows.net/image/smartPhone.png');
+INSERT INTO category(category_name, image_url)
+VALUES ('테블릿', 'https://item0container.blob.core.windows.net/image/tablet.png');
 
 INSERT INTO brand(brand_name) VALUES ('삼성');
 INSERT INTO brand(brand_name) VALUES ('LG');

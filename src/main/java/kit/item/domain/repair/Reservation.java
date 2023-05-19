@@ -23,6 +23,7 @@ public class Reservation {
     private LocalDateTime applicationDate;
     private Long duration;
     private String state;
+    private String prodName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

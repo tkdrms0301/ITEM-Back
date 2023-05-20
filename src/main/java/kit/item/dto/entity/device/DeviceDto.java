@@ -15,26 +15,22 @@ public class DeviceDto {
     private Long categoryId;
     private Long brandId;
     private Long productId;
-    private Long memberId;
-    private String categoryName;
     private String brandName;
     private String productName;
     private String directlyRegisterProductName;
     private ProductType productType;
-    private String imageUrl;
+    private String url;
     private List<DeviceDto> components;
 
-public DeviceDto(Long id, Long categoryId, Long brandId, Long productId, Long memberId, String categoryName, String brandName, String productName, String directlyRegisterProductName, ProductType productType, String imageUrl) {
+public DeviceDto(Long id, Long categoryId, Long brandId, Long productId, String brandName, String productName, String directlyRegisterProductName, ProductType productType, String url) {
         this.id = id;
         this.categoryId = categoryId;
         this.brandId = brandId;
         this.productId = productId;
-        this.memberId = memberId;
-        this.categoryName = categoryName;
         this.brandName = brandName;
         this.productName = productName;
         this.directlyRegisterProductName = directlyRegisterProductName;
         this.productType = productType;
-        this.imageUrl = imageUrl;
+        this.url = url;
     }
 }

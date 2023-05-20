@@ -9,7 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class CategoryDto {
-    private Long categoryId;
+    private Long id;
     private String url;
-    private String categoryName;
+    private String name;
 }

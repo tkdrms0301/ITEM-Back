@@ -61,7 +61,5 @@ public class Product {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<SaleProduct> saleProducts = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
 
 }

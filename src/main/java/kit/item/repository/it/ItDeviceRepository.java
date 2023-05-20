@@ -22,4 +22,12 @@ public interface ItDeviceRepository extends JpaRepository<ItDevice, Long> {
     List<DeviceDto> findSelectComponentByMemberIdAndComponentProductId(@Param(value = "memberId") Long memberId, @Param(value = "deviceId") Long deviceId);
 
     List<ItDevice> findByComponentProductId(Long componentProductId);
+
+    @Query("SELECT new kit.item.dto.entity.device.DeviceDto(" +
+            "i.id, i.category.id, i.brand.id, i.product.id, i.member.id, i.category.name, i.brand.name, i.product.name, i.directlyRegisteredName, i.product.productType, i.category.imageUrl) " +
+            "FROM IT_DEVICE i WHERE i.member.id = :memberId")
+    List<DeviceDto> findDeviceByMemberId(@Param(value = "memberId") Long memberId);
+
+    @Query("SELECT i FROM IT_DEVICE i WHERE i.member.id = :memberId AND (i.directlyRegisteredName IS NULL AND i.product.name = :productName OR i.directlyRegisteredName = :productName)")
+    ItDevice findDeviceByMemberIdAndProductName(@Param("memberId") Long memberId, @Param("productName") String productName);
 }

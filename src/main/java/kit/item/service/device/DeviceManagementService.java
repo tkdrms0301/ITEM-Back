@@ -160,4 +160,18 @@ public class DeviceManagementService {
         itDeviceRepository.delete(itDevice.get());
         return true;
     }
+
+    // my device regardless of category
+    public List<DeviceDto> getDeviceListRegardlessCategory(Long memberId) {
+        log.info("DeviceManagementService.getDeviceList");
+        List<DeviceDto> selectDevices = itDeviceRepository.findDeviceByMemberId(memberId);
+        for (DeviceDto deviceDto : selectDevices) {
+            if (deviceDto.getProductType().equals(ProductType.COMPONENT)) {
+                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
+                deviceDto.setComponents(components);
+            }
+            deviceDto.setComponents(new ArrayList<>());
+        }
+        return selectDevices;
+    }
 }

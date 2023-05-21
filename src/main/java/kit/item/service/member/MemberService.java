@@ -7,6 +7,7 @@ import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
 import kit.item.dto.entity.member.SellerInfoDto;
+import kit.item.dto.entity.point.PointHistoryDto;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
@@ -14,6 +15,7 @@ import kit.item.dto.response.member.ResponseGetMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
+import kit.item.repository.PointRepository;
 import kit.item.repository.member.MechanicRepository;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.member.SellerRepository;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -36,6 +39,7 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final SellerRepository sellerRepository;
     private final MechanicRepository mechanicRepository;
+    private final PointRepository pointRepository;
     private final PasswordEncoder passwordEncoder;
 
     // Member가 DB에 존재할 시 Member 객체 반환

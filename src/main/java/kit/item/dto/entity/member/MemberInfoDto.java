@@ -22,4 +22,5 @@ public class MemberInfoDto {
     private String account;
     private Long point;
     private RoleType roleType;
+    private LocalDateTime startDate;
 }

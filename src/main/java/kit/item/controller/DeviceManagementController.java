@@ -73,6 +73,7 @@ public class DeviceManagementController {
     @PostMapping("/delete-device")
     public ResponseEntity<MsgDto> deleteDevice(@RequestHeader(value = X_AUTH_TOKEN) String accessToken, @RequestBody RequestDeleteDeviceDto requestDeleteDeviceDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        System.out.println("requestDeleteDeviceDto = " + requestDeleteDeviceDto.getDeviceId());
         if(deviceManagementService.deleteMyDevice(memberId, requestDeleteDeviceDto.getDeviceId())) {
             return new ResponseEntity<>(new MsgDto(true, "기기 삭제 성공", null), HttpStatus.OK);
         }

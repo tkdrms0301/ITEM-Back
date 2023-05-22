@@ -65,14 +65,30 @@ public class DeviceManagementService {
     }
 
     // my device get list
-    public ResponseGetMyDeviceInfo getMyDeviceList(Long memberId) {
+    public List<MyDeviceTypeDto> getMyDeviceList(Long memberId) {
         log.info("DeviceManagementService.getMyDeviceList");
-        return ResponseGetMyDeviceInfo.builder()
-                .computers(getDeviceList(memberId, 1L))
-                .notebooks(getDeviceList(memberId, 2L))
-                .smartPhones(getDeviceList(memberId, 3L))
-                .tablets(getDeviceList(memberId, 4L))
-                .build();
+        List<MyDeviceTypeDto> myDeviceTypeDtos = new ArrayList<>();
+        myDeviceTypeDtos.add(MyDeviceTypeDto
+                .builder()
+                .summary("컴퓨터")
+                .detail(getDeviceList(memberId, 1L))
+                .build());
+        myDeviceTypeDtos.add(MyDeviceTypeDto
+                .builder()
+                .summary("노트북")
+                .detail(getDeviceList(memberId, 2L))
+                .build());
+        myDeviceTypeDtos.add(MyDeviceTypeDto
+                .builder()
+                .summary("스마트폰")
+                .detail(getDeviceList(memberId, 3L))
+                .build());
+        myDeviceTypeDtos.add(MyDeviceTypeDto
+                .builder()
+                .summary("테블릿")
+                .detail(getDeviceList(memberId, 4L))
+                .build());
+        return myDeviceTypeDtos;
     }
 
     // my device register
@@ -102,13 +118,15 @@ public class DeviceManagementService {
         itDevice.setBrand(brand.get());
 
         // 제품이름 직접 등록 설정
-        if (requestCreateDeviceDto.getDirectlyRegisterProductName() != null) {
+        if (!requestCreateDeviceDto.getDirectlyRegisterProductName().equals("")) {
             itDevice.setDirectlyRegisteredName(requestCreateDeviceDto.getDirectlyRegisterProductName());
+            itDevice.setProduct(null);
         }else{
             Optional<Product> product = productRepository.findById(requestCreateDeviceDto.getProductId());
             if (product.isEmpty()){
                 return false;
             }
+            itDevice.setDirectlyRegisteredName(null);
             itDevice.setProduct(product.get());
         }
 

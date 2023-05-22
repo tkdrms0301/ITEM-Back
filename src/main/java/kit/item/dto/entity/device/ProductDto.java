@@ -10,6 +10,6 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class ProductDto {
-    private Long productId;
-    private String productName;
+    private Long id;
+    private String name;
 }

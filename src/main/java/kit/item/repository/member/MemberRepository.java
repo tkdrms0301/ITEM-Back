@@ -27,7 +27,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);
 
-    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress, r.repairServiceType) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
     Optional<MechanicInfoDto> findMechanicById(@Param("id") Long id);
 
     @Query("select new kit.item.dto.entity.member.SellerInfoDto(s.companyName, s.companyNumber, s.companyPhoneNumber, s.description, s.companyAddress) from MEMBER m join fetch SELLER s where m.id=:id")

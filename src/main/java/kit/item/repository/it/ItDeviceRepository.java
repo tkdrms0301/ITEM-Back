@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ItDeviceRepository extends JpaRepository<ItDevice, Long> {
+
     @Query("select new kit.item.dto.entity.device.DeviceDto(" +
             "i.id, i.category.id, i.brand.id, i.product.id, i.member.id, i.category.name, i.brand.name, i.product.name, i.directlyRegisteredName, i.product.productType, i.category.imageUrl) " +
             "from IT_DEVICE i where i.member.id =:memberId and i.category.id =:categoryId")

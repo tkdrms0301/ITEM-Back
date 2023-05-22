@@ -10,12 +10,10 @@ import kit.item.dto.entity.repairShop.MyItDeviceDto;
 import kit.item.dto.entity.repairShop.RepairServiceDto;
 import kit.item.dto.entity.repairShop.ReservationEnableTimeDto;
 import kit.item.dto.request.repair.RequestReservationDto;
+import kit.item.dto.request.repair.RequestReservationUpdateDto;
 import kit.item.dto.request.repair.RequestServiceCreateInfo;
 import kit.item.dto.request.repair.RequestServiceUpdateInfo;
-import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
-import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
-import kit.item.dto.response.repairShop.ResponseReservationInitDto;
-import kit.item.dto.response.repairShop.ResponseServiceDto;
+import kit.item.dto.response.repairShop.*;
 import kit.item.enums.ReservationStateType;
 import kit.item.repository.it.ItDeviceRepository;
 import kit.item.repository.member.MemberRepository;
@@ -23,6 +21,7 @@ import kit.item.repository.repairShop.*;
 import kit.item.service.device.DeviceManagementService;
 import kit.item.service.file.AzureBlobService;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +31,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -281,26 +281,79 @@ public class RepairShopService {
 
         ItDevice userDevice = itDeviceRepository.findDeviceByMemberIdAndProductName(memberId, requestReservationDto.getProductName());
 
+        List<ReservationImage> reservationImages = saveReservationImages(requestReservationDto);
+
+        List<RepairServiceReservation> repairServiceReservations = getRepairServiceReservations(requestReservationDto);
+
+        LocalDate reservationDate = requestReservationDto.getDate();
+        LocalDateTime reservationDateTime = reservationDate.atTime(LocalTime.parse(requestReservationDto.getTime()));
+
+        Reservation reservation = Reservation.builder()
+                .member(member.get())
+                .state(String.valueOf(ReservationStateType.WAITING.getKrName()))
+                .comment(requestReservationDto.getComment())
+                .itDevice(userDevice)
+                .reservationImages(reservationImages)
+                .applicationDate(LocalDateTime.now().withSecond(0))
+                .reservationDate(reservationDateTime)
+                .repairServiceReservations(repairServiceReservations)
+                .repairShop(repairShopRepository.findById(requestReservationDto.getRepairShopId()).get())
+                .build();
+
+        Reservation savedReservation = reservationRepository.save(reservation);
+
+        if (reservationImages != null)
+            saveReservationImgs(reservationImages, savedReservation);
+        saveRepairServiceReservation(repairServiceReservations, savedReservation);
+
+    }
+
+    private void saveRepairServiceReservation(List<RepairServiceReservation> repairServiceReservations, Reservation savedReservation) {
+        repairServiceReservations.stream().forEach(repairServiceReservation -> {
+            RepairServiceReservation build = RepairServiceReservation.builder()
+                    .reservation(savedReservation)
+                    .repairService(repairServiceReservation.getRepairService())
+                    .build();
+            repairServiceReservationRepository.save(build);
+        });
+    }
+
+    private void saveReservationImgs(List<ReservationImage> reservationImages, Reservation savedReservation) {
+        reservationImages.stream().forEach(reservationImage -> {
+            ReservationImage build = ReservationImage.builder()
+                    .reservation(savedReservation)
+                    .url(reservationImage.getUrl())
+                    .build();
+            reservationImageRepository.save(build);
+        });
+    }
+
+    @NotNull
+    private List<ReservationImage> saveReservationImages(RequestReservationDto requestReservationDto) {
         List<ReservationImage> reservationImages = new ArrayList<>();
 
-        requestReservationDto.getRvRequestImgs().stream().forEach(requestImg -> {
+        List<MultipartFile> rvRequestImgs = requestReservationDto.getRvRequestImgs();
+        if (rvRequestImgs != null) {
+            rvRequestImgs.stream().forEach(requestImg -> {
+                try {
+                    String fileUrl = azureBlobAdapter.upload(requestImg);
 
-            try {
-                String fileUrl = azureBlobAdapter.upload(requestImg);
-//                //파일 url 출력
+                    ReservationImage reservationImage = ReservationImage.builder()
+                            .url(fileUrl)
+                            .build();
 
-                System.out.println(fileUrl);
+                    reservationImages.add(reservationImage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return reservationImages;
+        }
+        return null;
+    }
 
-                ReservationImage reservationImage = ReservationImage.builder()
-                        .url(fileUrl)
-                        .build();
-
-                reservationImages.add(reservationImage);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
+    @NotNull
+    private List<RepairServiceReservation> getRepairServiceReservations(RequestReservationDto requestReservationDto) {
         List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
 
         requestReservationDto.getServices().stream().forEach(service -> {
@@ -312,35 +365,252 @@ public class RepairShopService {
 
             repairServiceReservations.add(repairServiceReservation);
         });
+        return repairServiceReservations;
+    }
+
+    public List<ResponseReservaionHistoryDto> findReservationHistory(Long memberId){
+
+        List<ResponseReservaionHistoryDto> responseReservaionHistoryDtoList = new ArrayList<>();
+
+        List<Reservation> reservationList = reservationRepository.findByMemberId(memberId);
+        reservationList.stream().forEach(
+                reservation -> {
+                    Optional<RepairShop> repairShopByReservationId = reservationRepository.findRepairShopByReservationId(reservation.getId());
+
+                    Optional<Reservation> reservationById = reservationRepository.findById(reservation.getId());
+
+                    if (reservationById.isPresent()){
+                        if (repairShopByReservationId.isPresent()) {
+
+                            List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
+                            List<String> repairServiceNames = new ArrayList<>();
+                            repairServicesByReservationId.stream().forEach(repairService -> {
+                                repairServiceNames.add(repairService.getServiceName());
+                            });
+
+                            List<ReservationImage> reservationImages = reservationById.get().getReservationImages();
+                            List<String> reservationImageUrls = new ArrayList<>();
+                            reservationImages.stream().forEach(reservationImage -> {
+                                reservationImageUrls.add(reservationImage.getUrl());
+                            });
+
+                            //LocalDateTime -> LocalTime
+                            LocalTime reservationTime = reservationById.get().getReservationDate().toLocalTime();
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                            String reservationTimeStr = reservationTime.format(formatter);
+
+                            responseReservaionHistoryDtoList.add(
+                                    ResponseReservaionHistoryDto.builder()
+                                            .id(reservation.getId())
+                                            .repairShopId(repairShopByReservationId.get().getId())
+                                            .shopName(repairShopByReservationId.get().getShopName())
+                                            .productName((reservationById.get().getItDevice().getDirectlyRegisteredName() == null || reservationById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservationById.get().getItDevice().getProduct().getName() : reservationById.get().getItDevice().getDirectlyRegisteredName())
+                                            .prodImg(reservationById.get().getItDevice().getCategory().getImageUrl())
+                                            .requestServices(repairServiceNames)
+                                            .rvRequestImgs(reservationImageUrls)
+                                            .requestComment(reservationById.get().getComment())
+                                            .date(reservationById.get().getReservationDate().toLocalDate())
+                                            .time(reservationTimeStr)
+                                            .status(reservationById.get().getState())
+                                            .build()
+                            );
+                        }
+                    }
+                }
+        );
+        return responseReservaionHistoryDtoList;
+    }
+
+    public List<ResponseReservaionHistoryDto> findReservationHistoryMechanic(Long memberId){
+
+        List<ResponseReservaionHistoryDto> responseReservaionHistoryDtoList = new ArrayList<>();
+
+        List<Reservation> reservationList = reservationRepository.findByRepairShopId(memberId);
+
+        reservationList.stream().forEach(
+                reservation -> {
+                    Optional<RepairShop> repairShopByReservationId = reservationRepository.findRepairShopByReservationId(reservation.getId());
+
+                    Optional<Reservation> reservationById = reservationRepository.findById(reservation.getId());
+
+                    if (reservationById.isPresent()){
+                        if (repairShopByReservationId.isPresent()) {
+
+                            List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
+                            List<String> repairServiceNames = new ArrayList<>();
+                            repairServicesByReservationId.stream().forEach(repairService -> {
+                                repairServiceNames.add(repairService.getServiceName());
+                            });
+
+                            List<ReservationImage> reservationImages = reservationById.get().getReservationImages();
+                            List<String> reservationImageUrls = new ArrayList<>();
+                            reservationImages.stream().forEach(reservationImage -> {
+                                reservationImageUrls.add(reservationImage.getUrl());
+                            });
+
+                            //LocalDateTime -> LocalTime
+                            LocalTime reservationTime = reservationById.get().getReservationDate().toLocalTime();
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                            String reservationTimeStr = reservationTime.format(formatter);
+
+                            responseReservaionHistoryDtoList.add(
+                                    ResponseReservaionHistoryDto.builder()
+                                            .id(reservation.getId())
+                                            .repairShopId(repairShopByReservationId.get().getId())
+                                            .shopName(repairShopByReservationId.get().getShopName())
+                                            .productName((reservationById.get().getItDevice().getDirectlyRegisteredName() == null || reservationById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservationById.get().getItDevice().getProduct().getName() : reservationById.get().getItDevice().getDirectlyRegisteredName())
+                                            .prodImg(reservationById.get().getItDevice().getCategory().getImageUrl())
+                                            .requestServices(repairServiceNames)
+                                            .rvRequestImgs(reservationImageUrls)
+                                            .requestComment(reservationById.get().getComment())
+                                            .date(reservationById.get().getReservationDate().toLocalDate())
+                                            .time(reservationTimeStr)
+                                            .status(reservationById.get().getState())
+                                            .build()
+                            );
+                        }
+                    }
+                }
+        );
+        return responseReservaionHistoryDtoList;
+    }
+
+    public ResponseReservaionHistoryDto findReservationHistoryById(Long reservationId) {
+
+        Optional<Reservation> reservaionById = reservationRepository.findById(reservationId);
+        Optional<RepairShop> repairShopByReservationId = reservationRepository.findRepairShopByReservationId(reservationId);
+
+        if (reservaionById.isPresent()){
+            if (repairShopByReservationId.isPresent()) {
+
+                List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservaionById.get().getId());
+                List<String> repairServiceNames = new ArrayList<>();
+                repairServicesByReservationId.stream().forEach(repairService -> {
+                    repairServiceNames.add(repairService.getServiceName());
+                });
+
+                List<ReservationImage> reservationImages = reservaionById.get().getReservationImages();
+                List<String> reservationImageUrls = new ArrayList<>();
+                reservationImages.stream().forEach(reservationImage -> {
+                    reservationImageUrls.add(reservationImage.getUrl());
+                });
+
+                //LocalDateTime -> LocalTime
+                LocalTime reservationTime = reservaionById.get().getReservationDate().toLocalTime();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+                String reservationTimeStr = reservationTime.format(formatter);
 
 
-        Reservation reservation = Reservation.builder()
-                .member(member.get())
-                .state(String.valueOf(ReservationStateType.WAITING))
-                .comment(requestReservationDto.getComment())
-                .itDevice(userDevice)
-                .reservationImages(reservationImages)
-                .reservationDate(LocalDateTime.now().withSecond(0))
-                .repairServiceReservations(repairServiceReservations)
-                .build();
+                //정비소 id로 정비소 서비스들 받기
+                List<String> repairServices = new ArrayList<>();
+                List<RepairService> servicesByRepairShopId = repairShopServiceRepository.findByRepairShopId(repairShopByReservationId.get().getId());
+                servicesByRepairShopId.stream().forEach(repairService -> {
+                    repairServices.add(
+                            repairService.getServiceName()
+                    );
+                });
 
-        Reservation savedReservation = reservationRepository.save(reservation);
+                return ResponseReservaionHistoryDto.builder()
+                        .id(reservaionById.get().getId())
+                        .repairShopId(repairShopByReservationId.get().getId())
+                        .shopName(repairShopByReservationId.get().getShopName())
+                        .productName((reservaionById.get().getItDevice().getDirectlyRegisteredName() == null || reservaionById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservaionById.get().getItDevice().getProduct().getName() : reservaionById.get().getItDevice().getDirectlyRegisteredName())
+                        .prodImg(reservaionById.get().getItDevice().getCategory().getImageUrl())
+                        .requestServices(repairServiceNames)
+                        .rvRequestImgs(reservationImageUrls)
+                        .requestComment(reservaionById.get().getComment())
+                        .date(reservaionById.get().getReservationDate().toLocalDate())
+                        .time(reservationTimeStr)
+                        .status(reservaionById.get().getState())
+                        .services(repairServices)
+                        .build();
+            }
+        }
+        return null;
+    }
 
-        reservationImages.stream().forEach(reservationImage -> {
-            ReservationImage build = ReservationImage.builder()
-                    .reservation(savedReservation)
-                    .url(reservationImage.getUrl())
-                    .build();
-            reservationImageRepository.save(build);
-        });
+    public void updateReservation(Long memberId, RequestReservationUpdateDto reservationUpdateDto) {
+        Optional<Member> member = memberRepository.findById(memberId);
 
-        repairServiceReservations.stream().forEach(repairServiceReservation -> {
-            RepairServiceReservation build = RepairServiceReservation.builder()
-                    .reservation(savedReservation)
-                    .repairService(repairServiceReservation.getRepairService())
-                    .build();
-            repairServiceReservationRepository.save(build);
-        });
 
+        Reservation reservation = reservationRepository.findById(reservationUpdateDto.getId())
+                .orElseThrow(() -> new IllegalArgumentException("예약 정보를 찾을 수 없습니다."));
+
+        ItDevice deviceByMemberIdAndProductName = itDeviceRepository.findDeviceByMemberIdAndProductName(memberId, reservationUpdateDto.getProductName());
+        // 예약 정보 업데이트
+        reservation.setItDevice(deviceByMemberIdAndProductName);
+        reservation.setComment(reservationUpdateDto.getComment());
+        reservation.setReservationDate(LocalDateTime.of(reservationUpdateDto.getDate(), LocalTime.parse(reservationUpdateDto.getTime())));
+        // 예약 이미지 업데이트
+        if (reservationUpdateDto.getRvRequestImgs() != null) {
+            // 기존 예약 이미지 삭제
+            reservationImageRepository.deleteByReservation(reservation);
+
+            // 새로운 예약 이미지 업로드 및 연결
+            List<ReservationImage> reservationImages = new ArrayList<>();
+            for (MultipartFile rvRequestImg : reservationUpdateDto.getRvRequestImgs()) {
+                try {
+                    String fileUrl = azureBlobAdapter.upload(rvRequestImg);
+
+                    ReservationImage reservationImage = ReservationImage.builder()
+                            .url(fileUrl)
+                            .reservation(reservation)
+                            .build();
+
+                    reservationImages.add(reservationImage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            reservation.setReservationImages(reservationImages);
+            if (reservationImages.size() > 0)
+                saveReservationImgs(reservationImages, reservation);
+        }
+
+        // 예약 서비스 업데이트
+        if (reservationUpdateDto.getServices() != null) {
+            // 기존 예약 서비스 삭제
+            repairServiceReservationRepository.deleteByReservation(reservation);
+
+            // 새로운 예약 서비스 생성 및 연결
+            List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
+            for (String service : reservationUpdateDto.getServices()) {
+                List<RepairService> repairServices = repairShopServiceRepository.findByServiceNameAndRepairShopId(service, reservationUpdateDto.getRepairShopId());
+
+                if (!repairServices.isEmpty()) {
+                    RepairServiceReservation repairServiceReservation = RepairServiceReservation.builder()
+                            .reservation(reservation)
+                            .repairService(repairServices.get(0))
+                            .build();
+
+                    repairServiceReservations.add(repairServiceReservation);
+                }
+            }
+
+            saveRepairServiceReservation(repairServiceReservations, reservation);
+        }
+
+        reservationRepository.save(reservation);
+    }
+
+    public boolean acceptReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+            reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
+            reservationRepository.save(reservation.get());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean rejectReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+            reservation.get().setState(ReservationStateType.REJECTED.getKrName());
+            reservationRepository.save(reservation.get());
+            return true;
+        }
+        return false;
     }
 }

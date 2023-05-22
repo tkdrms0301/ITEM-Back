@@ -1,16 +1,12 @@
 package kit.item.controller;
 
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
 import kit.item.dto.entity.repairShop.RepairShopIdDto;
-import kit.item.dto.request.repair.RequestReservationDto;
-import kit.item.dto.request.repair.RequestServiceCreateInfo;
-import kit.item.dto.request.repair.RequestServiceUpdateInfo;
-import kit.item.dto.response.repairShop.ResponsePrivateRepairShopDto;
-import kit.item.dto.response.repairShop.ResponsePublicRepairShopDto;
-import kit.item.dto.response.repairShop.ResponseReservationInitDto;
-import kit.item.dto.response.repairShop.ResponseServiceDto;
+import kit.item.dto.request.repair.*;
+import kit.item.dto.response.repairShop.*;
 import kit.item.service.repairShop.RepairShopService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -85,16 +81,15 @@ public class RepairShopController {
 
     @PostMapping("/reservation/add")
     public void registReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-                                  @RequestParam("productName") String productName,
-                                  @RequestParam("prodImg") String prodImg,
-                                  @RequestParam("comment") String comment,
-                                  @RequestParam("services") List<String> services,
-                                  @RequestParam("rvRequestImgs") List<MultipartFile> rvRequestImgs,
-                                  @RequestParam("date") LocalDate date,
-                                  @RequestParam("time") String time,
-                                  @RequestParam("repairShopId") Long repairShopId) {
+                                  @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
+                                  @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
+                                  @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
+                                  @RequestParam(value = "services", required = false) List<String> services,
+                                  @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
+                                  @RequestParam(value = "date", required = false) LocalDate date,
+                                  @RequestParam(value = "time", required = false) String time,
+                                  @RequestParam(value = "repairShopId", required = false) Long repairShopId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
 
         RequestReservationDto requestReservationDto = RequestReservationDto.builder()
                 .productName(productName)
@@ -107,5 +102,61 @@ public class RepairShopController {
                 .repairShopId(repairShopId)
                 .build();
         repairShopService.createReservation(memberId, requestReservationDto);
+    }
+
+    @GetMapping("/reservation/history")
+    public List<ResponseReservaionHistoryDto> getReservationHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.findReservationHistory(memberId);
+    }
+
+    @GetMapping("/reservation/history/detail")
+    public ResponseReservaionHistoryDto getReservationDetail(@RequestParam Long reservationId) {
+        return repairShopService.findReservationHistoryById(reservationId);
+    }
+
+    @PostMapping("/reservation/update")
+    public void updateReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                  @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
+                                  @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
+                                  @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
+                                  @RequestParam(value = "services", required = false) List<String> services,
+                                  @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
+                                  @RequestParam(value = "date", required = false) LocalDate date,
+                                  @RequestParam(value = "time", required = false) String time,
+                                  @RequestParam(value = "repairShopId", required = false) Long repairShopId,
+                                  @RequestParam(value = "reservationId", required = false) Long reservationId) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+
+        RequestReservationUpdateDto reservationUpdateDto = RequestReservationUpdateDto.builder()
+                .id(reservationId)
+                .productName(productName)
+                .prodImg(prodImg)
+                .comment(comment)
+                .services(services)
+                .rvRequestImgs(rvRequestImgs)
+                .date(date)
+                .time(time)
+                .repairShopId(repairShopId)
+                .build();
+
+
+        repairShopService.updateReservation(memberId, reservationUpdateDto);
+    }
+
+    @GetMapping("/reservation/history/mechanic")
+    public List<ResponseReservaionHistoryDto> getReservationHistoryMechanic(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.findReservationHistoryMechanic(memberId);
+    }
+
+    @PostMapping("/reservation/accept")
+    public boolean acceptReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        return repairShopService.acceptReservation(requestReservationStateUpdateDto.getReservationId());
+    }
+
+    @PostMapping("/reservation/reject")
+    public boolean rejectReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId());
     }
 }

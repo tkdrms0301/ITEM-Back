@@ -3,9 +3,12 @@ package kit.item.domain.repair;
 import jakarta.persistence.*;
 import kit.item.domain.it.ItDevice;
 import kit.item.domain.member.Member;
+import kit.item.domain.member.RepairShop;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +50,11 @@ public class Reservation {
     @ToString.Exclude
     private ItDevice itDevice;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repair_shop_id")
+    @ToString.Exclude
+    private RepairShop repairShop;
+
     public void setReservationImages(List<ReservationImage> reservationImages) {
         this.reservationImages = reservationImages;
     }
@@ -57,5 +65,24 @@ public class Reservation {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setItDevice(ItDevice itDevice) {
+        this.itDevice = itDevice;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setReservationDate(LocalDateTime reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public void setReservationDate(LocalDate date, LocalTime time) {
+        this.reservationDate = LocalDateTime.of(date, time);
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

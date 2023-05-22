@@ -20,4 +20,9 @@ class RepairShopServiceTest {
         System.out.println(repairShopService.findAllPrivateRepairShops());
 
     }
+
+    @Test
+    void 예약을_위한_내_디바이스_조회(){
+        System.out.println(repairShopService.reservationInit(1L, 1L));
+    }
 }

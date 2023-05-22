@@ -10,6 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class RequestServiceCreateInfo {
     private ServiceType serviceType;
+    private Long servicePrice;
     private String serviceName;
     private String description;
 }

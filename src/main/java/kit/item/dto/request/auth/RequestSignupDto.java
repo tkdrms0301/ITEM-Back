@@ -76,6 +76,7 @@ public class RequestSignupDto {
         repairShop.setShopAddress(mechanicInfoDto.getShopAddress());
         repairShop.setShopPhoneNumber(mechanicInfoDto.getShopPhoneNumber());
         repairShop.setDescription(mechanicInfoDto.getDescription());
+        repairShop.setRepairServiceType(mechanicInfoDto.getRepairServiceType());
         return repairShop;
     }
 }

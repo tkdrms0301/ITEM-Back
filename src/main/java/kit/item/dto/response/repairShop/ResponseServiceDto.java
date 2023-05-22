@@ -14,4 +14,5 @@ public class ResponseServiceDto {
     private String serviceName;
     private String serviceType;
     private String description;
+    private Long servicePrice;
 }

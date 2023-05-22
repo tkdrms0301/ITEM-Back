@@ -13,4 +13,5 @@ public class RequestServiceUpdateInfo {
     private ServiceType serviceType;
     private String serviceName;
     private String description;
+    private Long servicePrice;
 }

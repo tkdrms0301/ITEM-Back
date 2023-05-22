@@ -3,15 +3,15 @@ package kit.item.domain.post;
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
 import kit.item.domain.it.BrandProduct;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "POST")
 @ToString(callSuper = true)
@@ -20,7 +20,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
     private Long id;
-
+    private String title;
     private String content;
     private LocalDateTime date;
     private Long report;
@@ -57,5 +57,9 @@ public class Post {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

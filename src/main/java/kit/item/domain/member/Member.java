@@ -1,6 +1,7 @@
 package kit.item.domain.member;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import kit.item.domain.market.*;
 import kit.item.domain.it.ItDevice;
 import kit.item.domain.point.PointHistory;
@@ -37,14 +38,20 @@ public class Member implements UserDetails {
     @Column(name = "member_id", nullable = false)
     private Long id;
 
+    @NotBlank
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+    @NotBlank
+    @Column(name = "password", nullable = false)
     private String password;
     private String name;
+    @NotBlank
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
     @Column(name = "phone_number")
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
 
     @Enumerated(EnumType.STRING)

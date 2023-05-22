@@ -1,16 +1,12 @@
 package kit.item.service.auth;
 
 import kit.item.dto.request.auth.RequestLoginDto;
-import kit.item.dto.request.auth.RequestLogoutDto;
-import kit.item.dto.request.auth.RequestReissueDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.response.auth.ResponseLoginDto;
-import kit.item.dto.response.auth.ResponseLogoutDto;
-import kit.item.dto.response.auth.ResponseReissueDto;
-import kit.item.dto.response.auth.ResponseSignupDto;
 import kit.item.service.member.MemberService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -18,10 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.Optional;
-
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuthService {
     private final TokenProvider tokenProvider;
@@ -30,8 +24,8 @@ public class AuthService {
 
 
     @Transactional
-    public ResponseSignupDto signup(RequestSignupDto requestSignupDto) {
-        return memberService.signup(requestSignupDto);
+    public void signup(RequestSignupDto requestSignupDto) {
+        memberService.signup(requestSignupDto);
     }
 
     @Transactional

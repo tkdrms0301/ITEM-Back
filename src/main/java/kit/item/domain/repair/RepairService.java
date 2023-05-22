@@ -2,9 +2,8 @@ package kit.item.domain.repair;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.RepairShop;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import kit.item.enums.ServiceType;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +12,22 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "REPAIR_SERVICE")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class RepairService {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "repair_service_id", nullable = false)
     private Long id;
 
-    private String name;
+    @Column(name = "service_name", nullable = false)
+    private String serviceName;
+
+    private String description;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "service_type", nullable = false)
+    private ServiceType serviceType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repair_shop_id")

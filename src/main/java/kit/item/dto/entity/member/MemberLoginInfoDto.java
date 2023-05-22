@@ -3,20 +3,14 @@ package kit.item.dto.entity.member;
 import kit.item.enums.RoleType;
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class MemberDTO {
-    private Long id;
-    private String email;
-    private String password;
-    private String name;
+public class MemberLoginInfoDto {
     private String nickname;
-    private String phoneNumber;
-    private String address;
-    private Long point;
     private RoleType roleType;
 }

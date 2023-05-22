@@ -7,7 +7,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestReissueDto {
-    private String accessToken;
-    private String refreshToken;
+public class RequestPasswordCheckDto {
+    private String password;
 }

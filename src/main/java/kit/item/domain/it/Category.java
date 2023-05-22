@@ -18,7 +18,12 @@ public class Category {
 
     @Column(name = "category_name")
     private String name;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private List<CategoryBrand> categoryBrands = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
+    private List<ItDevice> itDevices = new ArrayList<>();
 }

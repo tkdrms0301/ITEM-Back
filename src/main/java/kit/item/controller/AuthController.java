@@ -1,24 +1,19 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.request.auth.RequestLoginDto;
-import kit.item.dto.request.auth.RequestLogoutDto;
-import kit.item.dto.request.auth.RequestReissueDto;
-import kit.item.dto.request.auth.RequestSignupDto;
+import kit.item.dto.request.auth.*;
 import kit.item.dto.response.auth.ResponseLoginDto;
 import kit.item.dto.response.auth.ResponseLogoutDto;
-import kit.item.dto.response.auth.ResponseReissueDto;
-import kit.item.dto.response.auth.ResponseSignupDto;
-import kit.item.dto.response.member.ResponseLoginMemberDto;
 import kit.item.exception.DuplicateMemberException;
 import kit.item.service.auth.AuthService;
 import kit.item.service.member.MemberService;
-import kit.item.util.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static kit.item.util.prefix.ConstPrefix.ACCESS_TOKEN;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,13 +25,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<MsgDto> signup(@RequestBody RequestSignupDto requestSignupDto) {
-        ResponseSignupDto responseSignupDto;
         try{
-            responseSignupDto = authService.signup(requestSignupDto);
+            authService.signup(requestSignupDto);
         }catch (DuplicateMemberException e) {
-            return ResponseEntity.ok(new MsgDto(false, e.getMessage(), null));
+            return ResponseEntity.ok(new MsgDto(false, "회원가입 실패", null));
         }
-        return ResponseEntity.ok(new MsgDto(true, "회원가입 성공", responseSignupDto));
+        return ResponseEntity.ok(new MsgDto(true, "회원가입 성공", null));
     }
 
     @PostMapping("/login")
@@ -44,22 +38,36 @@ public class AuthController {
         ResponseLoginDto responseLoginDto = authService.login(requestLoginDto);
         if(responseLoginDto.getAccessToken() != null){
             HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.add(JwtFilter.ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
-            return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.loginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
+            httpHeaders.add(ACCESS_TOKEN, HEADER + responseLoginDto.getAccessToken());
+            return new ResponseEntity<>(new MsgDto(true, "로그인 성공", memberService.getLoginInfo(requestLoginDto)), httpHeaders, HttpStatus.OK);
         }
         return ResponseEntity.ok(new MsgDto(false, "로그인 실패", null));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<MsgDto> logout(@RequestHeader(value = "X-AUTH-TOKEN") String refreshToken) {
-        RequestLogoutDto requestLogoutDto = RequestLogoutDto.builder()
-                .refreshToken(refreshToken.replace(HEADER, ""))
-                .build();
-        try {
-            //authService.logout(requestLogoutDto);
-            return ResponseEntity.ok(new MsgDto(true, "로그아웃 성공", ResponseLogoutDto.builder().isLogout(true)));
-        }catch (RuntimeException e) {
-            return ResponseEntity.ok(new MsgDto(false, "로그아웃 실패", ResponseLogoutDto.builder().isLogout(false)));
+    @PostMapping("/email-check")
+    public ResponseEntity<MsgDto> emailCheck(@RequestBody RequestEmailCheckDto requestEmailCheckDto) {
+        boolean isExistEmail = memberService.emailCheck(requestEmailCheckDto.getEmail());
+        if (!isExistEmail) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 이메일입니다", null));
         }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 이메일입니다", null));
+    }
+
+    @PostMapping("/nickname-check")
+    public ResponseEntity<MsgDto> nicknameCheck(@RequestBody RequestNicknameCheckDto requestNicknameCheckDto) {
+        boolean isExistNickname = memberService.nicknameCheck(requestNicknameCheckDto.getNickname());
+        if (!isExistNickname) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 닉네임입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 닉네임입니다", null));
+    }
+
+    @PostMapping("/company-number-check")
+    public ResponseEntity<MsgDto> companyNumberCheck(@RequestBody RequestCompanyNumberCheckDto requestCompanyNumberCheckDto) {
+        boolean isExistCompanyNumber = memberService.companyNumberCheck(requestCompanyNumberCheckDto.getCompanyNumber());
+        if (!isExistCompanyNumber) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 사업자 번호입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 사업자 번호입니다", null));
     }
 }

@@ -2,21 +2,25 @@ package kit.item.domain.it;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import java.util.List;
+import java.util.Objects;
 
 @Getter
-@NoArgsConstructor
-@Entity(name = "IT_DEVEICE")
-@ToString(callSuper = true)
+@Setter
+@ToString
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Entity(name = "IT_DEVICE")
 public class ItDevice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "it_device_id", nullable = false)
     private Long id;
-
-    private Long registrationSeq;
+    @Column(name = "directly_registered_name")
     private String directlyRegisteredName;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -25,13 +29,29 @@ public class ItDevice {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_product_id")
+    @JoinColumn(name = "category_id")
     @ToString.Exclude
-    private BrandProduct brandProduct;
+    private Category category;
 
-    public void setBrandProduct(BrandProduct brandProduct) {
-        this.brandProduct = brandProduct;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id")
+    @ToString.Exclude
+    private Brand brand;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    @ToString.Exclude
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "prodcut_it_device_id")
+    @ToString.Exclude
+    private ItDevice componentProduct;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "componentProduct")
+    @ToString.Exclude
+    private List<ItDevice> components;
+
 
     public void setMember(Member member) {
         this.member = member;

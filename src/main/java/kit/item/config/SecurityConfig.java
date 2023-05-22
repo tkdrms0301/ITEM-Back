@@ -61,17 +61,18 @@ public class SecurityConfig {
                 .sameOrigin()
 
                 // 세션을 사용하지 않기 때문에 STATELESS로 설정
-//                .and()
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/file/**","/api/repair/privateShops","/api/repair/publicShops").permitAll()
-                .requestMatchers("/api/member").hasAuthority("MEMBER")
+                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/auth/company-number-check",
+                        "/api/device/category", "/api/device/brand", "/api/device/product",
+                        "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops").permitAll()
+                .requestMatchers("/api/member", "/api/repair/reservation/init").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
-                .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")
-                .requestMatchers("/api/all-members", "/hello/hello","/api/hello", "/api/authenticate").permitAll()
+                .requestMatchers("/api/repair/serviceList", "/api/repair/serviceList/info").hasAuthority("MECHANIC")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

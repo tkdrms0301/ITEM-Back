@@ -25,11 +25,10 @@ public interface ItDeviceRepository extends JpaRepository<ItDevice, Long> {
 
     @Query("delete from IT_DEVICE i where i.member.id =:memberId and i.finishedProduct.id =:deviceId")
     void deletePartProductsByFinishedProductId(@Param(value = "memberId") Long memberId,@Param(value = "deviceId") Long finishedProductId);
-    List<ItDevice> findByComponentProductId(Long componentProductId);
 
     @Query("SELECT new kit.item.dto.entity.device.DeviceDto(" +
-            "i.id, i.category.id, i.brand.id, i.product.id, i.member.id, i.category.name, i.brand.name, i.product.name, i.directlyRegisteredName, i.product.productType, i.category.imageUrl) " +
-            "FROM IT_DEVICE i WHERE i.member.id = :memberId")
+            "i.id, i.category.id, i.brand.id, i.product.id, i.category.name, i.brand.name, i.product.name, i.directlyRegisteredName, i.category.imageUrl) " +
+            "FROM IT_DEVICE i WHERE i.member.id = :memberId AND i.category.isPart = false")
     List<DeviceDto> findDeviceByMemberId(@Param(value = "memberId") Long memberId);
 
     @Query("SELECT i FROM IT_DEVICE i WHERE i.member.id = :memberId AND (i.directlyRegisteredName IS NULL AND i.product.name = :productName OR i.directlyRegisteredName = :productName)")

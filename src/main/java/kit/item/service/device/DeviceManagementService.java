@@ -268,11 +268,12 @@ public class DeviceManagementService {
         log.info("DeviceManagementService.getDeviceList");
         List<DeviceDto> selectDevices = itDeviceRepository.findDeviceByMemberId(memberId);
         for (DeviceDto deviceDto : selectDevices) {
-            if (deviceDto.getProductType().equals(ProductType.COMPONENT)) {
-                List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
-                deviceDto.setComponents(components);
+            List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
+
+            if (components.isEmpty()) {
+                deviceDto.setComponents(new ArrayList<>());
             }
-            deviceDto.setComponents(new ArrayList<>());
+            deviceDto.setComponents(components);
         }
         return selectDevices;
     }

@@ -113,6 +113,7 @@ public class RepairShopService {
 
         if (repairService.isPresent()) {
             responseServiceDto = ResponseServiceDto.builder()
+                    .servicePrice(repairService.get().getPrice())
                     .serviceId(repairService.get().getId())
                     .serviceType(String.valueOf(repairService.get().getServiceType()))
                     .serviceName(repairService.get().getServiceName())
@@ -136,6 +137,7 @@ public class RepairShopService {
                     .serviceName(repairService.getServiceName())
                     .serviceType(String.valueOf(repairService.getServiceType()))
                     .description(repairService.getDescription())
+                    .servicePrice(repairService.getPrice())
                     .build());
 
         });
@@ -160,13 +162,15 @@ public class RepairShopService {
         if (isExist && !(requestServiceUpdateInfo.getServiceName() == ""
                 || requestServiceUpdateInfo.getServiceName() == null
                 || requestServiceUpdateInfo.getDescription() == ""
-                || requestServiceUpdateInfo.getDescription() == null)) {
+                || requestServiceUpdateInfo.getDescription() == null
+                || requestServiceUpdateInfo.getServicePrice() == null)) {
 
             repairShopServiceRepository.updateServiceDetails(
                     requestServiceUpdateInfo.getServiceId(),
                     requestServiceUpdateInfo.getServiceType(),
                     requestServiceUpdateInfo.getServiceName(),
-                    requestServiceUpdateInfo.getDescription()
+                    requestServiceUpdateInfo.getDescription(),
+                    requestServiceUpdateInfo.getServicePrice()
             );
             return true;
         }
@@ -187,6 +191,7 @@ public class RepairShopService {
                     .serviceType(requestServiceCreateInfo.getServiceType())
                     .serviceName(requestServiceCreateInfo.getServiceName())
                     .description(requestServiceCreateInfo.getDescription())
+                    .price(requestServiceCreateInfo.getServicePrice())
                     .repairShop(repairShop.get()).build();
 
             repairShopServiceRepository.save(repairService);
@@ -205,10 +210,11 @@ public class RepairShopService {
 
         deviceListRegardlessCategory.stream().forEach(deviceDto -> {
             myItDeviceList.add(MyItDeviceDto.builder()
+                            .id(deviceDto.getId())
                     .itName(
                             (deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
                                     ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
-                    .itImg(deviceDto.getImageUrl())
+                    .itImg(deviceDto.getUrl())
                     .build());
         });
 

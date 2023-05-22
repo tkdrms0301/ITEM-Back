@@ -190,6 +190,7 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopName(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopPhoneNumber(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getDescription(),
+                    requestUpdateMemberInfoDto.getMechanicInfoDto().getRepairServiceType(),
                     memberId
             );
         }

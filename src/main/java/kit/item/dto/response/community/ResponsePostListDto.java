@@ -1,5 +1,6 @@
 package kit.item.dto.response.community;
 
+import kit.item.dto.entity.community.PostDataDto;
 import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;

@@ -6,11 +6,13 @@ import kit.item.domain.post.CommentReport;
 import kit.item.domain.post.Post;
 import kit.item.domain.post.PostReport;
 import kit.item.dto.entity.community.CommentDto;
+import kit.item.dto.entity.community.PostDataDto;
 import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.request.community.RequestCreateCommentDto;
 import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
 import kit.item.dto.response.community.ResponseCommentListDto;
+import kit.item.dto.response.community.ResponsePostDataListDto;
 import kit.item.dto.response.community.ResponsePostListDto;
 import kit.item.repository.community.CommentReportRepository;
 import kit.item.repository.community.CommentRepository;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -281,5 +284,24 @@ public class CommunityService {
                 .build();
         commentReportRepository.save(commentReport);
         return true;
+    }
+
+    public ResponsePostListDto getMyPosts(Long memberId,int page) {
+        Page<Post> posts = postRepository.findAllByMemberId(memberId, PageRequest.of(page, 10, Sort.by("id").descending()));
+        List<PostDto> postDtos = posts.stream()
+                .map(PostDto::fromPost)
+                .collect(Collectors.toList());
+        return ResponsePostListDto.builder()
+                .posts(postDtos)
+                .build();
+    }
+
+    //find all post what i commented
+
+    public ResponsePostDataListDto getPostsCommentedByMe(Long memberId,int page) {
+        Page<PostDataDto> posts = postRepository.findByCommentsMemberId(memberId, PageRequest.of(0, 10, Sort.by("id").descending()));
+        return ResponsePostDataListDto.builder()
+                .posts(posts.getContent())
+                .build();
     }
 }

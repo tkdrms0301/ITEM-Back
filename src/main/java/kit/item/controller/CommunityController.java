@@ -9,12 +9,14 @@ import kit.item.dto.request.community.RequestReportDto;
 import kit.item.service.community.CommunityService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("/api/community")
 public class CommunityController {
 
@@ -51,6 +53,7 @@ public class CommunityController {
     @PostMapping("/post/create")
     public ResponseEntity<MsgDto> createPost(@RequestBody RequestCreatePostDto requestCreatePostDTO, @RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
         Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        log.info("memberId : {}", memberId);
         return ResponseEntity.ok(new MsgDto(true, "게시글 작성 성공", communityService.createPost(requestCreatePostDTO,memberId)));
     }
 
@@ -123,6 +126,22 @@ public class CommunityController {
         Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
         return ResponseEntity.ok(new MsgDto(true, "", communityService.reportComment(commentId, requestReportDto, memberId)));
     }
+
+    @GetMapping("/user/posts")
+    public ResponseEntity<MsgDto> getMyPosts(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                             @RequestParam(defaultValue = "0") int page) {
+        Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        return ResponseEntity.ok(new MsgDto(true, "", communityService.getMyPosts(memberId, page)));
+    }
+
+    @GetMapping("/user/comments")
+    public ResponseEntity<MsgDto> getPostsCommentedByMe(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                        @RequestParam(defaultValue = "0") int page) {
+        Long memberId = tokenProvider.getId(tokenProvider.resolveToken(accessToken));
+        return ResponseEntity.ok(new MsgDto(true, "", communityService.getPostsCommentedByMe(memberId, page)));
+    }
+
+
 
 
 

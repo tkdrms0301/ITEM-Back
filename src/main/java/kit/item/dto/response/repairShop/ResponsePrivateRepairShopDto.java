@@ -19,4 +19,5 @@ public class ResponsePrivateRepairShopDto {
     private String shopPhoneNumber;
     private String description;
     private List<RepairServiceDto> services;
+    private String shopType;
 }

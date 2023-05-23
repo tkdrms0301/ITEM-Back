@@ -3,6 +3,7 @@ package kit.item.service.repairShop;
 import kit.item.domain.it.ItDevice;
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
+import kit.item.domain.point.PointHistory;
 import kit.item.domain.repair.*;
 import kit.item.dto.entity.device.DeviceDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
@@ -80,6 +81,7 @@ public class RepairShopService {
                     .shopPhoneNumber(repairShop.getShopPhoneNumber())
                     .description(repairShop.getDescription())
                     .services(repairServiceDtos)
+                    .shopType(repairShop.getRepairServiceType().name())
                     .build());
 
         });
@@ -604,6 +606,26 @@ public class RepairShopService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
             reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
+
+
+            //포인트 차감, 포인트 히스토리
+            reservation.get().getMember();
+            List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
+            repairServiceReservations.stream().forEach(repairServiceReservation -> {
+//                        Member member = repairServiceReservation.getReservation().getMember();
+//                        int point = member.getPoint();
+//                        int price = repairServiceReservation.getRepairService().getPrice();
+//                        member.setPoint(point - price);
+//                        memberRepository.save(member);
+//
+//                        PointHistory pointHistory = PointHistory.builder()
+//                                .member(member)
+//                                .point(price)
+//                                .type(PointHistoryType.USE.getKrName())
+//                                .build();
+//                        pointHistoryRepository.save(pointHistory);
+                    }
+            );
             reservationRepository.save(reservation.get());
             return true;
         }

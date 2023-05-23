@@ -6,21 +6,21 @@ import kit.item.domain.member.RepairShop;
 import kit.item.domain.point.PointHistory;
 import kit.item.domain.repair.*;
 import kit.item.dto.entity.device.DeviceDto;
-import kit.item.dto.entity.repairShop.EnableTimesDto;
-import kit.item.dto.entity.repairShop.MyItDeviceDto;
-import kit.item.dto.entity.repairShop.RepairServiceDto;
-import kit.item.dto.entity.repairShop.ReservationEnableTimeDto;
+import kit.item.dto.entity.repairShop.*;
+import kit.item.dto.request.point.RequestCreatePointHistoryDto;
 import kit.item.dto.request.repair.RequestReservationDto;
 import kit.item.dto.request.repair.RequestReservationUpdateDto;
 import kit.item.dto.request.repair.RequestServiceCreateInfo;
 import kit.item.dto.request.repair.RequestServiceUpdateInfo;
 import kit.item.dto.response.repairShop.*;
+import kit.item.enums.PointUsageType;
 import kit.item.enums.ReservationStateType;
 import kit.item.repository.it.ItDeviceRepository;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.repairShop.*;
 import kit.item.service.device.DeviceManagementService;
 import kit.item.service.file.AzureBlobService;
+import kit.item.service.point.PointService;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +52,7 @@ public class RepairShopService {
     private final ItDeviceRepository itDeviceRepository;
     private final ReservationImageRepository reservationImageRepository;
     private final RepairServiceReservationRepository repairServiceReservationRepository;
+    private final PointService pointService;
 
     @Autowired
     private AzureBlobService azureBlobAdapter;
@@ -220,11 +223,14 @@ public class RepairShopService {
                     .build());
         });
 
-        List<String> repairServices = new ArrayList<>();
+        List<ReservationServiceDto> repairServices = new ArrayList<>();
         List<RepairService> servicesByRepairShopId = repairShopServiceRepository.findByRepairShopId(repairShopId);
         servicesByRepairShopId.stream().forEach(repairService -> {
             repairServices.add(
-                    repairService.getServiceName()
+                    ReservationServiceDto.builder()
+                            .serviceName(repairService.getServiceName())
+                            .price(repairService.getPrice())
+                            .build()
             );
         });
 
@@ -364,8 +370,10 @@ public class RepairShopService {
     private List<RepairServiceReservation> getRepairServiceReservations(RequestReservationDto requestReservationDto) {
         List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
 
+        System.out.println("requestReservationDto = " + requestReservationDto.getServices());
+
         requestReservationDto.getServices().stream().forEach(service -> {
-            List<RepairService> byServiceNameAndRepairShopId = repairShopServiceRepository.findByServiceNameAndRepairShopId(service, requestReservationDto.getRepairShopId());
+            List<RepairService> byServiceNameAndRepairShopId = repairShopServiceRepository.findByServiceNameAndRepairShopId(service.getServiceName(), requestReservationDto.getRepairShopId());
 
             RepairServiceReservation repairServiceReservation = RepairServiceReservation.builder()
                     .repairService(byServiceNameAndRepairShopId.get(0))
@@ -391,9 +399,16 @@ public class RepairShopService {
                         if (repairShopByReservationId.isPresent()) {
 
                             List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
-                            List<String> repairServiceNames = new ArrayList<>();
+                            List<ReservationServiceDto> repairServices = new ArrayList<>();
                             repairServicesByReservationId.stream().forEach(repairService -> {
-                                repairServiceNames.add(repairService.getServiceName());
+                                repairServices.add(
+                                        ReservationServiceDto.builder()
+                                                .serviceName(
+                                                        repairService.getServiceName()
+                                                ).price(
+                                                        repairService.getPrice()
+                                                ).build()
+                                );
                             });
 
                             List<ReservationImage> reservationImages = reservationById.get().getReservationImages();
@@ -414,7 +429,7 @@ public class RepairShopService {
                                             .shopName(repairShopByReservationId.get().getShopName())
                                             .productName((reservationById.get().getItDevice().getDirectlyRegisteredName() == null || reservationById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservationById.get().getItDevice().getProduct().getName() : reservationById.get().getItDevice().getDirectlyRegisteredName())
                                             .prodImg(reservationById.get().getItDevice().getCategory().getImageUrl())
-                                            .requestServices(repairServiceNames)
+                                            .requestServices(repairServices)
                                             .rvRequestImgs(reservationImageUrls)
                                             .requestComment(reservationById.get().getComment())
                                             .date(reservationById.get().getReservationDate().toLocalDate())
@@ -445,9 +460,16 @@ public class RepairShopService {
                         if (repairShopByReservationId.isPresent()) {
 
                             List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
-                            List<String> repairServiceNames = new ArrayList<>();
+                            List<ReservationServiceDto> repairServices = new ArrayList<>();
                             repairServicesByReservationId.stream().forEach(repairService -> {
-                                repairServiceNames.add(repairService.getServiceName());
+                                repairServices.add(
+                                        ReservationServiceDto.builder()
+                                                .serviceName(
+                                                        repairService.getServiceName()
+                                                ).price(
+                                                        repairService.getPrice()
+                                                ).build()
+                                );
                             });
 
                             List<ReservationImage> reservationImages = reservationById.get().getReservationImages();
@@ -468,7 +490,7 @@ public class RepairShopService {
                                             .shopName(repairShopByReservationId.get().getShopName())
                                             .productName((reservationById.get().getItDevice().getDirectlyRegisteredName() == null || reservationById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservationById.get().getItDevice().getProduct().getName() : reservationById.get().getItDevice().getDirectlyRegisteredName())
                                             .prodImg(reservationById.get().getItDevice().getCategory().getImageUrl())
-                                            .requestServices(repairServiceNames)
+                                            .requestServices(repairServices)
                                             .rvRequestImgs(reservationImageUrls)
                                             .requestComment(reservationById.get().getComment())
                                             .date(reservationById.get().getReservationDate().toLocalDate())
@@ -492,9 +514,16 @@ public class RepairShopService {
             if (repairShopByReservationId.isPresent()) {
 
                 List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservaionById.get().getId());
-                List<String> repairServiceNames = new ArrayList<>();
+                List<ReservationServiceDto> requestServices = new ArrayList<>();
                 repairServicesByReservationId.stream().forEach(repairService -> {
-                    repairServiceNames.add(repairService.getServiceName());
+                    requestServices.add(
+                            ReservationServiceDto.builder()
+                                    .serviceName(
+                                            repairService.getServiceName()
+                                    ).price(
+                                            repairService.getPrice()
+                                    ).build()
+                    );
                 });
 
                 List<ReservationImage> reservationImages = reservaionById.get().getReservationImages();
@@ -510,11 +539,16 @@ public class RepairShopService {
 
 
                 //정비소 id로 정비소 서비스들 받기
-                List<String> repairServices = new ArrayList<>();
+                List<ReservationServiceDto> repairServices = new ArrayList<>();
                 List<RepairService> servicesByRepairShopId = repairShopServiceRepository.findByRepairShopId(repairShopByReservationId.get().getId());
                 servicesByRepairShopId.stream().forEach(repairService -> {
                     repairServices.add(
-                            repairService.getServiceName()
+                            ReservationServiceDto.builder()
+                                    .serviceName(
+                                            repairService.getServiceName()
+                                    ).price(
+                                            repairService.getPrice()
+                                    ).build()
                     );
                 });
 
@@ -524,7 +558,7 @@ public class RepairShopService {
                         .shopName(repairShopByReservationId.get().getShopName())
                         .productName((reservaionById.get().getItDevice().getDirectlyRegisteredName() == null || reservaionById.get().getItDevice().getDirectlyRegisteredName().length() == 0) ? reservaionById.get().getItDevice().getProduct().getName() : reservaionById.get().getItDevice().getDirectlyRegisteredName())
                         .prodImg(reservaionById.get().getItDevice().getCategory().getImageUrl())
-                        .requestServices(repairServiceNames)
+                        .requestServices(requestServices)
                         .rvRequestImgs(reservationImageUrls)
                         .requestComment(reservaionById.get().getComment())
                         .date(reservaionById.get().getReservationDate().toLocalDate())
@@ -583,8 +617,8 @@ public class RepairShopService {
 
             // 새로운 예약 서비스 생성 및 연결
             List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
-            for (String service : reservationUpdateDto.getServices()) {
-                List<RepairService> repairServices = repairShopServiceRepository.findByServiceNameAndRepairShopId(service, reservationUpdateDto.getRepairShopId());
+            for (ReservationServiceDto service : reservationUpdateDto.getServices()) {
+                List<RepairService> repairServices = repairShopServiceRepository.findByServiceNameAndRepairShopId(service.getServiceName(), reservationUpdateDto.getRepairShopId());
 
                 if (!repairServices.isEmpty()) {
                     RepairServiceReservation repairServiceReservation = RepairServiceReservation.builder()
@@ -605,29 +639,61 @@ public class RepairShopService {
     public boolean acceptReservation(Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
-            reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
-
 
             //포인트 차감, 포인트 히스토리
-            reservation.get().getMember();
+            AtomicLong totalPrice = new AtomicLong(0);
+            Member consumer = reservation.get().getMember();
             List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
+
+
+            StringBuilder serviceNames = new StringBuilder();
+            AtomicInteger count = new AtomicInteger(0);
+
             repairServiceReservations.stream().forEach(repairServiceReservation -> {
-//                        Member member = repairServiceReservation.getReservation().getMember();
-//                        int point = member.getPoint();
-//                        int price = repairServiceReservation.getRepairService().getPrice();
-//                        member.setPoint(point - price);
-//                        memberRepository.save(member);
-//
-//                        PointHistory pointHistory = PointHistory.builder()
-//                                .member(member)
-//                                .point(price)
-//                                .type(PointHistoryType.USE.getKrName())
-//                                .build();
-//                        pointHistoryRepository.save(pointHistory);
+                        totalPrice.addAndGet(repairServiceReservation.getRepairService().getPrice());
+                        count.incrementAndGet();
+                        if (count.get() < 2)
+                            serviceNames.append(repairServiceReservation.getRepairService().getServiceName());
                     }
             );
-            reservationRepository.save(reservation.get());
-            return true;
+
+            String finalServiceNames = serviceNames.toString();
+
+            if (consumer.getPoint() >= totalPrice.get()) {
+                //소비자
+                //포인트 차감
+                consumer.setPoint(consumer.getPoint() - totalPrice.get());
+                memberRepository.save(consumer);
+
+                //포인트 히스토리
+                RequestCreatePointHistoryDto consumerPointHistory = RequestCreatePointHistoryDto.builder()
+                        .serviceName(finalServiceNames)
+                        .serviceType(PointUsageType.REPAIR_SERVICE_USE.getKrName())
+                        .point(-totalPrice.get())
+                        .date(LocalDateTime.now()).build();
+                pointService.createHistory(consumer.getId(), consumerPointHistory);
+
+                //업체
+                //포인트 얻음
+                RepairShop repairShop = reservation.get().getRepairShop();
+                repairShop.setPoint(repairShop.getPoint() + totalPrice.get());
+                memberRepository.save(repairShop);
+
+                //포인트 히스토리
+                RequestCreatePointHistoryDto repairShopPointHistory = RequestCreatePointHistoryDto.builder()
+                        .serviceName(finalServiceNames)
+                        .serviceType(PointUsageType.REPAIR_SERVICE_PROVIDE.getKrName())
+                        .point(totalPrice.get())
+                        .date(LocalDateTime.now()).build();
+                pointService.createHistory(reservation.get().getRepairShop().getId(), repairShopPointHistory);
+
+                reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
+
+                reservationRepository.save(reservation.get());
+                return true;
+            }else{
+                return false;
+            }
         }
         return false;
     }

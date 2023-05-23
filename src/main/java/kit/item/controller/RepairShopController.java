@@ -5,6 +5,7 @@ import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
 import kit.item.dto.entity.repairShop.RepairShopIdDto;
+import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import kit.item.dto.request.repair.*;
 import kit.item.dto.response.repairShop.*;
 import kit.item.service.repairShop.RepairShopService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -84,12 +86,25 @@ public class RepairShopController {
                                   @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
                                   @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
                                   @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
-                                  @RequestParam(value = "services", required = false) List<String> services,
+                                  @RequestParam(value = "serviceName", required = false) List<String> serviceNames,
+                                  @RequestParam(value = "price", required = false) List<Long> prices,
                                   @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
                                   @RequestParam(value = "date", required = false) LocalDate date,
                                   @RequestParam(value = "time", required = false) String time,
                                   @RequestParam(value = "repairShopId", required = false) Long repairShopId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+
+        List<ReservationServiceDto> services = new ArrayList<>();
+        if (serviceNames != null && prices != null && serviceNames.size() == prices.size()) {
+            for (int i = 0; i < serviceNames.size(); i++) {
+                services.add(
+                        ReservationServiceDto
+                                .builder()
+                                .serviceName(serviceNames.get(i))
+                                .price(prices.get(i))
+                                .build());
+            }
+        }
 
         RequestReservationDto requestReservationDto = RequestReservationDto.builder()
                 .productName(productName)
@@ -120,13 +135,26 @@ public class RepairShopController {
                                   @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
                                   @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
                                   @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
-                                  @RequestParam(value = "services", required = false) List<String> services,
+                                  @RequestParam(value = "serviceName", required = false) List<String> serviceNames,
+                                  @RequestParam(value = "price", required = false) List<Long> prices,
                                   @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
                                   @RequestParam(value = "date", required = false) LocalDate date,
                                   @RequestParam(value = "time", required = false) String time,
                                   @RequestParam(value = "repairShopId", required = false) Long repairShopId,
                                   @RequestParam(value = "reservationId", required = false) Long reservationId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+
+        List<ReservationServiceDto> services = new ArrayList<>();
+        if (serviceNames != null && prices != null && serviceNames.size() == prices.size()) {
+            for (int i = 0; i < serviceNames.size(); i++) {
+                services.add(
+                        ReservationServiceDto
+                                .builder()
+                                .serviceName(serviceNames.get(i))
+                                .price(prices.get(i))
+                                .build());
+            }
+        }
 
         RequestReservationUpdateDto reservationUpdateDto = RequestReservationUpdateDto.builder()
                 .id(reservationId)

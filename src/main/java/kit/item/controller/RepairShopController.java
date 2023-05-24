@@ -187,4 +187,58 @@ public class RepairShopController {
     public boolean rejectReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
         return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId());
     }
+
+
+    //견적 초기
+    @GetMapping("/estimate/init")
+    public ResponseEstimateInitDto initEstimate(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.estimateInit(memberId);
+    }
+
+
+    //견적 신청
+    @PostMapping("/estimate/regist")
+    public boolean registEstimate(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                  @RequestParam(value = "productId", required = false) Long productId,
+                                  @RequestParam(value = "requestImg", required = false) MultipartFile requestImg,
+                                  @RequestParam(value = "comment", required = false) String comment,
+                                  @RequestParam(value = "repairShopId", required = false) Long repairShopId) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+
+        RequestEstimateDto requestEstimateDto = RequestEstimateDto.builder()
+                .productId(productId)
+                .requestImg(requestImg)
+                .comment(comment)
+                .repairShopId(repairShopId)
+                .build();
+
+        return repairShopService.registEstimate(memberId, requestEstimateDto);
+    }
+
+    //견적 리스트
+    @GetMapping("/estimate/history")
+    public List<ResponseEstimateHistoryDto> getEstimateHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.findEstimateHistory(memberId);
+    }
+
+    @GetMapping("/estimate/history/detail")
+    public ResponseEstimateHistoryDto getEstimateHistoryDetail(@RequestParam Long estimateId) {
+        return repairShopService.findEstimateHistoryDetail(estimateId);
+    }
+
+    @GetMapping("/estimate/history/mechanic")
+    public List<ResponseEstimateHistoryDto> getEstimateHistoryMechanic(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.findEstimateHistoryMechanic(repairShopId);
+    }
+
+    @PostMapping("/estimate/responseRegist")
+    public boolean responseEstimate(@RequestBody RequestEstimateResponseDto requestEstimateResponseDto) {
+        
+        return repairShopService.responseEstimate(requestEstimateResponseDto);
+    }
 }
+
+

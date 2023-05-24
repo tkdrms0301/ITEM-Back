@@ -3,16 +3,13 @@ package kit.item.service.repairShop;
 import kit.item.domain.it.ItDevice;
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
-import kit.item.domain.point.PointHistory;
 import kit.item.domain.repair.*;
 import kit.item.dto.entity.device.DeviceDto;
 import kit.item.dto.entity.repairShop.*;
 import kit.item.dto.request.point.RequestCreatePointHistoryDto;
-import kit.item.dto.request.repair.RequestReservationDto;
-import kit.item.dto.request.repair.RequestReservationUpdateDto;
-import kit.item.dto.request.repair.RequestServiceCreateInfo;
-import kit.item.dto.request.repair.RequestServiceUpdateInfo;
+import kit.item.dto.request.repair.*;
 import kit.item.dto.response.repairShop.*;
+import kit.item.enums.EstimateStateType;
 import kit.item.enums.PointUsageType;
 import kit.item.enums.ReservationStateType;
 import kit.item.repository.it.ItDeviceRepository;
@@ -38,6 +35,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +51,9 @@ public class RepairShopService {
     private final ReservationImageRepository reservationImageRepository;
     private final RepairServiceReservationRepository repairServiceReservationRepository;
     private final PointService pointService;
+    private final EstimateRepository estimateRepository;
+    private final EstimateImageRepository estimateImageRepository;
+    private final ResponseRepository responseRepository;
 
     @Autowired
     private AzureBlobService azureBlobAdapter;
@@ -215,7 +216,7 @@ public class RepairShopService {
 
         deviceListRegardlessCategory.stream().forEach(deviceDto -> {
             myItDeviceList.add(MyItDeviceDto.builder()
-                            .id(deviceDto.getId())
+                    .id(deviceDto.getId())
                     .itName(
                             (deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
                                     ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
@@ -244,7 +245,7 @@ public class RepairShopService {
         return responseReservationInitDto;
     }
 
-    private EnableTimesDto initReservationEnableTimeList(){
+    private EnableTimesDto initReservationEnableTimeList() {
         List<ReservationEnableTimeDto> reservationEnableTimeDtoList = new ArrayList<>();
 
         for (int i = 9; i < 18; i++) {
@@ -265,7 +266,7 @@ public class RepairShopService {
             }
         }
 
-        return  EnableTimesDto.builder()
+        return EnableTimesDto.builder()
                 .reservationTimes(reservationEnableTimeDtoList)
                 .build();
     }
@@ -384,7 +385,7 @@ public class RepairShopService {
         return repairServiceReservations;
     }
 
-    public List<ResponseReservaionHistoryDto> findReservationHistory(Long memberId){
+    public List<ResponseReservaionHistoryDto> findReservationHistory(Long memberId) {
 
         List<ResponseReservaionHistoryDto> responseReservaionHistoryDtoList = new ArrayList<>();
 
@@ -395,7 +396,7 @@ public class RepairShopService {
 
                     Optional<Reservation> reservationById = reservationRepository.findById(reservation.getId());
 
-                    if (reservationById.isPresent()){
+                    if (reservationById.isPresent()) {
                         if (repairShopByReservationId.isPresent()) {
 
                             List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
@@ -444,7 +445,7 @@ public class RepairShopService {
         return responseReservaionHistoryDtoList;
     }
 
-    public List<ResponseReservaionHistoryDto> findReservationHistoryMechanic(Long memberId){
+    public List<ResponseReservaionHistoryDto> findReservationHistoryMechanic(Long memberId) {
 
         List<ResponseReservaionHistoryDto> responseReservaionHistoryDtoList = new ArrayList<>();
 
@@ -456,7 +457,7 @@ public class RepairShopService {
 
                     Optional<Reservation> reservationById = reservationRepository.findById(reservation.getId());
 
-                    if (reservationById.isPresent()){
+                    if (reservationById.isPresent()) {
                         if (repairShopByReservationId.isPresent()) {
 
                             List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservationById.get().getId());
@@ -510,7 +511,7 @@ public class RepairShopService {
         Optional<Reservation> reservaionById = reservationRepository.findById(reservationId);
         Optional<RepairShop> repairShopByReservationId = reservationRepository.findRepairShopByReservationId(reservationId);
 
-        if (reservaionById.isPresent()){
+        if (reservaionById.isPresent()) {
             if (repairShopByReservationId.isPresent()) {
 
                 List<RepairService> repairServicesByReservationId = reservationRepository.findRepairServicesByReservationId(reservaionById.get().getId());
@@ -691,7 +692,7 @@ public class RepairShopService {
 
                 reservationRepository.save(reservation.get());
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
@@ -703,6 +704,263 @@ public class RepairShopService {
         if (reservation.isPresent()) {
             reservation.get().setState(ReservationStateType.REJECTED.getKrName());
             reservationRepository.save(reservation.get());
+            return true;
+        }
+        return false;
+    }
+
+    //견적 초기. 사용자 it device 반환
+    public ResponseEstimateInitDto estimateInit(Long memberId) {
+        List<DeviceDto> deviceListRegardlessCategory = deviceManagementService.getDeviceListRegardlessCategory(memberId);
+        List<MyItDeviceDto> myItDeviceList = new ArrayList<>();
+
+        deviceListRegardlessCategory.stream().forEach(deviceDto -> {
+            myItDeviceList.add(MyItDeviceDto.builder()
+                    .id(deviceDto.getId())
+                    .itName(
+                            (deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
+                                    ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
+                    .itImg(deviceDto.getUrl())
+                    .build());
+        });
+
+        return ResponseEstimateInitDto.builder()
+                .myItems(myItDeviceList)
+                .build();
+    }
+
+
+    //견적 신청
+    public boolean registEstimate(Long memberId, RequestEstimateDto requestEstimateDto) {
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        ItDevice itDevice = itDeviceRepository.findById(requestEstimateDto.getProductId()).get();
+        RepairShop repairShop = repairShopRepository.findById(requestEstimateDto.getRepairShopId()).get();
+
+        List<EstimateImage> estimateImages = new ArrayList<>();
+
+        MultipartFile requestEstimateImg = requestEstimateDto.getRequestImg();
+
+
+        if (member.isPresent()) {
+            EstimateImage estimateImage = null;
+
+            if (requestEstimateImg != null) {
+                try {
+                    String fileUrl = azureBlobAdapter.upload(requestEstimateImg);
+
+                    estimateImage = EstimateImage.builder()
+                            .url(fileUrl)
+                            .build();
+
+                    estimateImages.add(estimateImage);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            Estimate estimate = Estimate.builder()
+                    .member(member.get())
+                    .estimateImages(estimateImages)
+                    .date(LocalDateTime.now())
+                    .repairShop(repairShop)
+                    .itDevice(itDevice)
+                    .state(EstimateStateType.WAITING.getKrName())
+                    .description(requestEstimateDto.getComment())
+
+                    .build();
+
+
+            if (estimateImage != null)
+                estimateImage.setEstimate(estimate);
+
+            estimateRepository.save(estimate);
+            estimateImageRepository.saveAll(estimateImages);
+
+            return true;
+        }
+        return false;
+    }
+
+    public List<ResponseEstimateHistoryDto> findEstimateHistory(Long memberId) {
+        List<Estimate> estimates = estimateRepository.findByMemberId(memberId);
+
+        List<ResponseEstimateHistoryDto> responseEstimateHistoryDtos = new ArrayList<>();
+
+        estimates.stream().forEach(
+                estimate -> {
+
+                    DeviceDto deviceDto = itDeviceRepository.findDeviceById(estimate.getItDevice().getId());
+
+                    MyItDeviceDto myItDeviceDto = MyItDeviceDto.builder()
+                            .itName((deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
+                                    ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
+                            .itImg(deviceDto.getUrl())
+                            .id(deviceDto.getId())
+                            .build();
+
+
+                    //이미지 가져오기
+                    EstimateImage byEstimateId = estimateImageRepository.findByEstimateId(estimate.getId());
+                    String url = null;
+                    if (byEstimateId != null)
+                        url = byEstimateId.getUrl();
+
+
+                    //if 응답이 있을 경우 / 없을 경우
+                    if (estimate.getState().equals(EstimateStateType.WAITING.getKrName())) {
+                        responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
+                                .id(estimate.getId())
+                                .requestImg(url)
+                                .description(estimate.getDescription())
+                                .itDevice(myItDeviceDto)
+                                .status(estimate.getState())
+                                .build());
+                    } else {
+                        responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
+                                .id(estimate.getId())
+                                .requestImg(url)
+                                .description(estimate.getDescription())
+                                .itDevice(myItDeviceDto)
+                                .status(estimate.getState())
+                                .comment(estimate.getResponse().getComment())
+                                .minPrice(estimate.getResponse().getCostMin())
+                                .maxPrice(estimate.getResponse().getCostMax())
+                                .minTime(estimate.getResponse().getMinTime())
+                                .maxTime(estimate.getResponse().getMaxTime())
+                                .build());
+                    }
+
+                }
+        );
+        return responseEstimateHistoryDtos;
+    }
+
+    public ResponseEstimateHistoryDto findEstimateHistoryDetail(Long estimateId) {
+        Optional<Estimate> byId = estimateRepository.findById(estimateId);
+
+        ResponseEstimateHistoryDto result = null;
+
+        if (byId.isPresent()){
+            Estimate estimate = byId.get();
+
+            DeviceDto deviceDto = itDeviceRepository.findDeviceById(estimate.getItDevice().getId());
+
+            MyItDeviceDto myItDeviceDto = MyItDeviceDto.builder()
+                    .itName((deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
+                            ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
+                    .itImg(deviceDto.getUrl())
+                    .id(deviceDto.getId())
+                    .build();
+
+
+            EstimateImage byEstimateId = estimateImageRepository.findByEstimateId(estimate.getId());
+            String url = null;
+            if (byEstimateId != null)
+                url = byEstimateId.getUrl();
+
+            if (estimate.getState().equals(EstimateStateType.WAITING.getKrName())) {
+                
+                result = ResponseEstimateHistoryDto.builder()
+                        .id(estimate.getId())
+                        .requestImg(url)
+                        .description(estimate.getDescription())
+                        .itDevice(myItDeviceDto)
+                        .status(estimate.getState())
+                        .build();
+            } else {
+                result = ResponseEstimateHistoryDto.builder()
+                        .id(estimate.getId())
+                        .requestImg(url)
+                        .description(estimate.getDescription())
+                        .itDevice(myItDeviceDto)
+                        .status(estimate.getState())
+                        .comment(estimate.getResponse().getComment())
+                        .minPrice(estimate.getResponse().getCostMin())
+                        .maxPrice(estimate.getResponse().getCostMax())
+                        .minTime(estimate.getResponse().getMinTime())
+                        .maxTime(estimate.getResponse().getMaxTime())
+                        .build();
+            }
+        }
+        return result;
+    }
+
+    public List<ResponseEstimateHistoryDto> findEstimateHistoryMechanic(Long repairShopId) {
+
+        List<Estimate> estimates = estimateRepository.findByRepairShopId(repairShopId);
+
+        List<ResponseEstimateHistoryDto> responseEstimateHistoryDtos = new ArrayList<>();
+
+        estimates.stream().forEach(
+                estimate -> {
+
+                    DeviceDto deviceDto = itDeviceRepository.findDeviceById(estimate.getItDevice().getId());
+
+                    MyItDeviceDto myItDeviceDto = MyItDeviceDto.builder()
+                            .itName((deviceDto.getDirectlyRegisterProductName() == null || deviceDto.getDirectlyRegisterProductName().equals(""))
+                                    ? deviceDto.getProductName() : deviceDto.getDirectlyRegisterProductName())
+                            .itImg(deviceDto.getUrl())
+                            .id(deviceDto.getId())
+                            .build();
+
+
+                    //이미지 가져오기
+                    EstimateImage byEstimateId = estimateImageRepository.findByEstimateId(estimate.getId());
+                    String url = null;
+                    if (byEstimateId != null)
+                        url = byEstimateId.getUrl();
+
+
+                    //if 응답이 있을 경우 / 없을 경우
+                    if (estimate.getState().equals(EstimateStateType.WAITING.getKrName())) {
+                        responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
+                                .id(estimate.getId())
+                                .requestImg(url)
+                                .description(estimate.getDescription())
+                                .itDevice(myItDeviceDto)
+                                .status(estimate.getState())
+                                .build());
+                    } else {
+                        responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
+                                .id(estimate.getId())
+                                .requestImg(url)
+                                .description(estimate.getDescription())
+                                .itDevice(myItDeviceDto)
+                                .status(estimate.getState())
+                                .comment(estimate.getResponse().getComment())
+                                .minPrice(estimate.getResponse().getCostMin())
+                                .maxPrice(estimate.getResponse().getCostMax())
+                                .minTime(estimate.getResponse().getMinTime())
+                                .maxTime(estimate.getResponse().getMaxTime())
+                                .build());
+                    }
+
+                }
+        );
+        return responseEstimateHistoryDtos;
+    }
+
+    public boolean responseEstimate(RequestEstimateResponseDto requestEstimateResponseDto) {
+        Optional<Estimate> estimate = estimateRepository.findById(requestEstimateResponseDto.getEstimateId());
+
+        if (estimate.isPresent()){
+            Response estimateRes = Response.builder()
+                    .estimate(estimate.get())
+                    .comment(requestEstimateResponseDto.getComment())
+                    .responseDate(LocalDateTime.now())
+                    .costMin(requestEstimateResponseDto.getMinPrice())
+                    .costMax(requestEstimateResponseDto.getMaxPrice())
+                    .minTime(requestEstimateResponseDto.getMinTime())
+                    .maxTime(requestEstimateResponseDto.getMaxTime())
+                    .build();
+
+            estimate.get().setResponse(estimateRes);
+            estimate.get().setState(EstimateStateType.COMPLETED.getKrName());
+
+            estimateRepository.save(estimate.get());
+            responseRepository.save(estimateRes);
+
             return true;
         }
         return false;

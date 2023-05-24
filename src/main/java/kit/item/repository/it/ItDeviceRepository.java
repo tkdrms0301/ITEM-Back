@@ -33,4 +33,10 @@ public interface ItDeviceRepository extends JpaRepository<ItDevice, Long> {
 
     @Query("SELECT i FROM IT_DEVICE i WHERE i.member.id = :memberId AND (i.directlyRegisteredName IS NULL AND i.product.name = :productName OR i.directlyRegisteredName = :productName)")
     ItDevice findDeviceByMemberIdAndProductName(@Param("memberId") Long memberId, @Param("productName") String productName);
+
+    @Query("SELECT new kit.item.dto.entity.device.DeviceDto(" +
+            "i.id, i.category.id, i.brand.id, i.product.id, i.category.name, i.brand.name, i.product.name, i.directlyRegisteredName, i.category.imageUrl) " +
+            "FROM IT_DEVICE i WHERE i.id = :id")
+    DeviceDto findDeviceById(@Param(value = "id") Long id);
+
 }

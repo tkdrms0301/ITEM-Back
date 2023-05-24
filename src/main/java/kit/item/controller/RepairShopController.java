@@ -236,7 +236,7 @@ public class RepairShopController {
 
     @PostMapping("/estimate/responseRegist")
     public boolean responseEstimate(@RequestBody RequestEstimateResponseDto requestEstimateResponseDto) {
-        
+
         return repairShopService.responseEstimate(requestEstimateResponseDto);
     }
 }

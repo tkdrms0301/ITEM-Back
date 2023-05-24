@@ -3,6 +3,8 @@ package kit.item.dto.response.repairShop;
 import kit.item.dto.entity.repairShop.MyItDeviceDto;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @Setter
@@ -21,4 +23,5 @@ public class ResponseEstimateHistoryDto {
     private Integer maxPrice;
     private Integer minTime;
     private Integer maxTime;
+    private LocalDateTime date;
 }

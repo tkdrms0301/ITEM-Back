@@ -815,6 +815,7 @@ public class RepairShopService {
                                 .description(estimate.getDescription())
                                 .itDevice(myItDeviceDto)
                                 .status(estimate.getState())
+                                .date(estimate.getDate())
                                 .build());
                     } else {
                         responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
@@ -823,6 +824,7 @@ public class RepairShopService {
                                 .description(estimate.getDescription())
                                 .itDevice(myItDeviceDto)
                                 .status(estimate.getState())
+                                .date(estimate.getDate())
                                 .comment(estimate.getResponse().getComment())
                                 .minPrice(estimate.getResponse().getCostMin())
                                 .maxPrice(estimate.getResponse().getCostMax())
@@ -867,6 +869,7 @@ public class RepairShopService {
                         .description(estimate.getDescription())
                         .itDevice(myItDeviceDto)
                         .status(estimate.getState())
+                        .date(estimate.getDate())
                         .build();
             } else {
                 result = ResponseEstimateHistoryDto.builder()
@@ -875,6 +878,7 @@ public class RepairShopService {
                         .description(estimate.getDescription())
                         .itDevice(myItDeviceDto)
                         .status(estimate.getState())
+                        .date(estimate.getDate())
                         .comment(estimate.getResponse().getComment())
                         .minPrice(estimate.getResponse().getCostMin())
                         .maxPrice(estimate.getResponse().getCostMax())
@@ -920,6 +924,7 @@ public class RepairShopService {
                                 .description(estimate.getDescription())
                                 .itDevice(myItDeviceDto)
                                 .status(estimate.getState())
+                                .date(estimate.getDate())
                                 .build());
                     } else {
                         responseEstimateHistoryDtos.add(ResponseEstimateHistoryDto.builder()
@@ -928,6 +933,7 @@ public class RepairShopService {
                                 .description(estimate.getDescription())
                                 .itDevice(myItDeviceDto)
                                 .status(estimate.getState())
+                                .date(estimate.getDate())
                                 .comment(estimate.getResponse().getComment())
                                 .minPrice(estimate.getResponse().getCostMin())
                                 .maxPrice(estimate.getResponse().getCostMax())
@@ -935,7 +941,6 @@ public class RepairShopService {
                                 .maxTime(estimate.getResponse().getMaxTime())
                                 .build());
                     }
-
                 }
         );
         return responseEstimateHistoryDtos;

@@ -15,4 +15,5 @@ public class RepairServiceDto {
     private String serviceName;
     private ServiceType serviceType;
     private String description;
+    private Long servicePrice;
 }

@@ -106,8 +106,8 @@ INSERT INTO category_brand(brand_id, category_id) VALUES (2, 23); # 27 / 2 삼�
 # 구독권
 set @now = '';
 SELECT NOW() into @now;
-INSERT INTO subscription(start_date, member_id) values (@now, 1);
-INSERT INTO subscription(start_date, member_id) values (@now, 2);
+INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 1);
+INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
 INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1 / 21 컴퓨터;

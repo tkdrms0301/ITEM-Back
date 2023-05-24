@@ -1,4 +1,4 @@
-package kit.item.repository;
+package kit.item.repository.point;
 
 import kit.item.domain.point.PointHistory;
 import kit.item.dto.entity.point.PointHistoryDto;

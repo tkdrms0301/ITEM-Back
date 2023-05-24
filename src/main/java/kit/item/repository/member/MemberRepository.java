@@ -22,7 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);
 
-    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.account, m.point, m.roleType, s.startDate) " +
+    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.account, m.point, m.roleType, s.endDate) " +
             "from MEMBER m left join fetch SUBSCRIPTION s on m.id=s.member.id " +
             "where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);

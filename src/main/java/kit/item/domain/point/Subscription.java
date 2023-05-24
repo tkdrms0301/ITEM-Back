@@ -17,13 +17,17 @@ public class Subscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscription_id", nullable = false)
     private Long id;
-    @Column(name = "start_date")
-    private LocalDateTime startDate;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     @ToString.Exclude
     private Member member;
+
+    public Subscription(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
 
     public void setMember(Member member) {
         this.member = member;

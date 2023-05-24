@@ -43,7 +43,7 @@ public class ResponseGetMemberInfoDto {
                 .account(memberDto.getAccount())
                 .point(memberDto.getPoint())
                 .roleType(memberDto.getRoleType())
-                .subscription(memberDto.getStartDate() != null ? memberDto.getStartDate().toLocalDate().plusYears(1) : null)
+                .subscription(memberDto.getEndDate() != null ? memberDto.getEndDate().toLocalDate() : null)
                 .build();
     }
 }

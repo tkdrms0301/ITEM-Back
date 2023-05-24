@@ -75,6 +75,7 @@ public class RepairShopService {
                                 .serviceName(repairService.getServiceName())
                                 .serviceType(repairService.getServiceType())
                                 .description(repairService.getDescription())
+                                .servicePrice(repairService.getPrice())
                                 .build());
             });
 

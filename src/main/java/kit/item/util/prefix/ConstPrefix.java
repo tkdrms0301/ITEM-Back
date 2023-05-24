@@ -8,4 +8,6 @@ public abstract class ConstPrefix {
     public static final String AUTHORIZATION = "Bearer ";
 
     public static final Long IS_COMPONENT = 1L;
+
+    public static final Integer SIGN_UP_SUBSCRIPTION_DURATION = 7;
 }

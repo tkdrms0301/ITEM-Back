@@ -3,11 +3,11 @@ package kit.item.service.member;
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
 import kit.item.domain.member.Seller;
+import kit.item.domain.point.Subscription;
 import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
 import kit.item.dto.entity.member.SellerInfoDto;
-import kit.item.dto.entity.point.PointHistoryDto;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
@@ -15,10 +15,11 @@ import kit.item.dto.response.member.ResponseGetMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
-import kit.item.repository.PointRepository;
+import kit.item.repository.point.PointRepository;
 import kit.item.repository.member.MechanicRepository;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.member.SellerRepository;
+import kit.item.repository.point.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,8 +29,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static kit.item.util.prefix.ConstPrefix.SIGN_UP_SUBSCRIPTION_DURATION;
 
 @Slf4j
 @Service
@@ -39,7 +42,7 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final SellerRepository sellerRepository;
     private final MechanicRepository mechanicRepository;
-    private final PointRepository pointRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
 
     // Member가 DB에 존재할 시 Member 객체 반환
@@ -59,19 +62,25 @@ public class MemberService implements UserDetailsService {
         if(memberRepository.existsByNickname(requestSignupDto.getNickname())) {
             throw new DuplicateMemberException("이미 가입되어 있는 중복된 닉네임입니다.");
         }
-
+        Subscription subscription = new Subscription(LocalDateTime.now().plusDays(SIGN_UP_SUBSCRIPTION_DURATION));
         if (requestSignupDto.getRoleType().equals(RoleType.MEMBER)) {
             Member member = requestSignupDto.toMember();
             member.setPassword(passwordEncoder.encode(member.getPassword()));
             memberRepository.save(member);
+            subscription.setMember(member);
+            subscriptionRepository.save(subscription);
         } else if (requestSignupDto.getRoleType().equals(RoleType.SELLER) && requestSignupDto.getSellerInfoDto() != null) {
             Seller seller = requestSignupDto.toSeller();
             seller.setPassword(passwordEncoder.encode(seller.getPassword()));
             sellerRepository.save(seller);
+            subscription.setMember(seller);
+            subscriptionRepository.save(subscription);
         } else if (requestSignupDto.getRoleType().equals(RoleType.MECHANIC) && requestSignupDto.getMechanicInfoDto() != null) {
             RepairShop repairShop = requestSignupDto.toMechanic();
             repairShop.setPassword(passwordEncoder.encode(repairShop.getPassword()));
             mechanicRepository.save(repairShop);
+            subscription.setMember(repairShop);
+            subscriptionRepository.save(subscription);
         }
     }
 

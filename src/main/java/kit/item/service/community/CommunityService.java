@@ -16,6 +16,7 @@ import kit.item.dto.response.community.ResponsePostDto;
 import kit.item.dto.response.community.ResponsePostListDto;
 import kit.item.repository.community.*;
 import kit.item.repository.it.ProductRepository;
+import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +106,12 @@ public class CommunityService {
         List<String> images = requestCreatePostDTO.getImages();
         if (isDupliPost(title, memberId)) {
             return false;
+        }
+        String json = "{\"title\":\"" + title + "\",\"content\":\"" + content + "\",\"productId\":\"" + productId + "\"}";
+        try {
+            String res = HttpUtil.postJson("http://localhost:5000/getCommunityData", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         Post post = Post.builder()
                 .title(title)

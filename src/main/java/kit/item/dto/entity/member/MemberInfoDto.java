@@ -19,6 +19,8 @@ public class MemberInfoDto {
     private String nickname;
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
     private RoleType roleType;
+    private LocalDateTime startDate;
 }

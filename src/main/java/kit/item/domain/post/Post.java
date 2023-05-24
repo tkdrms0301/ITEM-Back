@@ -1,10 +1,9 @@
 package kit.item.domain.post;
 
 import jakarta.persistence.*;
+import kit.item.domain.it.Product;
 import kit.item.domain.member.Member;
-import kit.item.domain.it.BrandProduct;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id", nullable = false)
     private Long id;
+
     private String title;
     private String content;
     private LocalDateTime date;
@@ -31,9 +31,9 @@ public class Post {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_product_id")
+    @JoinColumn(name = "product_id")
     @ToString.Exclude
-    private BrandProduct brandProduct;
+    private Product product;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     @ToString.Exclude
@@ -49,10 +49,6 @@ public class Post {
 
     public void setPostImages(List<PostImage> postImages) {
         this.postImages = postImages;
-    }
-
-    public void setBrandProduct(BrandProduct brandProduct) {
-        this.brandProduct = brandProduct;
     }
 
     public void setMember(Member member) {

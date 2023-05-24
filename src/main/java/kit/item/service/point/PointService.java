@@ -1,9 +1,13 @@
 package kit.item.service.point;
 
 
+import kit.item.domain.member.Member;
 import kit.item.domain.point.PointHistory;
+import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.point.PointHistoryDto;
+import kit.item.dto.request.point.RequestCreatePointHistoryDto;
 import kit.item.repository.PointRepository;
+import kit.item.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,12 +20,12 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PointService {
-
     private final PointRepository pointRepository;
+    private final MemberRepository memberRepository;
+
     public Object getPointHistory(Long memberId) {
         log.info("PointService.getPointHistory");
         List<PointHistoryDto> pointHistoryDtos = pointRepository.findPointHistoryByMemberId(memberId);
-
         return pointHistoryDtos;
     }
 
@@ -31,15 +35,37 @@ public class PointService {
         return pointHistoryDtos;
     }
 
-    public boolean getPointHistoryDelete(Long historyId) {
+    public boolean getPointHistoryDelete(Long historyId, Long memberId) {
         log.info("PointService.getPointHistoryDelete");
-        Optional<PointHistory> pointHistoryDto = pointRepository.findById(historyId);
+        boolean isExist = pointRepository.existsByMemberIdAndHistoryId(memberId, historyId);
 
-        if(pointHistoryDto.isPresent()){
+        if(isExist){
             pointRepository.deleteById(historyId);
             return true;
         }
 
         return false;
+    }
+
+    public boolean createHistory(Long memberId, RequestCreatePointHistoryDto requestCreatePointHistoryDto){
+        log.info("PointService.createHistory");
+
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if(member.isPresent()){
+            PointHistory pointHistory = PointHistory.builder()
+                    .serviceName(requestCreatePointHistoryDto.getServiceName())
+                    .serviceType(requestCreatePointHistoryDto.getServiceType())
+                    .point(requestCreatePointHistoryDto.getPoint())
+                    .date(requestCreatePointHistoryDto.getDate())
+                    .member(member.get())
+                    .build();
+
+            pointRepository.save(pointHistory);
+            return true;
+
+        }else
+
+            return false;
     }
 }

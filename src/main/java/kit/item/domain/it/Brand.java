@@ -18,10 +18,12 @@ public class Brand {
 
     @Column(name = "brand_name")
     private String name;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
-    private List<BrandProduct> brandProducts = new ArrayList<>();
+    @Column(name = "is_finished")
+    private boolean isFinished;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
     private List<CategoryBrand> categoryBrands = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "brand")
+    private List<ItDevice> itDevices = new ArrayList<>();
 }

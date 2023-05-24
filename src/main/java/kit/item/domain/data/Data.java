@@ -1,7 +1,7 @@
 package kit.item.domain.data;
 
 import jakarta.persistence.*;
-import kit.item.domain.it.BrandProduct;
+import kit.item.domain.it.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -19,11 +19,7 @@ public class Data {
     private Long count;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_product_id")
+    @JoinColumn(name = "product_id")
     @ToString.Exclude
-    private BrandProduct brandProduct;
-
-    public void setBrandProduct(BrandProduct brandProduct) {
-        this.brandProduct = brandProduct;
-    }
+    private Product product;
 }

@@ -1,10 +1,9 @@
 package kit.item.service.community;
 
+import com.azure.core.annotation.ServiceClient;
+import kit.item.domain.it.Product;
 import kit.item.domain.member.Member;
-import kit.item.domain.post.Comment;
-import kit.item.domain.post.CommentReport;
-import kit.item.domain.post.Post;
-import kit.item.domain.post.PostReport;
+import kit.item.domain.post.*;
 import kit.item.dto.entity.community.CommentDto;
 import kit.item.dto.entity.community.PostDataDto;
 import kit.item.dto.entity.community.PostDto;
@@ -13,11 +12,10 @@ import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
 import kit.item.dto.response.community.ResponseCommentListDto;
 import kit.item.dto.response.community.ResponsePostDataListDto;
+import kit.item.dto.response.community.ResponsePostDto;
 import kit.item.dto.response.community.ResponsePostListDto;
-import kit.item.repository.community.CommentReportRepository;
-import kit.item.repository.community.CommentRepository;
-import kit.item.repository.community.PostReportRepository;
-import kit.item.repository.community.PostRepository;
+import kit.item.repository.community.*;
+import kit.item.repository.it.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -42,6 +40,8 @@ public class CommunityService {
     private final CommentRepository commentRepository;
     private final PostReportRepository postReportRepository;
     private final CommentReportRepository commentReportRepository;
+    private final ProductRepository productRepository;
+    private final PostImageRepository postImageRepository;
 
     public ResponsePostListDto getPostsList(int page) {
         List<PostDto> posts = getPosts(page, PAGE_SIZE);
@@ -87,26 +87,55 @@ public class CommunityService {
         return postPage.hasNext();
     }
 
-    public Post getPostById(Long postId) {
+    private Post getPostById(Long postId) {
         return postRepository.findById(postId).orElse(null);
+    }
+    public ResponsePostDto getPostContentById(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        ResponsePostDto responsePostDtO = ResponsePostDto.fromPost(post);
+        return responsePostDtO;
     }
 
     public Boolean createPost(RequestCreatePostDto requestCreatePostDTO, Long memberId) {
+        System.out.println("requestCreatePostDTO.getTitle() = " + requestCreatePostDTO.getTitle());
         String title = requestCreatePostDTO.getTitle();
         String content = requestCreatePostDTO.getContent();
+        Long productId = requestCreatePostDTO.getProductId();
+        List<String> images = requestCreatePostDTO.getImages();
         if (isDupliPost(title, memberId)) {
             return false;
         }
         Post post = Post.builder()
                 .title(title)
                 .content(content)
+                .date(LocalDateTime.now())
+                .report(0L)
                 .member(
                         Member.builder()
                                 .id(memberId)
                                 .build()
                 )
+                .product(
+                        productRepository.findById(productId).orElse(null)
+                )
                 .build();
         postRepository.save(post);
+        if(images != null) {
+            List<PostImage> postImages = new ArrayList<>();
+            for (String image : images) {
+                System.out.println("image = " + image);
+                PostImage postImage = PostImage.builder()
+                        .url(image)
+                        .build();
+                postImage.setPost(post);
+                postImages.add(postImage);
+            }
+            postImageRepository.saveAll(postImages);
+
+            post.setPostImages(postImages);
+
+            postRepository.save(post);
+        }
         return true;
     }
     private boolean isDupliPost(String title, Long memberId) {
@@ -114,10 +143,11 @@ public class CommunityService {
     }
 
     public Boolean updatePost(Long postId, RequestCreatePostDto requestCreatePostDTO, Long memberId) {
-        if (getPostById(postId) == null) {
+        Post origin = getPostById(postId);
+        if (origin == null) {
             return false;
         }
-        if (getPostById(postId).getMember().getId() != memberId) {
+        if (origin.getMember().getId() != memberId) {
             return false;
         }
         Post post = Post.builder()
@@ -128,8 +158,36 @@ public class CommunityService {
                         Member.builder()
                                 .id(memberId)
                                 .build())
+                .product(
+                        productRepository.findById(requestCreatePostDTO.getProductId()).orElse(null)
+                )
+                .date(origin.getDate())
+                .report(origin.getReport())
+                .postReports(origin.getPostReports())
+                .comments(origin.getComments())
                 .build();
         postRepository.save(post);
+
+        List<PostImage> existingImages = postImageRepository.findAllByPostId(postId);
+        postImageRepository.deleteAll(existingImages);
+
+        if(requestCreatePostDTO.getImages() != null) {
+            List<PostImage> postImages = new ArrayList<>();
+            for (String image : requestCreatePostDTO.getImages()) {
+                System.out.println("image = " + image);
+                PostImage postImage = PostImage.builder()
+                        .url(image)
+                        .build();
+                postImage.setPost(post);
+                postImages.add(postImage);
+            }
+            postImageRepository.saveAll(postImages);
+
+            post.setPostImages(postImages);
+
+            postRepository.save(post);
+        }
+
         return true;
     }
 
@@ -140,6 +198,18 @@ public class CommunityService {
         }
         if (getPostById(postId).getMember().getId() != memberId) {
             return false;
+        }
+        List<Comment> comments = post.getComments();
+        if (comments != null) {
+            commentRepository.deleteAll(comments);
+        }
+        List<PostImage> postImages = post.getPostImages();
+        if (postImages != null) {
+            postImageRepository.deleteAll(postImages);
+        }
+        List<PostReport> postReports = post.getPostReports();
+        if (postReports != null) {
+            postReportRepository.deleteAll(postReports);
         }
         postRepository.delete(post);
         return true;
@@ -296,12 +366,29 @@ public class CommunityService {
                 .build();
     }
 
-    //find all post what i commented
-
     public ResponsePostDataListDto getPostsCommentedByMe(Long memberId,int page) {
         Page<PostDataDto> posts = postRepository.findByCommentsMemberId(memberId, PageRequest.of(0, 10, Sort.by("id").descending()));
         return ResponsePostDataListDto.builder()
                 .posts(posts.getContent())
                 .build();
+    }
+
+    public String getCommentByPostId(Long postId, Long commentId) {
+        Post post = getPostById(postId);
+        if (post == null) {
+            return null;
+        }
+        Comment comment = getCommentById(commentId);
+        if (comment == null) {
+            return null;
+        }
+        return comment.getContent();
+    }
+
+    public List<PostDto> getLatestPostsList() {
+        List<Post> posts = postRepository.findAll(PageRequest.of(0, 5, Sort.by("id").descending())).getContent();
+        return posts.stream()
+                .map(PostDto::fromPost)
+                .collect(Collectors.toList());
     }
 }

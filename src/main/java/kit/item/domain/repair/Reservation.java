@@ -1,12 +1,14 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
+import kit.item.domain.it.ItDevice;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import kit.item.domain.member.RepairShop;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "RESERVATION")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +25,8 @@ public class Reservation {
     private Long id;
     private LocalDateTime reservationDate;
     private LocalDateTime applicationDate;
-    private Long duration;
     private String state;
+    private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -41,6 +45,16 @@ public class Reservation {
     @ToString.Exclude
     private List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "it_device_id")
+    @ToString.Exclude
+    private ItDevice itDevice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repair_shop_id")
+    @ToString.Exclude
+    private RepairShop repairShop;
+
     public void setReservationImages(List<ReservationImage> reservationImages) {
         this.reservationImages = reservationImages;
     }
@@ -51,5 +65,24 @@ public class Reservation {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setItDevice(ItDevice itDevice) {
+        this.itDevice = itDevice;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setReservationDate(LocalDateTime reservationDate) {
+        this.reservationDate = reservationDate;
+    }
+
+    public void setReservationDate(LocalDate date, LocalTime time) {
+        this.reservationDate = LocalDateTime.of(date, time);
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

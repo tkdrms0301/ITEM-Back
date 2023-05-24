@@ -19,7 +19,6 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,9 +51,9 @@ public class Member implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(name = "role_type")
     private RoleType roleType;

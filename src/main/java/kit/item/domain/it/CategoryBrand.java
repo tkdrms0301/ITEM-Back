@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity(name = "CATEGORY_BRAND")
@@ -20,4 +23,7 @@ public class CategoryBrand {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categoryBrand")
+    private List<Product> products = new ArrayList<>();
 }

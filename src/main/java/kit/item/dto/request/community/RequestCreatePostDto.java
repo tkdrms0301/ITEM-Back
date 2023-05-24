@@ -2,6 +2,8 @@ package kit.item.dto.request.community;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -10,9 +12,6 @@ import lombok.*;
 public class RequestCreatePostDto {
     private String title;
     private String content;
-    private Long memberId;
-
-    public static RequestCreatePostDtoBuilder builder(String title, String content, Long memberId) {
-        return new RequestCreatePostDtoBuilder().title(title).content(content).memberId(memberId);
-    }
+    private Long productId;
+    private List<String> images;
 }

@@ -7,6 +7,7 @@ import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
 import kit.item.dto.entity.member.SellerInfoDto;
+import kit.item.dto.entity.point.PointHistoryDto;
 import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
@@ -14,9 +15,10 @@ import kit.item.dto.response.member.ResponseGetMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
-import kit.item.repository.MechanicRepository;
-import kit.item.repository.MemberRepository;
-import kit.item.repository.SellerRepository;
+import kit.item.repository.PointRepository;
+import kit.item.repository.member.MechanicRepository;
+import kit.item.repository.member.MemberRepository;
+import kit.item.repository.member.SellerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +28,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -36,6 +39,7 @@ public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final SellerRepository sellerRepository;
     private final MechanicRepository mechanicRepository;
+    private final PointRepository pointRepository;
     private final PasswordEncoder passwordEncoder;
 
     // Member가 DB에 존재할 시 Member 객체 반환
@@ -79,6 +83,20 @@ public class MemberService implements UserDetailsService {
     public boolean nicknameCheck(String nickname) {
         log.info("MemberService.emailCheck");
         return memberRepository.existsByNickname(nickname);
+    }
+
+    public boolean companyNumberCheck(String companyNumber) {
+        log.info("MemberService.companyNumberCheck");
+        return sellerRepository.existsByCompanyNumber(companyNumber);
+    }
+
+    public boolean passwordCheck(Long memberId, String password) {
+        log.info("MemberService.passwordCheck");
+        Optional<Member> member = memberRepository.findById(memberId);
+        if(member.isPresent()) {
+            return passwordEncoder.matches(password, member.get().getPassword());
+        }
+        return false;
     }
 
     public MemberLoginInfoDto getLoginInfo(RequestLoginDto requestLoginDto) {
@@ -144,8 +162,8 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     memberId
             );
         }else if (member.get().getRoleType().equals(RoleType.SELLER)) {
@@ -153,8 +171,8 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyAddress(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyPhoneNumber(),
                     requestUpdateMemberInfoDto.getSellerInfoDto().getCompanyName(),
@@ -167,11 +185,12 @@ public class MemberService implements UserDetailsService {
                     requestUpdateMemberInfoDto.getAddress(),
                     requestUpdateMemberInfoDto.getNickname(),
                     passwordEncoder.encode(requestUpdateMemberInfoDto.getNewPassword()),
-                    requestUpdateMemberInfoDto.getName(),
                     requestUpdateMemberInfoDto.getPhoneNumber(),
+                    requestUpdateMemberInfoDto.getAccount(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopName(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getShopPhoneNumber(),
                     requestUpdateMemberInfoDto.getMechanicInfoDto().getDescription(),
+                    requestUpdateMemberInfoDto.getMechanicInfoDto().getRepairServiceType(),
                     memberId
             );
         }

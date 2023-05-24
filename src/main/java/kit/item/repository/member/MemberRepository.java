@@ -1,4 +1,4 @@
-package kit.item.repository;
+package kit.item.repository.member;
 
 import kit.item.domain.member.Member;
 import kit.item.dto.entity.member.MechanicInfoDto;
@@ -22,21 +22,23 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);
 
-    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.point, m.roleType) from MEMBER m where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.account, m.point, m.roleType, s.startDate) " +
+            "from MEMBER m left join fetch SUBSCRIPTION s on m.id=s.member.id " +
+            "where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);
 
-    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress, r.repairServiceType) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
     Optional<MechanicInfoDto> findMechanicById(@Param("id") Long id);
 
     @Query("select new kit.item.dto.entity.member.SellerInfoDto(s.companyName, s.companyNumber, s.companyPhoneNumber, s.description, s.companyAddress) from MEMBER m join fetch SELLER s where m.id=:id")
     Optional<SellerInfoDto> findSellerById(@Param("id") Long id);
 
     @Modifying
-    @Query("update MEMBER m set m.address=:address, m.nickname=:nickname, m.password=:password, m.name=:name, m.phoneNumber=:phoneNumber where m.id=:id")
-    int updateMemberById(@Param("address") String address,
+    @Query("update MEMBER m set m.address=:address, m.nickname=:nickname, m.password=:password, m.phoneNumber=:phoneNumber, m.account=:account where m.id=:id")
+    void updateMemberById(@Param("address") String address,
                          @Param("nickname") String nickname,
                          @Param("password") String password,
-                         @Param("name") String name,
                          @Param("phoneNumber") String phoneNumber,
+                         @Param("account") String account,
                          @Param("id") Long id);
 }

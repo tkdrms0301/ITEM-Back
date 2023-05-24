@@ -26,9 +26,9 @@ public class AzureController {
 	@PostMapping("/file-upload")
 	public ResponseEntity<String> upload(@RequestParam MultipartFile file) throws IOException {
 
-		String fileName = azureBlobAdapter.upload(file);
+		String fileUrl = azureBlobAdapter.upload(file);
 
-		return ResponseEntity.ok(fileName);
+		return ResponseEntity.ok(fileUrl);
 	}
 
 	@GetMapping("/file-download")

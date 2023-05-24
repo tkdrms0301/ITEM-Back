@@ -1,11 +1,11 @@
 package kit.item.domain.post;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "POST_IMAGE")
 @ToString(callSuper = true)

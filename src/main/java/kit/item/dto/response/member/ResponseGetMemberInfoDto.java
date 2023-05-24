@@ -8,6 +8,9 @@ import kit.item.dto.entity.member.SellerInfoDto;
 import kit.item.enums.RoleType;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Builder
 @Getter
 @Setter
@@ -22,8 +25,10 @@ public class ResponseGetMemberInfoDto {
     private String nickname;
     private String phoneNumber;
     private String address;
+    private String account;
     private Long point;
     private RoleType roleType;
+    private LocalDate subscription;
     private SellerInfoDto sellerInfoDto;
     private MechanicInfoDto mechanicInfoDto;
 
@@ -35,8 +40,10 @@ public class ResponseGetMemberInfoDto {
                 .nickname(memberDto.getNickname())
                 .phoneNumber(memberDto.getPhoneNumber())
                 .address(memberDto.getAddress())
+                .account(memberDto.getAccount())
                 .point(memberDto.getPoint())
                 .roleType(memberDto.getRoleType())
+                .subscription(memberDto.getStartDate() != null ? memberDto.getStartDate().toLocalDate().plusYears(1) : null)
                 .build();
     }
 }

@@ -67,10 +67,14 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/auth/nickname-check", "/api/file/**","/api/community/posts/**","/api/community/post/**").permitAll()
-                .requestMatchers("/api/member").hasAuthority("MEMBER")
+                .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/auth/company-number-check",
+                        "/api/device/completion-category", "/api/device/part-category", "/api/device/completion-brand", "/api/device/part-brand", "/api/device/completion-product","/api/device/part-product",
+                        "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops",
+                        "/api/community/posts/**","/api/community/post/**"
+                        ).permitAll()
+                .requestMatchers("/api/member", "/api/repair/reservation/init").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")
-                .requestMatchers("/api/mechanic").hasAuthority("MECHANIC")
+                .requestMatchers("/api/repair/serviceList", "/api/repair/serviceList/info").hasAuthority("MECHANIC")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

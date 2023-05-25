@@ -108,11 +108,11 @@ public class CommunityService {
             return false;
         }
         String json = "{\"title\":\"" + title + "\",\"content\":\"" + content + "\",\"productId\":\"" + productId + "\"}";
-        try {
-            String res = HttpUtil.postJson("http://localhost:5000/getCommunityData", json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            String res = HttpUtil.postJson("http://localhost:5000/getCommunityData", json);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         Post post = Post.builder()
                 .title(title)
                 .content(content)

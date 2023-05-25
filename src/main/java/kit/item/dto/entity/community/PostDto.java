@@ -21,6 +21,7 @@ public class PostDto {
     private Long report;
     private Long memberId;
     private String memberName;
+    private String thumbnail;
 
     public static PostDto fromPost(Post post) {
         return PostDto.builder()
@@ -31,6 +32,10 @@ public class PostDto {
                 .report(post.getReport())
                 .memberId(post.getMember().getId())
                 .memberName(post.getMember().getNickname())
+                .thumbnail(
+                        post.getPostImages().size() > 0 ?
+                                post.getPostImages().get(0).getUrl() : null
+                )
                 .build();
     }
 }

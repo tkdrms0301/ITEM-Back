@@ -18,7 +18,7 @@ import java.util.List;
 public class DataController {
     private final DataService dataService;
 
-    @GetMapping
+    @PostMapping("/get")
     public ResponseEntity<MsgDto> getData(@RequestBody RequestDataDto requestDataDto) {
         List<String> words = requestDataDto.getWords();
         if (words.isEmpty()) {

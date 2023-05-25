@@ -1,5 +1,6 @@
 package kit.item.service.data;
 
+import kit.item.domain.data.Data;
 import kit.item.domain.it.Product;
 import kit.item.dto.entity.data.*;
 import kit.item.dto.response.data.ResposneDataDto;
@@ -8,6 +9,7 @@ import kit.item.repository.data.PosAndNegRepository;
 import kit.item.repository.it.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,16 +34,18 @@ public class DataService {
         DataResultDto dataResultDto = new DataResultDto();
         dataResultDto.setWord(word);
 
-        List<DataDto> dataListByVocab = dataRepository.getDataListByVocab(word, (Pageable) PageRequest.of(0,MAXIMUM_DATA_RESULT));
-        if (dataListByVocab.isEmpty()) {
-            dataResultDto.setRelatedWords(new ArrayList<>());
-        }else {
-            List<RelatedWordDto> relatedWords = new ArrayList<>();
-            for (DataDto dto : dataListByVocab) {
-                relatedWords.add(new RelatedWordDto(dto.getVocab(), dto.getCount()));
-            }
-            dataResultDto.setRelatedWords(relatedWords);
-        }
+        Pageable pageRequest = PageRequest.of(0, MAXIMUM_DATA_RESULT);
+        Page<Data> dataListByVocab = dataRepository.findAllByVocab(word, pageRequest);
+//        Page<DataDto> dataListByVocab = dataRepository.getDataListByVocab(word, pageRequest);
+//        if (dataListByVocab.isEmpty()) {
+//            dataResultDto.setRelatedWords(new ArrayList<>());
+//        }else {
+//            List<RelatedWordDto> relatedWords = new ArrayList<>();
+//            for (DataDto dto : dataListByVocab) {
+//                relatedWords.add(new RelatedWordDto(dto.getVocab(), dto.getCount()));
+//            }
+//            dataResultDto.setRelatedWords(relatedWords);
+//        }
 
         Optional<Product> product = productRepository.findByName(word);
         if (product.isPresent()) {

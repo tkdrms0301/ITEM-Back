@@ -103,30 +103,30 @@ INSERT INTO category_brand(brand_id, category_id) VALUES (6, 6); # 26 / 6 인텔
 # 모니터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (2, 23); # 27 / 2 삼성 23 모니터;
 
-# 구독권
+# 구독권;
 set @now = '';
 SELECT NOW() into @now;
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 1);
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1
-INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2
-INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6
-INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11
+INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11;
 
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 10); # 14
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 10); # 15
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 10); # 16
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12;
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 10); # 14;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 10); # 15;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 10); # 16;
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S22 울트라', 18); # 17 / 23 휴대폰;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S23', 18); # 18 / 23 휴대폰;
@@ -156,16 +156,17 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); #
 
 
 # IT 기기 관리;
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 2, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 3, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 4, 1);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 4, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
 
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 1, 1, 1, 1);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 4, 11, 34, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 1, 1, 1, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 8);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
+
 # 포인트 이용내역;
 set @now = '';
 SELECT NOW() into @now;

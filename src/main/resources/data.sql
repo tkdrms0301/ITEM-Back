@@ -1,9 +1,9 @@
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 15000, 'MEMBER', '농협 1234');
+VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER', '기업 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 5000, 'MECHANIC', '대구은행 1234');
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
@@ -103,30 +103,30 @@ INSERT INTO category_brand(brand_id, category_id) VALUES (6, 6); # 26 / 6 인텔
 # 모니터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (2, 23); # 27 / 2 삼성 23 모니터;
 
-# 구독권
+# 구독권;
 set @now = '';
 SELECT NOW() into @now;
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 1);
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11 / 22 노트북;
+INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11;
 
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 3); # 14 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 3); # 15 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 3); # 16 / 21 컴퓨터;
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12;
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 10); # 14;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 10); # 15;
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 10); # 16;
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S22 울트라', 18); # 17 / 23 휴대폰;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S23', 18); # 18 / 23 휴대폰;
@@ -143,12 +143,12 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('샤오미 홍미 �
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭S8', 21); # 28 / 24 테블릿;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭S7', 21); # 29 / 24 테블릿;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭A8', 21); # 30 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 Legion Y700', 24); # 31 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 XiaoxinPad 2022', 24); # 32 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 탭 P11 플러스', 24); # 33 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 11', 22); # 34 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 12.9', 22); # 35 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 9세대', 22); # 36 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 Legion Y700', 22); # 31 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 XiaoxinPad 2022', 22); # 32 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 탭 P11 플러스', 22); # 33 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 11', 23); # 34 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 12.9', 23); # 35 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 9세대', 23); # 36 / 24 테블릿;
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('RTX 3070', 25); # 37 / 25 지포스 그래픽카드;
 INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); # 38 / 26 인텔 cpu;
@@ -156,16 +156,17 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); #
 
 
 # IT 기기 관리;
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 2, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 3, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 2, 11, 4, 1);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 4, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
 
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 1, 1, 1, 1);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 4, 11, 34, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id) VALUES (null, 1, 1, 1, 1);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 8);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
+
 # 포인트 이용내역;
 set @now = '';
 SELECT NOW() into @now;
@@ -174,6 +175,49 @@ INSERT INTO point_history(date, point, service_name, service_type, member_id) VA
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 2);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '그래픽카드 GTX1060 부품 구매', '상품 구매', 3);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 3);
+
+# 연관 단어 데이터;
+INSERT INTO data(count, vocab, product_id) VALUES (120, '예쁘다', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (150, '빠르다', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (170, '성능', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '좋다', 3);
+INSERT INTO data(count, vocab, product_id) VALUES (90, '예쁘다', 3);
+INSERT INTO data(count, vocab, product_id) VALUES (100, '예쁘다', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '성능', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (50, '느라다', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (110, '예쁘다', 6);
+INSERT INTO data(count, vocab, product_id) VALUES (140, '예쁘다', 7);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '예쁘다', 8);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '나쁘다', 9);
+INSERT INTO data(count, vocab, product_id) VALUES (210, '멋있다', 9);
+INSERT INTO data(count, vocab, product_id) VALUES (220, '느리다', 9);
+INSERT INTO data(count, vocab, product_id) VALUES (220, '빠르다', 10);
+INSERT INTO data(count, vocab, product_id) VALUES (310, '빠르다', 11);
+INSERT INTO data(count, vocab, product_id) VALUES (215, '성능', 12);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '빠르다', 13);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '나쁘다', 13);
+INSERT INTO data(count, vocab, product_id) VALUES (100, '빠르다', 14);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '성능', 15);
+INSERT INTO data(count, vocab, product_id) VALUES (140, '성능', 16);
+INSERT INTO data(count, vocab, product_id) VALUES (150, '성능', 17);
+INSERT INTO data(count, vocab, product_id) VALUES (160, '성능', 18);
+INSERT INTO data(count, vocab, product_id) VALUES (170, '좋다', 19);
+
+# 긍/부정 데이터;
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (2, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (3, 155, 144);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (4, 123, 123);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (5, 199, 111);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (6, 166, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (7, 200, 222);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (8, 11, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (9, 144, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (10, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (11, 122, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (12, 124, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (13, 200, 77);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (14, 200, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (15, 111, 138);
 
 -- 커뮤니티 글
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Post content 1', '2023-01-01 00:00:00', 0, 'Title 1', 1);

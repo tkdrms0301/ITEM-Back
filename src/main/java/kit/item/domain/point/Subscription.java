@@ -32,4 +32,8 @@ public class Subscription {
     public void setMember(Member member) {
         this.member = member;
     }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
 }

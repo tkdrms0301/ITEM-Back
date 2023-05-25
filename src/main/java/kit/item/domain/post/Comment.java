@@ -2,16 +2,17 @@ package kit.item.domain.post;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import kit.item.dto.entity.community.CommentDto;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity(name = "COMMENT")
 @ToString(callSuper = true)
 public class Comment {
@@ -22,6 +23,7 @@ public class Comment {
 
     private String content;
     private LocalDateTime date;
+    private Long report;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -56,5 +58,20 @@ public class Comment {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public CommentDto toDto() {
+        return CommentDto.builder()
+                .id(this.id)
+                .content(this.content)
+                .date(this.date)
+                .report(this.report)
+                .memberId(this.member.getId())
+                .memberName(this.member.getName())
+                .build();
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

@@ -3,11 +3,11 @@ package kit.item.domain.post;
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
 import kit.item.enums.ReportType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "POST_REPORT")
 @ToString(callSuper = true)

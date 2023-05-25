@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class PosAndNegDto {
+public class PosAndNegWithProductNameDto {
     private Long positive;
     private Long negative;
 }

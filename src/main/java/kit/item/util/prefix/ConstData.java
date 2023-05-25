@@ -5,4 +5,6 @@ public abstract class ConstData {
     public static final Integer PURCHASE_SUBSCRIPTION_DURATION = 30;
 
     public static final Long SUBSCRIPTION_PRICE = 29700L;
+
+    public static final Integer MAXIMUM_DATA_RESULT = 10;
 }

@@ -110,23 +110,23 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10 / 22 노트북;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11 / 22 노트북;
+INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1
+INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2
+INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 17); # 5
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 17); # 6
+INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 17); # 7
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 17); # 8
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 17); # 9
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 17); # 10
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 17); # 11
 
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 3); # 14 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 3); # 15 / 21 컴퓨터;
-INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 3); # 16 / 21 컴퓨터;
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 게임용 230511 (16GB, M.2 500GB)', 2); # 12
+INSERT INTO product(product_name, category_brand_id) VALUES ('삼성 PRO - I5M51 (16GB, M.2 512GB)', 2); # 13
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 875 게이밍울트라560X', 10); # 14
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 퍼포먼스PC', 10); # 15
+INSERT INTO product(product_name, category_brand_id) VALUES ('LG 프리워커 F5600', 10); # 16
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S22 울트라', 18); # 17 / 23 휴대폰;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시S23', 18); # 18 / 23 휴대폰;
@@ -143,12 +143,12 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('샤오미 홍미 �
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭S8', 21); # 28 / 24 테블릿;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭S7', 21); # 29 / 24 테블릿;
 INSERT INTO product(product_name, category_brand_id) VALUES ('삼성전자 갤럭시탭A8', 21); # 30 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 Legion Y700', 24); # 31 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 XiaoxinPad 2022', 24); # 32 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 탭 P11 플러스', 24); # 33 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 11', 22); # 34 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 12.9', 22); # 35 / 24 테블릿;
-INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 9세대', 22); # 36 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 Legion Y700', 22); # 31 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 XiaoxinPad 2022', 22); # 32 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('레노버 탭 P11 플러스', 22); # 33 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 11', 23); # 34 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 프로 12.9', 23); # 35 / 24 테블릿;
+INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드 9세대', 23); # 36 / 24 테블릿;
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('RTX 3070', 25); # 37 / 25 지포스 그래픽카드;
 INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); # 38 / 26 인텔 cpu;
@@ -174,3 +174,19 @@ INSERT INTO point_history(date, point, service_name, service_type, member_id) VA
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 2);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '그래픽카드 GTX1060 부품 구매', '상품 구매', 3);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 3);
+
+# 연관 단어 데이터;
+INSERT INTO data(count, vocab, product_id) VALUES (120, '예쁘다', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (90, '예쁘다', 3);
+INSERT INTO data(count, vocab, product_id) VALUES (100, '예쁘다', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (110, '예쁘다', 6);
+INSERT INTO data(count, vocab, product_id) VALUES (140, '예쁘다', 7);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '예쁘다', 8);
+INSERT INTO data(count, vocab, product_id) VALUES (210, '멋있다', 9);
+INSERT INTO data(count, vocab, product_id) VALUES (220, '빠르다', 10);
+INSERT INTO data(count, vocab, product_id) VALUES (310, '빠르다', 11);
+INSERT INTO data(count, vocab, product_id) VALUES (215, '성능', 12);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '빠르다', 13);
+INSERT INTO data(count, vocab, product_id) VALUES (100, '빠르다', 14);
+
+# 긍/부정 데이터;

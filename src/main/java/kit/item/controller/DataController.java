@@ -1,11 +1,8 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.entity.data.DataDto;
-import kit.item.dto.entity.data.PosAndNegDto;
-import kit.item.dto.entity.device.CategoryDto;
-import kit.item.dto.request.data.RequestKeywordDto;
-import kit.item.dto.request.data.RequestPosAndNegDto;
+import kit.item.dto.request.data.RequestDataDto;
+import kit.item.dto.response.data.ResposneDataDto;
 import kit.item.service.data.DataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,21 +18,17 @@ import java.util.List;
 public class DataController {
     private final DataService dataService;
 
-    @GetMapping("/keyword")
-    public ResponseEntity<MsgDto> getKeyword(@RequestParam Long productId) {
-        List<DataDto> dataList = dataService.getDataList(productId);
-        if(dataList.isEmpty()) {
-            return new ResponseEntity<>(new MsgDto(false, "조회된 키워드가 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<MsgDto> getData(@RequestBody RequestDataDto requestDataDto) {
+        List<String> words = requestDataDto.getWords();
+        if (words.isEmpty()) {
+            return new ResponseEntity<>(new MsgDto(true, "입력된 단어가 없음", new ArrayList<>()), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(true, "키워드 빈도수 조회 성공", dataList), HttpStatus.OK);
-    }
-
-    @GetMapping("/pos-and-neg")
-    public ResponseEntity<MsgDto> getPosAndNeg(@RequestParam Long productId) {
-        PosAndNegDto posAndNeg = dataService.getPosAndNeg(productId);
-        if(posAndNeg == null) {
-            return new ResponseEntity<>(new MsgDto(false, "조회된 긍/부정 빈도수가 없음", null), HttpStatus.OK);
+        List<Long> products = requestDataDto.getProducts();
+        ResposneDataDto resposneDataDto = dataService.getDataList(words, products);
+        if (resposneDataDto.getDatas().isEmpty()) {
+            return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(true, "긍/부정 빈도수 조회 성공", posAndNeg), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "제품 데이터 조회 성공", resposneDataDto), HttpStatus.OK);
     }
 }

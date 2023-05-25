@@ -1,9 +1,5 @@
 package kit.item.dto.entity.data;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 
 @Getter
@@ -12,7 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class DataDto {
+public class DataDto implements Comparable<DataDto> {
+    private Long id;
     private String vocab;
     private Long count;
+
+    @Override
+    public int compareTo(DataDto o) {
+        return (int) (o.getCount() - getCount());
+    }
 }

@@ -1,6 +1,7 @@
 package kit.item.dto.entity.data;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -11,8 +12,15 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class DataResultDto {
+public class DataResultDto implements Comparable<DataResultDto> {
+    private Long productId;
     private String word;
+    private String productName;
     private List<RelatedWordDto> relatedWords;
     private PosAndNegDto posAndNegDto;
+
+    @Override
+    public int compareTo(@NotNull DataResultDto o) {
+        return (int) (o.getProductId() - getProductId());
+    }
 }

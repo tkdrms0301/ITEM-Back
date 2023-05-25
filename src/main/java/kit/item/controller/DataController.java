@@ -1,6 +1,7 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
+import kit.item.dto.entity.data.DataResultDto;
 import kit.item.dto.request.data.RequestDataDto;
 import kit.item.dto.response.data.ResposneDataDto;
 import kit.item.service.data.DataService;
@@ -25,10 +26,13 @@ public class DataController {
             return new ResponseEntity<>(new MsgDto(true, "입력된 단어가 없음", new ArrayList<>()), HttpStatus.OK);
         }
         List<Long> products = requestDataDto.getProducts();
-        ResposneDataDto resposneDataDto = dataService.getDataList(words, products);
-        if (resposneDataDto.getDatas().isEmpty()) {
+        if (words.isEmpty()) {
+            return new ResponseEntity<>(new MsgDto(true, "입력된 제품이 없음", new ArrayList<>()), HttpStatus.OK);
+        }
+        List<DataResultDto> dataList = dataService.getDataList(words, products);
+        if (dataList.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "제품 데이터 조회 성공", resposneDataDto), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "제품 데이터 조회 성공", dataList), HttpStatus.OK);
     }
 }

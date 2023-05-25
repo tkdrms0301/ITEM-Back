@@ -8,13 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class DataDto implements Comparable<DataDto> {
-    private Long id;
+public class DataDto {
     private String vocab;
     private Long count;
-
-    @Override
-    public int compareTo(DataDto o) {
-        return (int) (o.getCount() - getCount());
-    }
+    private Long productId;
 }

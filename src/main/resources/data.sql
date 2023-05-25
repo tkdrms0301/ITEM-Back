@@ -178,19 +178,46 @@ INSERT INTO point_history(date, point, service_name, service_type, member_id) VA
 
 # 연관 단어 데이터;
 INSERT INTO data(count, vocab, product_id) VALUES (120, '예쁘다', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (150, '빠르다', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (170, '성능', 2);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '좋다', 3);
 INSERT INTO data(count, vocab, product_id) VALUES (90, '예쁘다', 3);
 INSERT INTO data(count, vocab, product_id) VALUES (100, '예쁘다', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '성능', 4);
+INSERT INTO data(count, vocab, product_id) VALUES (50, '느라다', 4);
 INSERT INTO data(count, vocab, product_id) VALUES (110, '예쁘다', 6);
 INSERT INTO data(count, vocab, product_id) VALUES (140, '예쁘다', 7);
 INSERT INTO data(count, vocab, product_id) VALUES (130, '예쁘다', 8);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '나쁘다', 9);
 INSERT INTO data(count, vocab, product_id) VALUES (210, '멋있다', 9);
+INSERT INTO data(count, vocab, product_id) VALUES (220, '느리다', 9);
 INSERT INTO data(count, vocab, product_id) VALUES (220, '빠르다', 10);
 INSERT INTO data(count, vocab, product_id) VALUES (310, '빠르다', 11);
 INSERT INTO data(count, vocab, product_id) VALUES (215, '성능', 12);
 INSERT INTO data(count, vocab, product_id) VALUES (120, '빠르다', 13);
+INSERT INTO data(count, vocab, product_id) VALUES (120, '나쁘다', 13);
 INSERT INTO data(count, vocab, product_id) VALUES (100, '빠르다', 14);
+INSERT INTO data(count, vocab, product_id) VALUES (130, '성능', 15);
+INSERT INTO data(count, vocab, product_id) VALUES (140, '성능', 16);
+INSERT INTO data(count, vocab, product_id) VALUES (150, '성능', 17);
+INSERT INTO data(count, vocab, product_id) VALUES (160, '성능', 18);
+INSERT INTO data(count, vocab, product_id) VALUES (170, '좋다', 19);
 
 # 긍/부정 데이터;
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (2, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (3, 155, 144);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (4, 123, 123);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (5, 199, 111);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (6, 166, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (7, 200, 222);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (8, 11, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (9, 144, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (10, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (11, 122, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (12, 124, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (13, 200, 77);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (14, 200, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (15, 111, 138);
 
 -- 커뮤니티 글
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Post content 1', '2023-01-01 00:00:00', 0, 'Title 1', 1);

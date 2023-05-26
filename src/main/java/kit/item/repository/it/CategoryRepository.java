@@ -13,6 +13,9 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    @Query("select new kit.item.dto.entity.device.CategoryDto(c.id, c.imageUrl, c.name) from CATEGORY c")
-    List<CategoryDto> findAllCategory();
+    @Query("select new kit.item.dto.entity.device.CategoryDto(c.id, c.imageUrl, c.name) from CATEGORY c where c.isPart = false")
+    List<CategoryDto> findCompletionAllCategory();
+
+    @Query("select new kit.item.dto.entity.device.CategoryDto(c.id, c.imageUrl, c.name) from CATEGORY c where c.isPart = true")
+    List<CategoryDto> findPartAllCategory();
 }

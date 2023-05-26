@@ -1,4 +1,4 @@
-package kit.item.repository;
+package kit.item.repository.point;
 
 import kit.item.domain.point.PointHistory;
 import kit.item.dto.entity.point.PointHistoryDto;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PointRepository extends JpaRepository<PointHistory, Long> {

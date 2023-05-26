@@ -1,11 +1,9 @@
 package kit.item.domain.member;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import kit.item.domain.repair.RepairService;
 import kit.item.domain.repair.RepairServiceReview;
+import kit.item.enums.RepairServiceType;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -23,6 +21,9 @@ public class RepairShop extends Member{
     private String description;
     @Column(name = "shop_address")
     private String shopAddress;
+    @Column(name = "repair_service_type")
+    @Enumerated(EnumType.STRING)
+    private RepairServiceType repairServiceType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairShop")
     @ToString.Exclude

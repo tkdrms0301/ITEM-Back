@@ -44,11 +44,11 @@ public class ItDevice {
     private Product product;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "prodcut_it_device_id")
+    @JoinColumn(name = "finished_it_device_id")
     @ToString.Exclude
-    private ItDevice componentProduct;
+    private ItDevice finishedProduct;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "componentProduct")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "finishedProduct", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<ItDevice> components;
 

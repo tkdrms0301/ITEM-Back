@@ -68,7 +68,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/auth/company-number-check",
-                        "/api/device/category", "/api/device/brand", "/api/device/product",
+                        "/api/device/completion-category", "/api/device/part-category", "/api/device/completion-brand", "/api/device/part-brand", "/api/device/completion-product","/api/device/part-product",
                         "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops").permitAll()
                 .requestMatchers("/api/member", "/api/repair/reservation/init").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")

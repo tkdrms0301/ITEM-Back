@@ -19,7 +19,7 @@ public class Data {
     private Long count;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "brand_product_id")
+    @JoinColumn(name = "product_id")
     @ToString.Exclude
     private Product product;
 }

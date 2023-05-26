@@ -1,6 +1,5 @@
 package kit.item.dto.entity.device;
 
-import kit.item.enums.ProductType;
 import lombok.*;
 
 @Getter

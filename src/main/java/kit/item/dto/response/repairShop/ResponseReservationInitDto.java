@@ -1,6 +1,7 @@
 package kit.item.dto.response.repairShop;
 
 import kit.item.dto.entity.repairShop.MyItDeviceDto;
+import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import lombok.*;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import java.util.List;
 @Builder
 public class ResponseReservationInitDto {
     List<MyItDeviceDto> myItems;
-    List<String> services;
+    List<ReservationServiceDto> services;
 }

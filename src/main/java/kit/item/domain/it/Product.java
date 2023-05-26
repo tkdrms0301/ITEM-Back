@@ -6,7 +6,6 @@ import kit.item.domain.data.PosAndNeg;
 import kit.item.domain.market.SaleProduct;
 import kit.item.domain.post.Post;
 import kit.item.domain.repair.RepairServiceReservation;
-import kit.item.enums.ProductType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,20 +26,8 @@ public class Product {
     @Column(name = "product_name")
     private String name;
 
-    /*
-     * 완제품 COMPLETE_PRODUCT
-     * 완본체 FINISHED_PRODUCT
-     * 부품 COMPONENT
-     */
-    @Column(name = "product_type")
-    @Enumerated(EnumType.STRING)
-    private ProductType productType;
     @Column(name = "directly_register_product_name")
     private String directlyRegisterProductName;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "kind_id")
-    private Kind kind;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_brand_id")

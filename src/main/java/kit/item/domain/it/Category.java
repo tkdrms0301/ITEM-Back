@@ -20,6 +20,8 @@ public class Category {
     private String name;
     @Column(name = "image_url")
     private String imageUrl;
+    @Column(name = "is_part")
+    boolean isPart;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private List<CategoryBrand> categoryBrands = new ArrayList<>();

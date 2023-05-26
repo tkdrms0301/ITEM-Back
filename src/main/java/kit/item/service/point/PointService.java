@@ -3,10 +3,9 @@ package kit.item.service.point;
 
 import kit.item.domain.member.Member;
 import kit.item.domain.point.PointHistory;
-import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.point.PointHistoryDto;
 import kit.item.dto.request.point.RequestCreatePointHistoryDto;
-import kit.item.repository.PointRepository;
+import kit.item.repository.point.PointRepository;
 import kit.item.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

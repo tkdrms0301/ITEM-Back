@@ -22,10 +22,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);
 
-    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.account, m.point, m.roleType) from MEMBER m where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MemberInfoDto(m.id, m.email, m.password, m.name, m.nickname, m.phoneNumber, m.address, m.account, m.point, m.roleType, s.endDate) " +
+            "from MEMBER m left join fetch SUBSCRIPTION s on m.id=s.member.id " +
+            "where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);
 
-    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress, r.repairServiceType) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
     Optional<MechanicInfoDto> findMechanicById(@Param("id") Long id);
 
     @Query("select new kit.item.dto.entity.member.SellerInfoDto(s.companyName, s.companyNumber, s.companyPhoneNumber, s.description, s.companyAddress) from MEMBER m join fetch SELLER s where m.id=:id")

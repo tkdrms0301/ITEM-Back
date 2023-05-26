@@ -29,6 +29,8 @@ public class RepairService {
     @Column(name = "service_type", nullable = false)
     private ServiceType serviceType;
 
+    @Column(name = "service_price", nullable = false)
+    private Long price;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repair_shop_id")
     @ToString.Exclude
@@ -37,10 +39,6 @@ public class RepairService {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairService")
     @ToString.Exclude
     private List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
-
-    public void setRepairServiceReservations(List<RepairServiceReservation> repairServiceReservations) {
-        this.repairServiceReservations = repairServiceReservations;
-    }
 
     public void setRepairShop(RepairShop repairShop) {
         this.repairShop = repairShop;

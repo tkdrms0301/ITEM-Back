@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 @Builder
 public class MyItDeviceDto {
+    Long id;
     String itName;
     String itImg;
 }

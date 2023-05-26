@@ -23,4 +23,13 @@ public class DataResultDto implements Comparable<DataResultDto> {
     public int compareTo(@NotNull DataResultDto o) {
         return (int) (o.getProductId() - getProductId());
     }
+
+    public boolean check(List<DataResultDto> dataResultDtoList) {
+        for (DataResultDto dataResultDto : dataResultDtoList) {
+            if (dataResultDto.getProductId().equals(productId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

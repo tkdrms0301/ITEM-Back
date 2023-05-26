@@ -22,13 +22,7 @@ public class DataController {
     @PostMapping("/get")
     public ResponseEntity<MsgDto> getData(@RequestBody RequestDataDto requestDataDto) {
         List<String> words = requestDataDto.getWords();
-        if (words.isEmpty()) {
-            return new ResponseEntity<>(new MsgDto(true, "입력된 단어가 없음", new ArrayList<>()), HttpStatus.OK);
-        }
         List<Long> products = requestDataDto.getProducts();
-        if (words.isEmpty()) {
-            return new ResponseEntity<>(new MsgDto(true, "입력된 제품이 없음", new ArrayList<>()), HttpStatus.OK);
-        }
         List<DataResultDto> dataList = dataService.getDataList(words, products);
         if (dataList.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);

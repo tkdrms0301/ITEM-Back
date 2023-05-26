@@ -31,10 +31,11 @@ public class DataService {
 
     public DataResultDto getData(Long productId) {
         DataResultDto dataResultDto = new DataResultDto();
-        dataResultDto.setWord(null);
+
         Optional<Product> product = productRepository.findById(productId);
         if (product.isPresent()) {
             dataResultDto.setProductId(product.get().getId());
+            dataResultDto.setWord(product.get().getName());
             dataResultDto.setProductName(product.get().getName());
             PosAndNegDto posAndNegDto = posAndNegRepository.getPosAndNegByProductId(product.get().getId());
             dataResultDto.setPosAndNegDto(posAndNegDto == null ? new PosAndNegDto() : posAndNegDto);
@@ -52,6 +53,7 @@ public class DataService {
             }
             return dataResultDto;
         }
+        dataResultDto.setWord(null);
         dataResultDto.setProductName(null);
         dataResultDto.setPosAndNegDto(new PosAndNegDto());
         dataResultDto.setRelatedWords(new ArrayList<>());
@@ -103,7 +105,7 @@ public class DataService {
         }
         for (Long productId : productIds) {
             DataResultDto dataResultDto = getData(productId);
-            if (dataResultDto.getWord() != null && productIds.contains(dataResultDto.getProductId())) {
+            if (dataResultDto.getProductName() != null && !dataResultDto.check(datas)) {
                 datas.add(dataResultDto);
             }
         }

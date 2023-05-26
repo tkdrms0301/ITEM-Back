@@ -85,7 +85,7 @@ public class RepairShopController {
     public void registReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                   @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
                                   @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
-                                  @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
+                                  @RequestParam(value = "requestComment", required = false, defaultValue = "") String requestComment,
                                   @RequestParam(value = "serviceName", required = false) List<String> serviceNames,
                                   @RequestParam(value = "price", required = false) List<Long> prices,
                                   @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
@@ -109,7 +109,7 @@ public class RepairShopController {
         RequestReservationDto requestReservationDto = RequestReservationDto.builder()
                 .productName(productName)
                 .prodImg(prodImg)
-                .comment(comment)
+                .comment(requestComment)
                 .services(services)
                 .rvRequestImgs(rvRequestImgs)
                 .date(date)
@@ -134,7 +134,7 @@ public class RepairShopController {
     public void updateReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                   @RequestParam(value = "productName", required = false, defaultValue = "") String productName,
                                   @RequestParam(value = "prodImg", required = false, defaultValue = "") String prodImg,
-                                  @RequestParam(value = "comment", required = false, defaultValue = "") String comment,
+                                  @RequestParam(value = "requestComment", required = false, defaultValue = "") String requestComment,
                                   @RequestParam(value = "serviceName", required = false) List<String> serviceNames,
                                   @RequestParam(value = "price", required = false) List<Long> prices,
                                   @RequestParam(value = "rvRequestImgs", required = false) List<MultipartFile> rvRequestImgs,
@@ -160,7 +160,7 @@ public class RepairShopController {
                 .id(reservationId)
                 .productName(productName)
                 .prodImg(prodImg)
-                .comment(comment)
+                .comment(requestComment)
                 .services(services)
                 .rvRequestImgs(rvRequestImgs)
                 .date(date)

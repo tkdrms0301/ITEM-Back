@@ -5,7 +5,6 @@ import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import lombok.*;
 
 import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -13,7 +12,7 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class ResponseReservationInitDto {
-    List<MyItDeviceDto> myItems;
-    List<ReservationServiceDto> services;
+public class ResponseEstimateInitDto {
+        List<MyItDeviceDto> myItems;
+
 }

@@ -1,14 +1,14 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
 @Entity(name = "ESTIMATE_IMAGE")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class EstimateImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

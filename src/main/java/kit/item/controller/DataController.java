@@ -8,6 +8,8 @@ import kit.item.dto.entity.device.ProductDto;
 import kit.item.dto.request.data.RequestDataDto;
 import kit.item.dto.response.data.ResposneDataDto;
 import kit.item.service.data.DataService;
+import kit.item.service.subscription.SubscriptionService;
+import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,15 @@ import java.util.List;
 @RequestMapping("/api/data")
 public class DataController {
     private final DataService dataService;
+    private final SubscriptionService subscriptionService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/get")
-    public ResponseEntity<MsgDto> getData(@RequestBody RequestDataDto requestDataDto) {
+    public ResponseEntity<MsgDto> getData(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestDataDto requestDataDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
         List<String> words = requestDataDto.getWords();
         List<Long> products = requestDataDto.getProducts();
         List<DataResultDto> dataList = dataService.getDataList(words, products);
@@ -34,7 +42,11 @@ public class DataController {
     }
 
     @GetMapping("/category")
-    public ResponseEntity<MsgDto> getCompletionCategory() {
+    public ResponseEntity<MsgDto> getCompletionCategory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
         List<CategoryDto> categoryDtos = dataService.getCategoryList();
         if(categoryDtos.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(false, "조회된 완제품 카테고리가 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
@@ -43,7 +55,12 @@ public class DataController {
     }
 
     @GetMapping("/brand")
-    public ResponseEntity<MsgDto> getCompletionBrand(@RequestParam Long category) {
+    public ResponseEntity<MsgDto> getCompletionBrand(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                     @RequestParam Long category) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
         List<BrandDto> brandDtos = dataService.getBrandList(category);
         if(brandDtos.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(false, "조회된 완제품 브랜드가 없음", new ArrayList<BrandDto>()), HttpStatus.OK);
@@ -52,7 +69,13 @@ public class DataController {
     }
 
     @GetMapping("/product")
-    public ResponseEntity<MsgDto> getCompletionProduct(@RequestParam Long category, @RequestParam Long brand) {
+    public ResponseEntity<MsgDto> getCompletionProduct(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                       @RequestParam Long category,
+                                                       @RequestParam Long brand) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
         List<ProductDto> productDtos = dataService.getProductList(category, brand);
         if(productDtos.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(false, "조회된 제품이 없음", new ArrayList<ProductDto>()), HttpStatus.OK);

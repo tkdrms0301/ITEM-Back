@@ -2,8 +2,13 @@ package kit.item.service.data;
 
 import kit.item.domain.it.Product;
 import kit.item.dto.entity.data.*;
+import kit.item.dto.entity.device.BrandDto;
+import kit.item.dto.entity.device.CategoryDto;
+import kit.item.dto.entity.device.ProductDto;
 import kit.item.repository.data.DataRepository;
 import kit.item.repository.data.PosAndNegRepository;
+import kit.item.repository.it.CategoryBrandRepository;
+import kit.item.repository.it.CategoryRepository;
 import kit.item.repository.it.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,8 +33,11 @@ public class DataService {
     private final PosAndNegRepository posAndNegRepository;
     private final DataRepository dataRepository;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategoryBrandRepository categoryBrandRepository;
 
     public DataResultDto getData(Long productId) {
+        log.info("DeviceManagementService.getData productId");
         DataResultDto dataResultDto = new DataResultDto();
 
         Optional<Product> product = productRepository.findById(productId);
@@ -55,12 +63,13 @@ public class DataService {
         }
         dataResultDto.setWord(null);
         dataResultDto.setProductName(null);
-        dataResultDto.setPosAndNegDto(new PosAndNegDto());
+        dataResultDto.setPosAndNegDto(null);
         dataResultDto.setRelatedWords(new ArrayList<>());
         return dataResultDto;
     }
 
     public List<DataResultDto> getData(String word) {
+        log.info("DeviceManagementService.getData word");
         List<DataResultDto> dataResultDtoList = new ArrayList<>();
 
         // word로 검색한 데이터를 count로 내림차순 정렬하여 가져온다.
@@ -92,13 +101,14 @@ public class DataService {
     }
 
     public List<DataResultDto> getDataList(List<String> words, List<Long> productIds) {
+        log.info("DeviceManagementService.getDataList");
         // words는 검색어들, products는 제품 id
         List<DataResultDto> datas = new ArrayList<>();
         List<DataResultDto> dataResultDtoList = null;
         for (String word : words) {
             dataResultDtoList = getData(word);
             for (DataResultDto dataResultDto : dataResultDtoList) {
-                if (productIds.contains(dataResultDto.getProductId())) {
+                if (!dataResultDto.check(datas)) {
                     datas.add(dataResultDto);
                 }
             }
@@ -110,5 +120,23 @@ public class DataService {
             }
         }
         return datas;
+    }
+
+    // category - completion 완제품(컴퓨터, 노트북, 스마트폰, 태블릿)
+    public List<CategoryDto> getCategoryList() {
+        log.info("DeviceManagementService.getCategoryList");
+        return categoryRepository.findAllCategory();
+    }
+
+    // categoryId -> brand 완제품
+    public List<BrandDto> getBrandList(Long categoryId) {
+        log.info("DeviceManagementService.getBrandList");
+        return categoryBrandRepository.findAllBrandByCategoryId(categoryId);
+    }
+
+    // brandId -> product 완제품
+    public List<ProductDto> getProductList(Long categoryId, Long brandId) {
+        log.info("DeviceManagementService.getProductList");
+        return categoryBrandRepository.findAllByCategoryIdAndBrandId(categoryId, brandId);
     }
 }

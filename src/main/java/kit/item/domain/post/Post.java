@@ -3,15 +3,14 @@ package kit.item.domain.post;
 import jakarta.persistence.*;
 import kit.item.domain.it.Product;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "POST")
 @ToString(callSuper = true)
@@ -21,8 +20,16 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Long id;
 
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "content")
     private String content;
+
+    @Column(name = "date")
     private LocalDateTime date;
+
+    @Column(name = "report")
     private Long report;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,11 +58,11 @@ public class Post {
         this.postImages = postImages;
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

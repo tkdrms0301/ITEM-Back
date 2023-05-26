@@ -194,4 +194,12 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean checkPoint(Long point) {
+        return this.point >= point;
+    }
+
+    public void usePoint(Long point) {
+        this.point -= point;
+    }
 }

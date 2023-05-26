@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class PosAndNegDto {
-    private Long positive;
-    private Long negative;
+public class RelatedWordDto {
+    private String label;
+    private Long value;
 }

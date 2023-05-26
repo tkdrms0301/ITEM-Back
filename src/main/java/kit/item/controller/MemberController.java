@@ -46,6 +46,15 @@ public class MemberController {
         return new ResponseEntity<>(new MsgDto(false, "동일한 비밀번호 입력", null), HttpStatus.OK);
     }
 
+    @PostMapping("/subscribe")
+    public ResponseEntity<MsgDto> subscribe(@RequestHeader(value = X_AUTH_TOKEN) String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (memberService.subscribe(memberId)) {
+            return new ResponseEntity<>(new MsgDto(true, "구독 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "구독 실패", null), HttpStatus.OK);
+    }
+
     @GetMapping("/member")
     public String member() {
         return "member";

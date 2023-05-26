@@ -12,6 +12,7 @@ import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
 import kit.item.dto.response.member.ResponseGetMemberInfoDto;
+import kit.item.dto.response.member.ResponseSubscribeDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
@@ -32,7 +33,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static kit.item.util.prefix.ConstPrefix.SIGN_UP_SUBSCRIPTION_DURATION;
+import static kit.item.util.prefix.ConstData.*;
+
 
 @Slf4j
 @Service
@@ -207,6 +209,29 @@ public class MemberService implements UserDetailsService {
                 .msg("회원 정보 수정 완료")
                 .isSuccess(true)
                 .build();
+    }
 
+    public boolean subscribe(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if (member.isPresent()) {
+            if (member.get().checkPoint(SUBSCRIPTION_PRICE)) {
+                Subscription subscription = null;
+                if (subscriptionRepository.existsByMemberId(memberId)) {
+                    subscription = subscriptionRepository.findByMemberId(memberId);
+                    if (subscription.getEndDate().isBefore(LocalDateTime.now())) {
+                        subscription.setEndDate(LocalDateTime.now().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                    }
+                    subscription.setEndDate(subscription.getEndDate().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                } else {
+                    subscription = new Subscription(LocalDateTime.now().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                    subscription.setMember(member.get());
+                }
+                member.get().usePoint(SUBSCRIPTION_PRICE);
+                memberRepository.save(member.get());
+                subscriptionRepository.save(subscription);
+                return true;
+            }
+        }
+        return false;
     }
 }

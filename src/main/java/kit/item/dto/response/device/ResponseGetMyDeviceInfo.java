@@ -15,6 +15,4 @@ public class ResponseGetMyDeviceInfo {
     List<DeviceDto> notebooks;
     List<DeviceDto> smartPhones;
     List<DeviceDto> tablets;
-
-
 }

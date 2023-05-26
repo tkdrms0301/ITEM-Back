@@ -20,10 +20,10 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Long id;
 
-    @Column(name = "title", columnDefinition = "TEXT")
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content",  columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "date")

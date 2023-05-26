@@ -28,7 +28,6 @@ public class RepairShopController {
 
     @GetMapping("/privateShops")
     public List<ResponsePrivateRepairShopDto> findAllPrivateRepairShops(@RequestHeader HttpHeaders headers) {
-        System.out.println("aaaaa" + headers);
         return repairShopService.findAllPrivateRepairShops();
     }
 
@@ -40,27 +39,23 @@ public class RepairShopController {
     @GetMapping("/serviceList")
     public List<ResponseServiceDto> getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.getServiceListByShopID(memberId);
     }
 
     @PostMapping("/serviceList")
     public boolean createServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceCreateInfo requestServiceCreateInfo) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.createServiceList(memberId, requestServiceCreateInfo);
     }
 
     @DeleteMapping("/serviceList")
     public boolean getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.deleteServiceByServiceId(memberId, serviceId);
     }
 
     @GetMapping("/serviceList/info")
     public ResponseServiceDto getServiceInfo(Long serviceId) {
-        System.out.println("serviceId = " + serviceId);
         return repairShopService.getServiceInfo(serviceId);
     }
 

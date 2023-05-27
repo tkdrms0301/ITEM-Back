@@ -86,43 +86,48 @@ public class DataController {
         return new ResponseEntity<>(new MsgDto(true, "제품 조회 성공", productDtos), HttpStatus.OK);
     }
 
-    @PostMapping("/download-test-data")
-    public ResponseEntity<MsgDto> getDataTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestDataDto requestDataDto) {
+    @PostMapping(value = "/download-related-word-data", produces = "text/csv")
+    public ResponseEntity<String> getDataTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                              @RequestBody RequestDataDto requestDataDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         if (!subscriptionService.isExist(memberId)) {
-            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+            return new ResponseEntity<>("구독 정보가 없음", HttpStatus.CREATED);
         }
         List<String> words = requestDataDto.getWords();
         List<Long> products = requestDataDto.getProducts();
-        List<DataCsvDto> dataList = dataService.getDataCsvList(words, products);
-        if (dataList.isEmpty()) {
-            return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new MsgDto(false, "제품 데이터 조회 성공", dataList), HttpStatus.OK);
+
+        String exportFileName = "related_word_data_" + LocalDate.now() + ".csv";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "text/csv;charset=euc-kr");
+        headers.add("Content-Disposition", "attachment; filename=" + exportFileName);
+
+        String dataList = dataService.getDataCsvList(words, products);
+
+        if (dataList.isEmpty())
+            return new ResponseEntity<>("조회된 데이터가 없음", HttpStatus.OK);
+        return new ResponseEntity<>(dataList, headers, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/download-test-pan",  produces = "text/csv")
-    public ResponseEntity<MsgDto> getPosAndNegTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+    @ResponseBody
+    @PostMapping(value = "/download-pos-and-neg-data", produces = "text/csv")
+    public ResponseEntity<String> getPosAndNegTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                    @RequestBody RequestDataDto requestDataDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         if (!subscriptionService.isExist(memberId)) {
-            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+            return new ResponseEntity<>("구독 정보가 없음", HttpStatus.OK);
         }
         List<String> words = requestDataDto.getWords();
         List<Long> products = requestDataDto.getProducts();
 
         String exportFileName = "pos_and_neg_data_" + LocalDate.now() + ".csv";
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "text/csv; charset=MS949");
-        headers.add("Content-Disposition", "attachment; filename=\\" + exportFileName);
+        headers.add("Content-Type", "text/csv;charset=euc-kr");
+        headers.add("Content-Disposition", "attachment; filename=" + exportFileName);
 
-        try {
-            String dataList = dataService.getPosAndNegCsvList(words, products);
-            return new ResponseEntity<>(new MsgDto(false, "제품 데이터 다운로드 성공", dataList), headers, HttpStatus.OK);
-        } catch (IOException e) {
-            return new ResponseEntity<>(new MsgDto(true, "잘못된 입력", new ArrayList<>()), HttpStatus.OK);
-        }
+        String dataList = dataService.getPosAndNegCsvList(words, products);
+
+        if (dataList.isEmpty())
+            return new ResponseEntity<>("조회된 데이터가 없음", HttpStatus.OK);
+        return new ResponseEntity<>(dataList, headers, HttpStatus.CREATED);
     }
-
-
 }

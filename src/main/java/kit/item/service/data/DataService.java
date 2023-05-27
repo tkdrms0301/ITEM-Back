@@ -127,11 +127,10 @@ public class DataService {
         log.info("DeviceManagementService.getDataList");
         List<DataResultDto> dataList = getDataList(words, productIds);
         StringBuilder data = new StringBuilder();
-        data.append("id,검색어,제품명,단어,빈도수").append("\n");
+        data.append("검색어,제품명,단어,빈도수").append("\n");
         for (DataResultDto dataResultDto : dataList) {
             for (RelatedWordDto relatedWordDto : dataResultDto.getRelatedWords()) {
-                data.append(dataResultDto.getProductId()).append(",")
-                    .append(dataResultDto.getWord()).append(",")
+                data.append(dataResultDto.getWord()).append(",")
                     .append(dataResultDto.getProductName()).append(",")
                     .append(relatedWordDto.getLabel()).append(",")
                     .append(relatedWordDto.getValue())
@@ -145,14 +144,13 @@ public class DataService {
         log.info("DeviceManagementService.getPosAndNegList");
         List<DataResultDto> dataList = getDataList(words, productIds);
         StringBuilder data = new StringBuilder();
-        data.append("id,검색어,제품명,긍정,부정").append("\n");
+        data.append("검색어,제품명,긍정,부정").append("\n");
         for (DataResultDto dataResultDto : dataList) {
-            data.append(dataResultDto.getProductId()).append(",")
-                    .append(dataResultDto.getWord()).append(",")
-                    .append(dataResultDto.getProductName()).append(",")
-                    .append(dataResultDto.getPosAndNegDto().getPositive()).append(",")
-                    .append(dataResultDto.getPosAndNegDto().getNegative())
-                    .append("\n");
+            data.append(dataResultDto.getWord()).append(",")
+                .append(dataResultDto.getProductName()).append(",")
+                .append(dataResultDto.getPosAndNegDto().getPositive()).append(",")
+                .append(dataResultDto.getPosAndNegDto().getNegative())
+                .append("\n");
         }
         return data.toString();
     }

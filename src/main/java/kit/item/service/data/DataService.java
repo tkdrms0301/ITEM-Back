@@ -123,30 +123,29 @@ public class DataService {
         return datas;
     }
 
-    public List<DataCsvDto> getDataCsvList(List<String> words, List<Long> productIds) {
+    public String getDataCsvList(List<String> words, List<Long> productIds) {
         log.info("DeviceManagementService.getDataList");
         List<DataResultDto> dataList = getDataList(words, productIds);
-        List<DataCsvDto> dataCsvDtos = new ArrayList<>();
+        StringBuilder data = new StringBuilder();
+        data.append("id,검색어,제품명,단어,빈도수").append("\n");
         for (DataResultDto dataResultDto : dataList) {
             for (RelatedWordDto relatedWordDto : dataResultDto.getRelatedWords()) {
-                DataCsvDto dataCsvDto = DataCsvDto.builder()
-                        .id(dataResultDto.getProductId())
-                        .word(dataResultDto.getWord())
-                        .productName(dataResultDto.getProductName())
-                        .vocab(relatedWordDto.getLabel())
-                        .count(relatedWordDto.getValue())
-                        .build();
-                dataCsvDtos.add(dataCsvDto);
+                data.append(dataResultDto.getProductId()).append(",")
+                    .append(dataResultDto.getWord()).append(",")
+                    .append(dataResultDto.getProductName()).append(",")
+                    .append(relatedWordDto.getLabel()).append(",")
+                    .append(relatedWordDto.getValue())
+                    .append("\n");
             }
         }
-        return dataCsvDtos;
+        return data.toString();
     }
 
-    public String getPosAndNegCsvList(List<String> words, List<Long> productIds) throws IOException {
+    public String getPosAndNegCsvList(List<String> words, List<Long> productIds) {
         log.info("DeviceManagementService.getPosAndNegList");
         List<DataResultDto> dataList = getDataList(words, productIds);
         StringBuilder data = new StringBuilder();
-        data.append("id,단어,제품명,긍정,부정").append("\n");
+        data.append("id,검색어,제품명,긍정,부정").append("\n");
         for (DataResultDto dataResultDto : dataList) {
             data.append(dataResultDto.getProductId()).append(",")
                     .append(dataResultDto.getWord()).append(",")

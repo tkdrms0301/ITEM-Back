@@ -1,20 +1,23 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
+import kit.item.dto.entity.data.DataCsvDto;
 import kit.item.dto.entity.data.DataResultDto;
 import kit.item.dto.entity.device.BrandDto;
 import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.device.ProductDto;
 import kit.item.dto.request.data.RequestDataDto;
-import kit.item.dto.response.data.ResposneDataDto;
 import kit.item.service.data.DataService;
 import kit.item.service.subscription.SubscriptionService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,4 +85,44 @@ public class DataController {
         }
         return new ResponseEntity<>(new MsgDto(true, "제품 조회 성공", productDtos), HttpStatus.OK);
     }
+
+    @PostMapping("/download-test-data")
+    public ResponseEntity<MsgDto> getDataTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestDataDto requestDataDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
+        List<String> words = requestDataDto.getWords();
+        List<Long> products = requestDataDto.getProducts();
+        List<DataCsvDto> dataList = dataService.getDataCsvList(words, products);
+        if (dataList.isEmpty()) {
+            return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "제품 데이터 조회 성공", dataList), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/download-test-pan",  produces = "text/csv")
+    public ResponseEntity<MsgDto> getPosAndNegTest(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                   @RequestBody RequestDataDto requestDataDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if (!subscriptionService.isExist(memberId)) {
+            return new ResponseEntity<>(new MsgDto(false, "구독 정보가 없음", new ArrayList<>()), HttpStatus.OK);
+        }
+        List<String> words = requestDataDto.getWords();
+        List<Long> products = requestDataDto.getProducts();
+
+        String exportFileName = "pos_and_neg_data_" + LocalDate.now() + ".csv";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "text/csv; charset=MS949");
+        headers.add("Content-Disposition", "attachment; filename=\\" + exportFileName);
+
+        try {
+            String dataList = dataService.getPosAndNegCsvList(words, products);
+            return new ResponseEntity<>(new MsgDto(false, "제품 데이터 다운로드 성공", dataList), headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>(new MsgDto(true, "잘못된 입력", new ArrayList<>()), HttpStatus.OK);
+        }
+    }
+
+
 }

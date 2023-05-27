@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -120,6 +121,41 @@ public class DataService {
             }
         }
         return datas;
+    }
+
+    public List<DataCsvDto> getDataCsvList(List<String> words, List<Long> productIds) {
+        log.info("DeviceManagementService.getDataList");
+        List<DataResultDto> dataList = getDataList(words, productIds);
+        List<DataCsvDto> dataCsvDtos = new ArrayList<>();
+        for (DataResultDto dataResultDto : dataList) {
+            for (RelatedWordDto relatedWordDto : dataResultDto.getRelatedWords()) {
+                DataCsvDto dataCsvDto = DataCsvDto.builder()
+                        .id(dataResultDto.getProductId())
+                        .word(dataResultDto.getWord())
+                        .productName(dataResultDto.getProductName())
+                        .vocab(relatedWordDto.getLabel())
+                        .count(relatedWordDto.getValue())
+                        .build();
+                dataCsvDtos.add(dataCsvDto);
+            }
+        }
+        return dataCsvDtos;
+    }
+
+    public String getPosAndNegCsvList(List<String> words, List<Long> productIds) throws IOException {
+        log.info("DeviceManagementService.getPosAndNegList");
+        List<DataResultDto> dataList = getDataList(words, productIds);
+        StringBuilder data = new StringBuilder();
+        data.append("id,단어,제품명,긍정,부정").append("\n");
+        for (DataResultDto dataResultDto : dataList) {
+            data.append(dataResultDto.getProductId()).append(",")
+                    .append(dataResultDto.getWord()).append(",")
+                    .append(dataResultDto.getProductName()).append(",")
+                    .append(dataResultDto.getPosAndNegDto().getPositive()).append(",")
+                    .append(dataResultDto.getPosAndNegDto().getNegative())
+                    .append("\n");
+        }
+        return data.toString();
     }
 
     // category - completion 완제품(컴퓨터, 노트북, 스마트폰, 태블릿)

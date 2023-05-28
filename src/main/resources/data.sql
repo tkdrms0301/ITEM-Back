@@ -148,8 +148,6 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('APPLE 아이패드
 INSERT INTO product(product_name, category_brand_id) VALUES ('RTX 3070', 25); # 37 / 25 지포스 그래픽카드;
 INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); # 38 / 26 인텔 cpu;
 
-
-
 # IT 기기 관리;
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
@@ -379,3 +377,6 @@ INSERT INTO post (content, date, report, title, member_id) VALUES ('Acer Swift 3
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Microsoft Surface Laptop 4: 우아한 디자인과 탁월한 터치스크린, 원활한 성능으로 유연한 사용자 경험을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 7 DAY), 0, 'Nintendo Switch Lite: 휴대성과 저렴한 가격으로 즐기는 멋진 게임 경험', 3);
 INSERT INTO post (content, date, report, title, member_id) VALUES ('LG Gram 17: 가벼운 무게에도 불구하고 큰 화면과 장기간 사용 가능한 배터리로 탁월한 이동성과 성능을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 3 DAY), 0, 'Samsung QLED Q80T: 생생한 화질과 탁월한 게이밍 성능을 갖춘 스마트 TV', 1);
 
+INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
+VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 2 );
+INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);

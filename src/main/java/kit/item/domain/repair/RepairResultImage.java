@@ -1,12 +1,13 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Getter
-@NoArgsConstructor
+@Setter
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Entity(name = "REPAIR_RESULT_IMAGE")
 @ToString(callSuper = true)
 public class RepairResultImage {

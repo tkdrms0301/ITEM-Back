@@ -3,15 +3,21 @@ package kit.item.controller;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
+import kit.item.dto.common.MsgDto;
+import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
 import kit.item.dto.entity.repairShop.RepairShopIdDto;
 import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import kit.item.dto.request.repair.*;
 import kit.item.dto.response.repairShop.*;
+import kit.item.exception.DuplicateHashValueException;
+import kit.item.service.repairShop.RepairResultService;
 import kit.item.service.repairShop.RepairShopService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +30,7 @@ import java.util.List;
 @RequestMapping("/api/repair")
 public class RepairShopController {
     private final RepairShopService repairShopService;
+    private final RepairResultService repairResultService;
     private final TokenProvider tokenProvider;
 
     @GetMapping("/privateShops")
@@ -235,7 +242,27 @@ public class RepairShopController {
         return repairShopService.responseEstimate(requestEstimateResponseDto);
     }
 
+    @GetMapping("/report/info")
+    public ResponseEntity<MsgDto> getReportInfo(@RequestParam Long reservationId) {
+        ResponseReservationInfoDto responseReservationInfoDto = repairResultService.findReservationInfo(reservationId);
+        if(responseReservationInfoDto == null) {
+            return new ResponseEntity<>(new MsgDto(false, "예약 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "예약 정보 조회", responseReservationInfoDto), HttpStatus.OK);
+    }
 
+    @PostMapping("/report/create")
+    public ResponseEntity<MsgDto> createReport(@RequestBody RequestRepairResultCreateDto requestRepairResultCreateDto) {
+        try {
+            boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
+            if(result) {
+                return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", result), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new MsgDto(false, "보고서 생성 실패", result), HttpStatus.OK);
+        } catch (DuplicateHashValueException e) {
+            return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", e.getMessage()), HttpStatus.OK);
+        }
+    }
 }
 
 

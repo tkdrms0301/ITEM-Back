@@ -65,14 +65,28 @@ public class RepairResultService {
         if (reservation.isPresent()) {
             List<RepairResultImage> repairResultBeforeImages = null;
             List<RepairResultImage> repairResultAfterImages = null;
+            RepairResult repairResult = RepairResult.builder()
+                    .comment(requestRepairResultCreateDto.getComment())
+                    .date(LocalDateTime.now())
+                    .reservation(reservation.get())
+                    .reservation(reservation.get())
+                    .build();
+            repairResultRepository.save(repairResult);
+
             try {
                 if (!checkImageByHash(requestRepairResultCreateDto.getBeforeRepairResultImages())) {
                     repairResultBeforeImages = saveRepairResultImages(requestRepairResultCreateDto.getBeforeRepairResultImages());
+                    repairResultBeforeImages.forEach(repairResultImage -> {
+                        repairResultImage.setRepairResult(repairResult);
+                    });
                 } else {
                     throw new DuplicateHashValueException("중복된 이미지가 존재합니다.");
                 }
                 if (!checkImageByHash(requestRepairResultCreateDto.getAfterRepairResultImages())) {
                     repairResultAfterImages = saveRepairResultImages(requestRepairResultCreateDto.getAfterRepairResultImages());
+                    repairResultBeforeImages.forEach(repairResultImage -> {
+                        repairResultImage.setRepairResult(repairResult);
+                    });
                 } else {
                     throw new DuplicateHashValueException("중복된 이미지가 존재합니다.");
                 }
@@ -81,13 +95,6 @@ public class RepairResultService {
             } catch (NoSuchAlgorithmException e) {
                 log.info("해시 알고리즘 실패");
             }
-            RepairResult repairResult = RepairResult.builder()
-                    .comment(requestRepairResultCreateDto.getComment())
-                    .date(LocalDateTime.now())
-                    .reservation(reservation.get())
-                    .reservation(reservation.get())
-                    .build();
-            repairResultRepository.save(repairResult);
             return true;
         }
         return false;

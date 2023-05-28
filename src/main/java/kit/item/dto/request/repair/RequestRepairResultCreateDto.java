@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class RequestRepairResultCreateDto {
     private Long reservationId;
-    private String comment;
-    private List<MultipartFile> beforeRepairResultImages;
-    private List<MultipartFile> afterRepairResultImages;
+    private String reportResultComment;
+    private List<MultipartFile> reportBeforeImgs;
+    private List<MultipartFile> reportAfterImgs;
 }

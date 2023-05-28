@@ -243,7 +243,7 @@ public class RepairShopController {
     }
 
     @GetMapping("/report/info")
-    public ResponseEntity<MsgDto> getReportInfo(@RequestParam Long reservationId) {
+    public ResponseEntity<MsgDto> getRepairResultReportInfo(@RequestParam Long reservationId) {
         ResponseReservationInfoDto responseReservationInfoDto = repairResultService.findReservationInfo(reservationId);
         if(responseReservationInfoDto == null) {
             return new ResponseEntity<>(new MsgDto(false, "예약 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
@@ -252,7 +252,7 @@ public class RepairShopController {
     }
 
     @PostMapping("/report/create")
-    public ResponseEntity<MsgDto> createReport(@RequestBody RequestRepairResultCreateDto requestRepairResultCreateDto) {
+    public ResponseEntity<MsgDto> createRepairResultReport(@RequestBody RequestRepairResultCreateDto requestRepairResultCreateDto) {
         try {
             boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
             if(result) {
@@ -260,8 +260,17 @@ public class RepairShopController {
             }
             return new ResponseEntity<>(new MsgDto(false, "보고서 생성 실패", result), HttpStatus.OK);
         } catch (DuplicateHashValueException e) {
-            return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", e.getMessage()), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", false), HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<MsgDto> getRepairResultReport(@RequestParam Long repairReportId) {
+        ResponseRepairDto responseRepairDto = repairResultService.getRepairResult(repairReportId);
+        if(responseRepairDto == null) {
+            return new ResponseEntity<>(new MsgDto(false, "보고서 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "보고서 정보 조회", responseRepairDto), HttpStatus.OK);
     }
 }
 

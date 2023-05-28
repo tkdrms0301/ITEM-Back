@@ -5,6 +5,7 @@ import kit.item.domain.member.Member;
 import kit.item.domain.point.PointHistory;
 import kit.item.dto.entity.point.PointHistoryDto;
 import kit.item.dto.request.point.RequestCreatePointHistoryDto;
+import kit.item.dto.request.point.RequestGetIncomeHistoryDateAndServiceNameDto;
 import kit.item.repository.point.PointRepository;
 import kit.item.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +67,24 @@ public class PointService {
         }else
 
             return false;
+    }
+
+    public Object getIncomeHistory(Long memberId) {
+        log.info("PointService.getIncomeHistory");
+        List<PointHistoryDto> pointHistoryDtos = pointRepository.findIncomeHistoryByMemberId(memberId);
+        return pointHistoryDtos;
+    }
+
+    public Object getIncomeHistoryDateAndServiceName(Long memberId, RequestGetIncomeHistoryDateAndServiceNameDto requestGetIncomeHistoryDateAndServiceTypeDto) {
+        log.info("PointService.getIncomeHistoryDateAndServiceName");
+
+        LocalDateTime startDate = requestGetIncomeHistoryDateAndServiceTypeDto.getStartDate().withHour(00).withMinute(00).withSecond(00);
+        LocalDateTime endDate = requestGetIncomeHistoryDateAndServiceTypeDto.getEndDate().withHour(23).withMinute(59).withSecond(59);
+        List<String> serviceNames = requestGetIncomeHistoryDateAndServiceTypeDto.getServiceName();
+
+
+        List<PointHistoryDto> pointHistoryDtos = pointRepository.findIncomeHistoryByMemberIdAndServiceNamesAndDateRange(memberId, serviceNames, startDate, endDate);
+
+        return pointHistoryDtos;
     }
 }

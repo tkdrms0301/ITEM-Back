@@ -170,6 +170,13 @@ INSERT INTO point_history(date, point, service_name, service_type, member_id) VA
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 2);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '그래픽카드 GTX1060 부품 구매', '상품 구매', 3);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 3);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 25000, '안드로이드 폰 점검', '수리 서비스 제공', 3);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, -25000, '안드로이드 폰 점검', '수리 서비스 이용', 1);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 25000, '소프트웨어 오류 해결', '수리 서비스 제공', 3);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, -25000, '소프트웨어 오류 해결', '수리 서비스 이용', 1);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 100000, '노트북/데스크탑 수리', '수리 서비스 제공', 3);
+INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, -100000, '노트북/데스크탑 수리', '수리 서비스 이용', 1);
+
 
 # 연관 단어 데이터;
 INSERT INTO data(count, vocab, product_id) VALUES (120, '예쁘다', 2);

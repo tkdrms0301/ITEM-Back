@@ -1,8 +1,7 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.request.member.RequestGetMemberInfoDto;
-import kit.item.dto.request.point.RequestCreatePointHistoryDto;
+import kit.item.dto.request.point.RequestGetIncomeHistoryDateAndServiceNameDto;
 import kit.item.dto.request.point.RequestGetPointHistoryDateDto;
 import kit.item.dto.request.point.RequestGetPointHistoryDto;
 import kit.item.service.point.PointService;
@@ -32,7 +31,10 @@ public class PointController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
 
         System.out.println("requestGetPointHistoryDateDto = " + requestGetPointHistoryDateDto.getStartDate());
-        LocalDateTime startDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getStartDate());
+        LocalDateTime startDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getStartDate())
+                .withHour(00)
+                .withMinute(00)
+                .withSecond(00);
         LocalDateTime endDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getEndDate())
                 .withHour(23)
                 .withMinute(59)
@@ -45,6 +47,18 @@ public class PointController {
     public ResponseEntity<MsgDto> getPointHistoryDelete(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetPointHistoryDto requestGetPointHistoryDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return new ResponseEntity<>(new MsgDto(true, "포인트 이용내역 삭제", pointService.getPointHistoryDelete(requestGetPointHistoryDto.getId(), memberId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/income-history")
+    public ResponseEntity<MsgDto> getIncomeHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return new ResponseEntity<>(new MsgDto(true, "서비스 수익 내역 조회", pointService.getIncomeHistory(memberId)), HttpStatus.OK);
+    }
+
+    @PostMapping("/income-history/dateAndServiceName")
+    public ResponseEntity<MsgDto> getIncomeHistoryDateAndServiceName(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestGetIncomeHistoryDateAndServiceNameDto requestGetIncomeHistoryDateAndServiceTypeDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return new ResponseEntity<>(new MsgDto(true, "서비스 수익 내역 조회", pointService.getIncomeHistoryDateAndServiceName(memberId, requestGetIncomeHistoryDateAndServiceTypeDto)), HttpStatus.OK);
     }
 
 }

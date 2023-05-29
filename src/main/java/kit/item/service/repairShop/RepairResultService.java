@@ -141,7 +141,9 @@ public class RepairResultService {
         });
 
         for (String hashValue : hashList) {
-            if (hashList.contains(hashValue)) {
+            List<String> tempHashList = new ArrayList<>(hashList);
+            tempHashList.remove(hashValue);
+            if (tempHashList.contains(hashValue)) {
                 return true;
             }
         }

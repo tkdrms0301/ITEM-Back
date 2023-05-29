@@ -251,8 +251,8 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(true, "예약 정보 조회", responseReservationInfoDto), HttpStatus.OK);
     }
 
-    @PostMapping("/report/create")
-    public ResponseEntity<MsgDto> createRepairResultReport(@RequestBody RequestRepairResultCreateDto requestRepairResultCreateDto) {
+    @RequestMapping(value = "/report/create", method=RequestMethod.POST, consumes="multipart/form-data")
+    public ResponseEntity<MsgDto> createRepairResultReport(RequestRepairResultCreateDto requestRepairResultCreateDto) {
         try {
             boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
             if(result) {

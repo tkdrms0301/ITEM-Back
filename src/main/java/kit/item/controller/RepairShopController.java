@@ -281,9 +281,9 @@ public class RepairShopController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공"), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패", null), HttpStatus.OK);
     }
 
 //    @GetMapping("/review/list")
@@ -310,18 +310,51 @@ public class RepairShopController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공"), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패", null), HttpStatus.OK);
     }
 
     @PostMapping("/review/delete")
     public ResponseEntity<MsgDto> deleteReview(@RequestParam Long reviewId) {
         boolean result = reviewService.deleteReview(reviewId);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공"), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패"), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/reply/create")
+    public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReplyCreateDto requestReplyCreateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.createReply(requestReplyCreateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 생성 실패", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/reply/update")
+    public ResponseEntity<MsgDto> updateReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReplyUpdateDto requestReplyUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.updateReply(requestReplyUpdateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 수정 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 수정 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/reply/delete")
+    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                              @RequestParam Long replyId) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.deleteReply(replyId, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 삭제 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 삭제 실패", null), HttpStatus.OK);
     }
 }
 

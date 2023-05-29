@@ -9,8 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class RequestReviewUpdateDto {
+public class RequestReplyUpdateDto {
     private String content;
-    private Long rating;
     private Long reviewId;
 }

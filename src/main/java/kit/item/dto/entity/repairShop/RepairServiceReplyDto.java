@@ -1,4 +1,4 @@
-package kit.item.dto.request.repair;
+package kit.item.dto.entity.repairShop;
 
 import lombok.*;
 
@@ -9,8 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 @Builder
-public class RequestReviewUpdateDto {
+public class RepairServiceReplyDto {
+    private Long replyId;
     private String content;
-    private Long rating;
-    private Long reviewId;
 }

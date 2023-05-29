@@ -2,20 +2,28 @@ package kit.item.service.repairShop;
 
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
+import kit.item.domain.repair.RepairServiceReply;
 import kit.item.domain.repair.RepairServiceReview;
+import kit.item.dto.entity.repairShop.RepairServiceReplyDto;
+import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
 import kit.item.dto.request.repair.RequestReplyCreateDto;
+import kit.item.dto.request.repair.RequestReplyUpdateDto;
 import kit.item.dto.request.repair.RequestReviewCreateDto;
 import kit.item.dto.request.repair.RequestReviewUpdateDto;
+import kit.item.dto.response.repairShop.ResponseRepairServiceReviewDto;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.repairShop.RepairServiceReplyRepository;
 import kit.item.repository.repairShop.RepairServiceReviewRepository;
 import kit.item.repository.repairShop.RepairShopRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,6 +45,9 @@ public class ReviewService {
         if (member.isEmpty()) {
             return false;
         }
+        if (repairServiceReviewRepository.existsByMemberIdAndRepairShopId(memberId, requestReviewCreateDto.getRepairShopId())) {
+            return false;
+        }
         repairServiceReviewRepository.save(RepairServiceReview.builder()
                     .content(requestReviewCreateDto.getContent())
                     .rating(requestReviewCreateDto.getRating())
@@ -47,6 +58,17 @@ public class ReviewService {
     }
 
     public boolean getReview(Long shopId) {
+        Pageable reviewPage = Pageable.ofSize(10).first();
+        Page<RepairServiceReview> review = repairServiceReviewRepository.findAllByRepairShopId(shopId, reviewPage);
+        Page<ResponseRepairServiceReviewDto> reviewDto = review.map(r -> ResponseRepairServiceReviewDto.builder()
+                .reviewId(r.getId())
+                .content(r.getContent())
+                .rating(r.getRating())
+                .repairServiceReplyDto(RepairServiceReplyDto.builder()
+                        .replyId(r.getRepairServiceReply().getId())
+                        .content(r.getRepairServiceReply().getContent())
+                        .build())
+                .build());
         return false;
     }
 
@@ -55,8 +77,11 @@ public class ReviewService {
     }
 
     public boolean updateReview(RequestReviewUpdateDto requestReviewUpdateDto, Long memberId) {
-        Optional<RepairServiceReview> repairServiceReview = repairServiceReviewRepository.findByRepairShopIdAndMemberId(requestReviewUpdateDto.getRepairShopId(), memberId);
+        Optional<RepairServiceReview> repairServiceReview = repairServiceReviewRepository.findById(requestReviewUpdateDto.getReviewId());
         if (repairServiceReview.isEmpty()) {
+            return false;
+        }
+        if (!repairServiceReview.get().getMember().getId().equals(memberId)) {
             return false;
         }
         repairServiceReview.get().setContent(requestReviewUpdateDto.getContent());
@@ -70,12 +95,54 @@ public class ReviewService {
         if (repairServiceReview.isEmpty()) {
             return false;
         }
+        RepairServiceReply repairServiceReply = repairServiceReview.get().getRepairServiceReply();
+        if (repairServiceReply != null) {
+            repairServiceReplyRepository.delete(repairServiceReply);
+        }
         repairServiceReviewRepository.delete(repairServiceReview.get());
         return true;
     }
 
-    public boolean createReply(RequestReplyCreateDto requestReplyCreateDto) {
-        return false;
+    public boolean createReply(RequestReplyCreateDto requestReplyCreateDto, Long memberId) {
+        Optional<RepairServiceReview> review = repairServiceReviewRepository.findById(requestReplyCreateDto.getReviewId());
+        if (review.isEmpty()) {
+            return false;
+        }
+        Optional<RepairShop> repairShop = repairShopRepository.findById(memberId);
+        if (repairShop.isEmpty()) {
+            return false;
+        }
+        repairServiceReplyRepository.save(RepairServiceReply.builder()
+                        .content(requestReplyCreateDto.getContent())
+                        .repairServiceReview(review.get())
+                        .repairShop(repairShop.get())
+                        .build());
+        return true;
+    }
+
+    public boolean updateReply(RequestReplyUpdateDto requestReplyUpdateDto, Long memberId) {
+        Optional<RepairServiceReply> repairServiceReply = repairServiceReplyRepository.findById(requestReplyUpdateDto.getReviewId());
+        if (repairServiceReply.isEmpty()) {
+            return false;
+        }
+        if (!repairServiceReply.get().getRepairShop().getId().equals(memberId)) {
+            return false;
+        }
+        repairServiceReply.get().setContent(requestReplyUpdateDto.getContent());
+        repairServiceReplyRepository.save(repairServiceReply.get());
+        return true;
+    }
+
+    public boolean deleteReply(Long replyId, Long memberId) {
+        Optional<RepairServiceReply> repairServiceReply = repairServiceReplyRepository.findById(replyId);
+        if (repairServiceReply.isEmpty()) {
+            return false;
+        }
+        if (!repairServiceReply.get().getRepairShop().getId().equals(memberId)) {
+            return false;
+        }
+        repairServiceReplyRepository.delete(repairServiceReply.get());
+        return true;
     }
 
     public boolean createReviewReport(Long reviewId) {

@@ -4,6 +4,14 @@ INSERT INTO member(address, email, name, nickname, password, phone_number, point
 VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER', '기업 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('test address1', 'test4', '일반유저2_ID', '일반유저2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('test address1', 'test5', '일반유저3_ID', '일반유저3_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
@@ -380,3 +388,27 @@ INSERT INTO post (content, date, report, title, member_id) VALUES ('LG Gram 17: 
 INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
 VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 2 );
 INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);
+
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 빨라서 좋았습니다.', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('안고쳐져서 고생했는데 감사합니다.', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('자주 이용할게요', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 조금 늦어져서 아쉬워여.', 4, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('별로네요', 1, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 빨라서 좋았습니다.', 5, 5, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 5, 5, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('안고쳐져서 고생했는데 감사합니다.', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속하고 전문적인 서비스를 받을 수 있어요', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객 만족도를 최우선으로 생각하고 있어요!', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('경험 풍부한 전문가들이 정확하고 신속한 수리를 해줘요!', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('합리적인 가격으로 고품질 서비스를 제공해요!', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('최신 기술과 도구를 사용하여 정밀한 수리를 해줘요!', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('친절하고 상세한 설명으로 문제를 해결해줘요!', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 5, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리 시간을 최소화하여 불편을 최대한 줄여줘요!', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속한 서비스와 함께 문제 예방을 위한 유용해요', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객의 개인정보와 기기 정보를 안전하게 보호해줘요', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('전자기기 정비소에서는 고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
+

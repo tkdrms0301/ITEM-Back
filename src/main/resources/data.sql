@@ -175,7 +175,7 @@ INSERT INTO point_history(date, point, service_name, service_type, member_id) VA
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 50000, '그래픽카드 GTX1060 부품 구매', '상품 구매', 3);
 INSERT INTO point_history(date, point, service_name, service_type, member_id) VALUES (@now, 15000, '리뷰 추천 누적 20회', '리뷰 추천 누적', 3);
 
---커뮤니티 글
+-- 커뮤니티 글
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Post content 1', '2023-01-01 00:00:00', 0, 'Title 1', 1);
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Post content 2', '2023-01-02 00:00:00', 0, 'Title 2', 2);
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Post content 3', '2023-01-03 00:00:00', 0, 'Title 3', 3);

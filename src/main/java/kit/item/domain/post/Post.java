@@ -20,10 +20,16 @@ public class Post {
     @Column(name = "post_id", nullable = false)
     private Long id;
 
+    @Column(name = "title")
     private String title;
-    @Column(length=1000)
+
+    @Column(name = "content" ,length=1000)
     private String content;
+
+    @Column(name = "date")
     private LocalDateTime date;
+
+    @Column(name = "date")
     private Long report;
 
     @ManyToOne(fetch = FetchType.LAZY)

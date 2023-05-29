@@ -13,6 +13,7 @@ import kit.item.dto.response.repairShop.*;
 import kit.item.exception.DuplicateHashValueException;
 import kit.item.service.repairShop.RepairResultService;
 import kit.item.service.repairShop.RepairShopService;
+import kit.item.service.repairShop.ReviewService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +32,7 @@ import java.util.List;
 public class RepairShopController {
     private final RepairShopService repairShopService;
     private final RepairResultService repairResultService;
+    private final ReviewService reviewService;
     private final TokenProvider tokenProvider;
 
     @GetMapping("/privateShops")
@@ -271,6 +273,55 @@ public class RepairShopController {
             return new ResponseEntity<>(new MsgDto(false, "보고서 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(true, "보고서 정보 조회", responseRepairDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/review/create")
+    public ResponseEntity<MsgDto> createReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReviewCreateDto requestReviewCreateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패"), HttpStatus.OK);
+    }
+
+//    @GetMapping("/review/list")
+//    public ResponseEntity<MsgDto> getReview(@RequestParam Long shopId) {
+//        ResponseReviewDto responseReviewDto = reviewService.getReview(shopId);
+//        if(responseReviewDto == null) {
+//            return new ResponseEntity<>(new MsgDto(false, "리뷰 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(new MsgDto(true, "리뷰 정보 조회", responseReviewDto), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/review")
+//    public ResponseEntity<MsgDto> getReview(@RequestParam Long shopId, @RequestParam Long reviewId) {
+//        ResponseReviewDetailDto responseReviewDetailDto = reviewService.getReview(reviewId);
+//        if(responseReviewDetailDto == null) {
+//            return new ResponseEntity<>(new MsgDto(false, "리뷰 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(new MsgDto(true, "리뷰 정보 조회", responseReviewDetailDto), HttpStatus.OK);
+//    }
+
+    @PutMapping("/review/update")
+    public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReviewUpdateDto requestReviewUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패"), HttpStatus.OK);
+    }
+
+    @PostMapping("/review/delete")
+    public ResponseEntity<MsgDto> deleteReview(@RequestParam Long reviewId) {
+        boolean result = reviewService.deleteReview(reviewId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공"), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패"), HttpStatus.OK);
     }
 }
 

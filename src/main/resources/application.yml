@@ -9,6 +9,10 @@ logging:
             sql: trace
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 30MB
+      max-request-size: 30MB
 #  datasource:
 #    url: jdbc:mysql://itemtest.mysql.database.azure.com:3306/item?serverTimezone=Asia/Seoul
 #    username: adminuser

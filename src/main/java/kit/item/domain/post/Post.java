@@ -21,6 +21,7 @@ public class Post {
     private Long id;
 
     private String title;
+    @Column(length=1000)
     private String content;
     private LocalDateTime date;
     private Long report;

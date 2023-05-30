@@ -81,7 +81,7 @@ public class RepairResultService {
 
             reservation.get().setState(ReservationStateType.COMPLETED.getKrName());
             reservationRepository.save(reservation.get());
-            
+
             RepairResult repairResult = RepairResult.builder()
                     .comment(requestRepairResultCreateDto.getReportResultComment())
                     .date(LocalDateTime.now())

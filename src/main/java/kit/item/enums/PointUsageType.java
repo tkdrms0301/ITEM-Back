@@ -7,7 +7,9 @@ public enum PointUsageType {
     PRODUCT_PURCHASE(3, "상품 구매"),
     REPAIR_SERVICE_PROVIDE(4, "수리 서비스 제공"),
     REPAIR_SERVICE_USE(5, "수리 서비스 이용"),
-    SUBSCRIPTION_PURCHASE(6, "구독 상품 구매");
+    SUBSCRIPTION_PURCHASE(6, "구독 상품 구매"),
+
+    RESERVATION_RETURN(7, "예약 취소/거절");
 
     private final int value;
     private final String krName;

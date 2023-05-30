@@ -193,6 +193,10 @@ public class RepairShopController {
     public boolean rejectReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
         return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId());
     }
+    @PostMapping("/reservation/cancel")
+    public boolean cancelReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        return repairShopService.cancelReservation(requestReservationStateUpdateDto.getReservationId());
+    }
 
 
     //견적 초기

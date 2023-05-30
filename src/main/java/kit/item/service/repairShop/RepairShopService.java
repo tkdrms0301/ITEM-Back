@@ -322,6 +322,8 @@ public class RepairShopService {
             saveReservationImgs(reservationImages, savedReservation);
         saveRepairServiceReservation(repairServiceReservations, savedReservation);
 
+        //포인트 소비
+        spendPointByReservationForMember(savedReservation.getId());
     }
 
     private void saveRepairServiceReservation(List<RepairServiceReservation> repairServiceReservations, Reservation savedReservation) {
@@ -638,7 +640,7 @@ public class RepairShopService {
         reservationRepository.save(reservation);
     }
 
-    public boolean acceptReservation(Long reservationId) {
+    public boolean spendPointByReservationForMember(Long reservationId){
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
 
@@ -675,10 +677,86 @@ public class RepairShopService {
                         .date(LocalDateTime.now()).build();
                 pointService.createHistory(consumer.getId(), consumerPointHistory);
 
-                //업체
+                //ADMIN계정
                 //포인트 얻음
-                RepairShop repairShop = reservation.get().getRepairShop();
-                repairShop.setPoint(repairShop.getPoint() + totalPrice.get());
+                Optional<Member> admin = memberRepository.findByEmail("test0");
+                if (admin.isPresent()){
+                    admin.get().setPoint(admin.get().getPoint() + totalPrice.get());
+
+                    memberRepository.save(admin.get());
+
+                    //포인트 히스토리
+                    RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
+                            .serviceName(finalServiceNames)
+                            .serviceType(PointUsageType.REPAIR_SERVICE_PROVIDE.getKrName())
+                            .point(totalPrice.get())
+                            .date(LocalDateTime.now()).build();
+                    pointService.createHistory(admin.get().getId(), adminPointHistory);
+                }
+
+
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+    public boolean acceptReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+            reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
+            reservationRepository.save(reservation.get());
+
+            //정비소 포인트 얻음
+            gainPointByReservationForRepairShop(reservationId);
+
+            return true;
+        }
+        return false;
+    }
+
+    public boolean gainPointByReservationForRepairShop(Long reservationId){
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+
+            Optional<Member> admin = memberRepository.findByEmail("test0");
+
+            AtomicLong totalPrice = new AtomicLong(0);
+            List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
+
+
+            StringBuilder serviceNames = new StringBuilder();
+            AtomicInteger count = new AtomicInteger(0);
+
+            repairServiceReservations.stream().forEach(repairServiceReservation -> {
+                        totalPrice.addAndGet(repairServiceReservation.getRepairService().getPrice());
+                        count.incrementAndGet();
+                        if (count.get() < 2)
+                            serviceNames.append(repairServiceReservation.getRepairService().getServiceName());
+                    }
+            );
+
+            String finalServiceNames = serviceNames.toString();
+
+            //ADMIN
+            //포인트 차감
+            admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
+            memberRepository.save(admin.get());
+
+            //포인트 히스토리
+            RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
+                    .serviceName(finalServiceNames)
+                    .serviceType(PointUsageType.REPAIR_SERVICE_USE.getKrName())
+                    .point(-totalPrice.get())
+                    .date(LocalDateTime.now()).build();
+            pointService.createHistory(admin.get().getId(), adminPointHistory);
+
+            //정비소
+            //포인트 얻음
+            RepairShop repairShop = reservation.get().getRepairShop();
+            repairShop.setPoint(repairShop.getPoint() + totalPrice.get());
+
                 memberRepository.save(repairShop);
 
                 //포인트 히스토리
@@ -687,15 +765,67 @@ public class RepairShopService {
                         .serviceType(PointUsageType.REPAIR_SERVICE_PROVIDE.getKrName())
                         .point(totalPrice.get())
                         .date(LocalDateTime.now()).build();
-                pointService.createHistory(reservation.get().getRepairShop().getId(), repairShopPointHistory);
+                pointService.createHistory(repairShop.getId(), repairShopPointHistory);
 
-                reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
 
-                reservationRepository.save(reservation.get());
-                return true;
-            } else {
-                return false;
-            }
+            return true;
+        }
+        return false;
+    }
+
+    public boolean returnPointByReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+
+            //포인트 획득, 포인트 히스토리
+            AtomicLong totalPrice = new AtomicLong(0);
+            Member consumer = reservation.get().getMember();
+            List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
+
+
+            StringBuilder serviceNames = new StringBuilder();
+            AtomicInteger count = new AtomicInteger(0);
+
+            repairServiceReservations.stream().forEach(repairServiceReservation -> {
+                        totalPrice.addAndGet(repairServiceReservation.getRepairService().getPrice());
+                        count.incrementAndGet();
+                        if (count.get() < 2)
+                            serviceNames.append(repairServiceReservation.getRepairService().getServiceName());
+                    }
+            );
+
+            String finalServiceNames = serviceNames.toString();
+
+                //소비자
+                //포인트 획득
+                consumer.setPoint(consumer.getPoint() + totalPrice.get());
+                memberRepository.save(consumer);
+
+                //포인트 히스토리
+                RequestCreatePointHistoryDto consumerPointHistory = RequestCreatePointHistoryDto.builder()
+                        .serviceName(finalServiceNames)
+                        .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
+                        .point(totalPrice.get())
+                        .date(LocalDateTime.now()).build();
+                pointService.createHistory(consumer.getId(), consumerPointHistory);
+
+
+            Optional<Member> admin = memberRepository.findByEmail("test0");
+
+            //ADMIN
+            //포인트 차감
+            admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
+            memberRepository.save(admin.get());
+
+            //포인트 히스토리
+            RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
+                    .serviceName(finalServiceNames)
+                    .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
+                    .point(-totalPrice.get())
+                    .date(LocalDateTime.now()).build();
+            pointService.createHistory(admin.get().getId(), adminPointHistory);
+
+            return true;
         }
         return false;
     }
@@ -705,10 +835,32 @@ public class RepairShopService {
         if (reservation.isPresent()) {
             reservation.get().setState(ReservationStateType.REJECTED.getKrName());
             reservationRepository.save(reservation.get());
+
+            //예약 거절 시 멤버에게 포인트 반환
+            returnPointByReservation(reservationId);
+
             return true;
         }
         return false;
     }
+
+    public boolean cancelReservation(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+
+            //예약 취소 시 멤버에게 포인트 반환
+            returnPointByReservation(reservationId);
+
+            repairServiceReservationRepository.deleteByReservation(reservation.get());
+
+            reservationRepository.delete(reservation.get());
+
+            return true;
+        }
+        return false;
+    }
+
+
 
     //견적 초기. 사용자 it device 반환
     public ResponseEstimateInitDto estimateInit(Long memberId) {

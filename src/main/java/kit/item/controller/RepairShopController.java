@@ -6,6 +6,7 @@ import kit.item.domain.member.Member;
 import kit.item.dto.common.MsgDto;
 import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
+import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
 import kit.item.dto.entity.repairShop.RepairShopIdDto;
 import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import kit.item.dto.request.repair.*;
@@ -16,6 +17,7 @@ import kit.item.service.repairShop.RepairShopService;
 import kit.item.service.repairShop.ReviewService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -286,23 +288,23 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패", null), HttpStatus.OK);
     }
 
-//    @GetMapping("/review/list")
-//    public ResponseEntity<MsgDto> getReview(@RequestParam Long shopId) {
-//        ResponseReviewDto responseReviewDto = reviewService.getReview(shopId);
-//        if(responseReviewDto == null) {
-//            return new ResponseEntity<>(new MsgDto(false, "리뷰 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(new MsgDto(true, "리뷰 정보 조회", responseReviewDto), HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/review")
-//    public ResponseEntity<MsgDto> getReview(@RequestParam Long shopId, @RequestParam Long reviewId) {
-//        ResponseReviewDetailDto responseReviewDetailDto = reviewService.getReview(reviewId);
-//        if(responseReviewDetailDto == null) {
-//            return new ResponseEntity<>(new MsgDto(false, "리뷰 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(new MsgDto(true, "리뷰 정보 조회", responseReviewDetailDto), HttpStatus.OK);
-//    }
+    @GetMapping("/review/list")
+    public ResponseEntity<MsgDto> getReviews(@RequestParam int page, @RequestParam Long shopId) {
+        Page<RepairServiceReviewDto> reviews = reviewService.getReviews(page, shopId);
+        if(reviews.getTotalElements() == 0) {
+            return new ResponseEntity<>(new MsgDto(false, "리뷰 없음", reviews.getContent()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", reviews), HttpStatus.OK);
+    }
+
+    @GetMapping("/review")
+    public ResponseEntity<MsgDto> getReview(@RequestParam Long reviewId) {
+        RepairServiceReviewDto review = reviewService.getReview(reviewId);
+        if(review == null) {
+            return new ResponseEntity<>(new MsgDto(false, "리뷰 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", review), HttpStatus.OK);
+    }
 
     @PutMapping("/review/update")
     public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,

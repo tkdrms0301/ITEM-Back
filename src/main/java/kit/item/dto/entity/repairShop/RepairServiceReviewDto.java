@@ -1,5 +1,6 @@
 package kit.item.dto.entity.repairShop;
 
+import kit.item.domain.repair.RepairServiceReview;
 import lombok.*;
 
 @Getter
@@ -11,6 +12,8 @@ import lombok.*;
 @Builder
 public class RepairServiceReviewDto {
     private Long reviewId;
-    private String content;
+    private String reviewContent;
     private Long rating;
+    private Long replyId;
+    private String replyContent;
 }

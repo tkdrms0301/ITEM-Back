@@ -2,14 +2,17 @@ package kit.item.service.repairShop;
 
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
+import kit.item.domain.post.Post;
 import kit.item.domain.repair.RepairServiceReply;
 import kit.item.domain.repair.RepairServiceReview;
+import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.entity.repairShop.RepairServiceReplyDto;
 import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
 import kit.item.dto.request.repair.RequestReplyCreateDto;
 import kit.item.dto.request.repair.RequestReplyUpdateDto;
 import kit.item.dto.request.repair.RequestReviewCreateDto;
 import kit.item.dto.request.repair.RequestReviewUpdateDto;
+import kit.item.dto.response.community.ResponsePostListDto;
 import kit.item.dto.response.repairShop.ResponseRepairServiceReviewDto;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.repairShop.RepairServiceReplyRepository;
@@ -18,19 +21,23 @@ import kit.item.repository.repairShop.RepairShopRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class ReviewService {
+    private static final int PAGE_SIZE = 10;
     private final RepairServiceReviewRepository repairServiceReviewRepository;
     private final RepairServiceReplyRepository repairServiceReplyRepository;
     private final RepairShopRepository repairShopRepository;
@@ -57,23 +64,33 @@ public class ReviewService {
         return true;
     }
 
-    public boolean getReview(Long shopId) {
-        Pageable reviewPage = Pageable.ofSize(10).first();
-        Page<RepairServiceReview> review = repairServiceReviewRepository.findAllByRepairShopId(shopId, reviewPage);
-        Page<ResponseRepairServiceReviewDto> reviewDto = review.map(r -> ResponseRepairServiceReviewDto.builder()
-                .reviewId(r.getId())
-                .content(r.getContent())
-                .rating(r.getRating())
-                .repairServiceReplyDto(RepairServiceReplyDto.builder()
-                        .replyId(r.getRepairServiceReply().getId())
-                        .content(r.getRepairServiceReply().getContent())
-                        .build())
-                .build());
-        return false;
+    public Page<RepairServiceReviewDto> getReviews(int page, Long shopId) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending());
+        return repairServiceReviewRepository.findAllByRepairShopId(shopId, pageable);
     }
 
-    public boolean getReview(Long shopId, Long reviewId) {
-        return false;
+    public RepairServiceReviewDto getReview(Long reviewId) {
+        Optional<RepairServiceReview> repairServiceReview = repairServiceReviewRepository.findById(reviewId);
+        if (repairServiceReview.isEmpty()) {
+            return null;
+        }
+        if (repairServiceReview.get().getRepairServiceReply() != null) {
+            RepairServiceReply repairServiceReply = repairServiceReview.get().getRepairServiceReply();
+            return RepairServiceReviewDto.builder()
+                    .reviewId(repairServiceReview.get().getId())
+                    .reviewContent(repairServiceReview.get().getContent())
+                    .rating(repairServiceReview.get().getRating())
+                    .replyId(repairServiceReply.getId())
+                    .replyContent(repairServiceReply.getContent())
+                    .build();
+        }
+        return RepairServiceReviewDto.builder()
+                .reviewId(repairServiceReview.get().getId())
+                .reviewContent(repairServiceReview.get().getContent())
+                .rating(repairServiceReview.get().getRating())
+                .replyId(null)
+                .replyContent(null)
+                .build();
     }
 
     public boolean updateReview(RequestReviewUpdateDto requestReviewUpdateDto, Long memberId) {

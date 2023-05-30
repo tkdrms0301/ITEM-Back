@@ -3,15 +3,24 @@ package kit.item.controller;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
+import kit.item.dto.common.MsgDto;
+import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
+import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
 import kit.item.dto.entity.repairShop.RepairShopIdDto;
 import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import kit.item.dto.request.repair.*;
 import kit.item.dto.response.repairShop.*;
+import kit.item.exception.DuplicateHashValueException;
+import kit.item.service.repairShop.RepairResultService;
 import kit.item.service.repairShop.RepairShopService;
+import kit.item.service.repairShop.ReviewService;
 import kit.item.util.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,11 +33,12 @@ import java.util.List;
 @RequestMapping("/api/repair")
 public class RepairShopController {
     private final RepairShopService repairShopService;
+    private final RepairResultService repairResultService;
+    private final ReviewService reviewService;
     private final TokenProvider tokenProvider;
 
     @GetMapping("/privateShops")
     public List<ResponsePrivateRepairShopDto> findAllPrivateRepairShops(@RequestHeader HttpHeaders headers) {
-        System.out.println("aaaaa" + headers);
         return repairShopService.findAllPrivateRepairShops();
     }
 
@@ -40,27 +50,23 @@ public class RepairShopController {
     @GetMapping("/serviceList")
     public List<ResponseServiceDto> getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.getServiceListByShopID(memberId);
     }
 
     @PostMapping("/serviceList")
     public boolean createServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceCreateInfo requestServiceCreateInfo) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.createServiceList(memberId, requestServiceCreateInfo);
     }
 
     @DeleteMapping("/serviceList")
     public boolean getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
         return repairShopService.deleteServiceByServiceId(memberId, serviceId);
     }
 
     @GetMapping("/serviceList/info")
     public ResponseServiceDto getServiceInfo(Long serviceId) {
-        System.out.println("serviceId = " + serviceId);
         return repairShopService.getServiceInfo(serviceId);
     }
 
@@ -187,6 +193,10 @@ public class RepairShopController {
     public boolean rejectReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
         return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId());
     }
+    @PostMapping("/reservation/cancel")
+    public boolean cancelReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        return repairShopService.cancelReservation(requestReservationStateUpdateDto.getReservationId());
+    }
 
 
     //견적 초기
@@ -238,6 +248,119 @@ public class RepairShopController {
     public boolean responseEstimate(@RequestBody RequestEstimateResponseDto requestEstimateResponseDto) {
 
         return repairShopService.responseEstimate(requestEstimateResponseDto);
+    }
+
+    @GetMapping("/report/info")
+    public ResponseEntity<MsgDto> getRepairResultReportInfo(@RequestParam Long reservationId) {
+        ResponseReservationInfoDto responseReservationInfoDto = repairResultService.findReservationInfo(reservationId);
+        if(responseReservationInfoDto == null) {
+            return new ResponseEntity<>(new MsgDto(false, "예약 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "예약 정보 조회", responseReservationInfoDto), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/report/create", method=RequestMethod.POST, consumes="multipart/form-data")
+    public ResponseEntity<MsgDto> createRepairResultReport(RequestRepairResultCreateDto requestRepairResultCreateDto) {
+        try {
+            boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
+            if(result) {
+                return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", result), HttpStatus.OK);
+            }
+            return new ResponseEntity<>(new MsgDto(false, "보고서 생성 실패", result), HttpStatus.OK);
+        } catch (DuplicateHashValueException e) {
+            return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", false), HttpStatus.OK);
+        }
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<MsgDto> getRepairResultReport(@RequestParam Long reservationId) {
+        ResponseRepairDto responseRepairDto = repairResultService.getRepairResult(reservationId);
+        if(responseRepairDto == null) {
+            return new ResponseEntity<>(new MsgDto(false, "보고서 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "보고서 정보 조회", responseRepairDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/review/create")
+    public ResponseEntity<MsgDto> createReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReviewCreateDto requestReviewCreateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패", null), HttpStatus.OK);
+    }
+
+    @GetMapping("/review/list")
+    public ResponseEntity<MsgDto> getReviews(@RequestParam int page, @RequestParam Long shopId) {
+        Page<RepairServiceReviewDto> reviews = reviewService.getReviews(page, shopId);
+        if(reviews.getTotalElements() == 0) {
+            return new ResponseEntity<>(new MsgDto(false, "리뷰 없음", reviews.getContent()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", reviews), HttpStatus.OK);
+    }
+
+    @GetMapping("/review")
+    public ResponseEntity<MsgDto> getReview(@RequestParam Long reviewId) {
+        RepairServiceReviewDto review = reviewService.getReview(reviewId);
+        if(review == null) {
+            return new ResponseEntity<>(new MsgDto(false, "리뷰 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", review), HttpStatus.OK);
+    }
+
+    @PutMapping("/review/update")
+    public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReviewUpdateDto requestReviewUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/review/delete")
+    public ResponseEntity<MsgDto> deleteReview(@RequestParam Long reviewId) {
+        boolean result = reviewService.deleteReview(reviewId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/reply/create")
+    public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReplyCreateDto requestReplyCreateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.createReply(requestReplyCreateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 생성 실패", null), HttpStatus.OK);
+    }
+
+    @PutMapping("/reply/update")
+    public ResponseEntity<MsgDto> updateReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                               @RequestBody RequestReplyUpdateDto requestReplyUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.updateReply(requestReplyUpdateDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 수정 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 수정 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/reply/delete")
+    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                              @RequestParam Long replyId) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.deleteReply(replyId, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 삭제 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 삭제 실패", null), HttpStatus.OK);
     }
 }
 

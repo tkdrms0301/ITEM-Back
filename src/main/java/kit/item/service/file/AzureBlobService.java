@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class AzureBlobService {
@@ -27,7 +28,8 @@ public class AzureBlobService {
 	public String upload(MultipartFile multipartFile) throws IOException {
 
 		// Todo UUID
-		BlobClient blob = blobContainerClient.getBlobClient(multipartFile.getOriginalFilename());
+		String fileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+		BlobClient blob = blobContainerClient.getBlobClient(fileName);
 		blob.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
 
 		return blob.getBlobUrl();

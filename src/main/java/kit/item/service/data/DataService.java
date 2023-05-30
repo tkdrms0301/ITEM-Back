@@ -2,8 +2,13 @@ package kit.item.service.data;
 
 import kit.item.domain.it.Product;
 import kit.item.dto.entity.data.*;
+import kit.item.dto.entity.device.BrandDto;
+import kit.item.dto.entity.device.CategoryDto;
+import kit.item.dto.entity.device.ProductDto;
 import kit.item.repository.data.DataRepository;
 import kit.item.repository.data.PosAndNegRepository;
+import kit.item.repository.it.CategoryBrandRepository;
+import kit.item.repository.it.CategoryRepository;
 import kit.item.repository.it.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +34,17 @@ public class DataService {
     private final PosAndNegRepository posAndNegRepository;
     private final DataRepository dataRepository;
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final CategoryBrandRepository categoryBrandRepository;
 
     public DataResultDto getData(Long productId) {
+        log.info("DeviceManagementService.getData productId");
         DataResultDto dataResultDto = new DataResultDto();
-        dataResultDto.setWord(null);
+
         Optional<Product> product = productRepository.findById(productId);
         if (product.isPresent()) {
             dataResultDto.setProductId(product.get().getId());
+            dataResultDto.setWord(product.get().getName());
             dataResultDto.setProductName(product.get().getName());
             PosAndNegDto posAndNegDto = posAndNegRepository.getPosAndNegByProductId(product.get().getId());
             dataResultDto.setPosAndNegDto(posAndNegDto == null ? new PosAndNegDto() : posAndNegDto);
@@ -52,13 +62,15 @@ public class DataService {
             }
             return dataResultDto;
         }
+        dataResultDto.setWord(null);
         dataResultDto.setProductName(null);
-        dataResultDto.setPosAndNegDto(new PosAndNegDto());
+        dataResultDto.setPosAndNegDto(null);
         dataResultDto.setRelatedWords(new ArrayList<>());
         return dataResultDto;
     }
 
     public List<DataResultDto> getData(String word) {
+        log.info("DeviceManagementService.getData word");
         List<DataResultDto> dataResultDtoList = new ArrayList<>();
 
         // word로 검색한 데이터를 count로 내림차순 정렬하여 가져온다.
@@ -90,23 +102,74 @@ public class DataService {
     }
 
     public List<DataResultDto> getDataList(List<String> words, List<Long> productIds) {
+        log.info("DeviceManagementService.getDataList");
         // words는 검색어들, products는 제품 id
         List<DataResultDto> datas = new ArrayList<>();
         List<DataResultDto> dataResultDtoList = null;
         for (String word : words) {
             dataResultDtoList = getData(word);
             for (DataResultDto dataResultDto : dataResultDtoList) {
-                if (productIds.contains(dataResultDto.getProductId())) {
+                if (!dataResultDto.check(datas)) {
                     datas.add(dataResultDto);
                 }
             }
         }
         for (Long productId : productIds) {
             DataResultDto dataResultDto = getData(productId);
-            if (dataResultDto.getWord() != null && productIds.contains(dataResultDto.getProductId())) {
+            if (dataResultDto.getProductName() != null && !dataResultDto.check(datas)) {
                 datas.add(dataResultDto);
             }
         }
         return datas;
+    }
+
+    public String getDataCsvList(List<String> words, List<Long> productIds) {
+        log.info("DeviceManagementService.getDataList");
+        List<DataResultDto> dataList = getDataList(words, productIds);
+        StringBuilder data = new StringBuilder();
+        data.append("검색어|제품명|단어|빈도수").append("\n");
+        for (DataResultDto dataResultDto : dataList) {
+            for (RelatedWordDto relatedWordDto : dataResultDto.getRelatedWords()) {
+                data.append(dataResultDto.getWord()).append("|")
+                    .append(dataResultDto.getProductName()).append("|")
+                    .append(relatedWordDto.getLabel()).append("|")
+                    .append(relatedWordDto.getValue())
+                    .append("\n");
+            }
+        }
+        return data.toString();
+    }
+
+    public String getPosAndNegCsvList(List<String> words, List<Long> productIds) {
+        log.info("DeviceManagementService.getPosAndNegList");
+        List<DataResultDto> dataList = getDataList(words, productIds);
+        StringBuilder data = new StringBuilder();
+        data.append("검색어|제품명|긍정|부정").append("\n");
+        for (DataResultDto dataResultDto : dataList) {
+            data.append(dataResultDto.getWord()).append("|")
+                .append(dataResultDto.getProductName()).append("|")
+                .append(dataResultDto.getPosAndNegDto().getPositive()).append("|")
+                .append(dataResultDto.getPosAndNegDto().getNegative())
+                .append("\n");
+        }
+        return data.toString();
+    }
+
+    // category - completion 완제품(컴퓨터, 노트북, 스마트폰, 태블릿)
+    public List<CategoryDto> getCategoryList() {
+        log.info("DeviceManagementService.getCategoryList");
+        return categoryRepository.findAllCategory();
+    }
+
+    // categoryId -> brand 완제품
+    public List<BrandDto> getBrandList(Long categoryId) {
+        log.info("DeviceManagementService.getBrandList");
+        return categoryBrandRepository.findAllBrandByCategoryId(categoryId);
+    }
+
+    // brandId -> product 완제품
+    public List<ProductDto> getProductList(Long categoryId, Long brandId) {
+        log.info("DeviceManagementService.getProductList");
+        return categoryBrandRepository.findAllByCategoryIdAndBrandId(categoryId, brandId);
     }
 }

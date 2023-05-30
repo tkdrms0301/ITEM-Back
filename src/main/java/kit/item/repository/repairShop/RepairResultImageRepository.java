@@ -15,7 +15,7 @@ public interface RepairResultImageRepository extends JpaRepository<RepairResultI
 
     @Query("select r.url " +
            "from REPAIR_RESULT_IMAGE r " +
-           "where r.id= :repairResultId and r.isBefore = :isBefore")
+           "where r.repairResult.id= :repairResultId and r.isBefore = :isBefore")
     List<String> findImagesByRepairResultId(
             @Param(value = "repairResultId") Long repairResultId,
             @Param(value = "isBefore") boolean isBefore);

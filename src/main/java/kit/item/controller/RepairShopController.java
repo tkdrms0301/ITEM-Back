@@ -265,8 +265,8 @@ public class RepairShopController {
     }
 
     @GetMapping("/report")
-    public ResponseEntity<MsgDto> getRepairResultReport(@RequestParam Long repairReportId) {
-        ResponseRepairDto responseRepairDto = repairResultService.getRepairResult(repairReportId);
+    public ResponseEntity<MsgDto> getRepairResultReport(@RequestParam Long reservationId) {
+        ResponseRepairDto responseRepairDto = repairResultService.getRepairResult(reservationId);
         if(responseRepairDto == null) {
             return new ResponseEntity<>(new MsgDto(false, "보고서 정보 없음", new ArrayList<CategoryDto>()), HttpStatus.OK);
         }

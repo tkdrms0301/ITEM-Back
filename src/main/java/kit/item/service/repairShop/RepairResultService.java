@@ -7,6 +7,7 @@ import kit.item.domain.repair.ReservationImage;
 import kit.item.dto.request.repair.RequestRepairResultCreateDto;
 import kit.item.dto.response.repairShop.ResponseRepairDto;
 import kit.item.dto.response.repairShop.ResponseReservationInfoDto;
+import kit.item.enums.ReservationStateType;
 import kit.item.exception.DuplicateHashValueException;
 import kit.item.repository.repairShop.RepairResultImageRepository;
 import kit.item.repository.repairShop.RepairResultRepository;
@@ -59,16 +60,16 @@ public class RepairResultService {
         return null;
     }
 
-    public ResponseRepairDto getRepairResult(Long repairResultId) {
-        Optional<RepairResult> repairResult = repairResultRepository.findById(repairResultId);
+    public ResponseRepairDto getRepairResult(Long reservationId) {
+        Optional<RepairResult> repairResult = repairResultRepository.findByReservationId(reservationId);
         if (repairResult.isPresent()) {
             RepairResult repairResultInfo = repairResult.get();
 
             return ResponseRepairDto.builder()
                     .comment(repairResultInfo.getComment())
                     .date(repairResultInfo.getDate())
-                    .beforeRepairResultImages(repairResultImageRepository.findImagesByRepairResultId(repairResultId, true))
-                    .afterRepairResultImages(repairResultImageRepository.findImagesByRepairResultId(repairResultId, false))
+                    .beforeRepairResultImages(repairResultImageRepository.findImagesByRepairResultId(repairResultInfo.getId(), true))
+                    .afterRepairResultImages(repairResultImageRepository.findImagesByRepairResultId(repairResultInfo.getId(), false))
                     .build();
         }
         return null;
@@ -77,6 +78,10 @@ public class RepairResultService {
     public boolean createRepairResult(RequestRepairResultCreateDto requestRepairResultCreateDto) throws DuplicateHashValueException {
         Optional<Reservation> reservation = reservationRepository.findById(requestRepairResultCreateDto.getReservationId());
         if (reservation.isPresent()) {
+
+            reservation.get().setState(ReservationStateType.COMPLETED.getKrName());
+            reservationRepository.save(reservation.get());
+            
             RepairResult repairResult = RepairResult.builder()
                     .comment(requestRepairResultCreateDto.getReportResultComment())
                     .date(LocalDateTime.now())

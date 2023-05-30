@@ -17,10 +17,10 @@ public interface RepairServiceReviewRepository extends JpaRepository<RepairServi
     Optional<RepairServiceReview> findByRepairShopIdAndMemberId(Long shopId, Long memberId);
     boolean existsByMemberIdAndRepairShopId(Long memberId, Long shopId);
 
-    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReviewDto(r.id, r.content, r.rating) " +
+    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReviewDto(r.id, r.content, r.rating, rep.id, rep.content) " +
             "from REPAIR_SERVICE_REVIEW r " +
+            "LEFT join fetch REPAIR_SERVICE_REPLY rep " +
+            "on r.id = rep.repairServiceReview.id " +
             "where r.repairShop.id = :shopId")
-    Page<RepairServiceReviewDto> findByRepairShopId(@Param(value = "shopId") Long shopId, Pageable page);
-
-    Page<RepairServiceReview> findAllByRepairShopId(Long shopId, Pageable page);
+    Page<RepairServiceReviewDto> findAllByRepairShopId(@Param(value = "shopId") Long shopId, Pageable page);
 }

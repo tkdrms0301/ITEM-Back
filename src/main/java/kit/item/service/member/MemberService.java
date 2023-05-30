@@ -3,6 +3,7 @@ package kit.item.service.member;
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
 import kit.item.domain.member.Seller;
+import kit.item.domain.point.PointHistory;
 import kit.item.domain.point.Subscription;
 import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
@@ -12,6 +13,7 @@ import kit.item.dto.request.auth.RequestLoginDto;
 import kit.item.dto.request.auth.RequestSignupDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
 import kit.item.dto.response.member.ResponseGetMemberInfoDto;
+import kit.item.dto.response.member.ResponseSubscribeDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
 import kit.item.enums.RoleType;
 import kit.item.exception.DuplicateMemberException;
@@ -32,7 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static kit.item.util.prefix.ConstPrefix.SIGN_UP_SUBSCRIPTION_DURATION;
+import static kit.item.util.prefix.ConstData.*;
+import static kit.item.util.prefix.ConstString.*;
+
 
 @Slf4j
 @Service
@@ -44,6 +48,7 @@ public class MemberService implements UserDetailsService {
     private final MechanicRepository mechanicRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PointRepository pointRepository;
 
     // Member가 DB에 존재할 시 Member 객체 반환
     @Override
@@ -69,18 +74,39 @@ public class MemberService implements UserDetailsService {
             memberRepository.save(member);
             subscription.setMember(member);
             subscriptionRepository.save(subscription);
+            pointRepository.save(PointHistory.builder()
+                    .serviceName(SN_SIGN_UP_SUBSCRIPTION)
+                    .serviceType(ST_SUBSCRIPTION_PURCHASE)
+                    .point(0L)
+                    .member(member)
+                    .date(LocalDateTime.now())
+                    .build());
         } else if (requestSignupDto.getRoleType().equals(RoleType.SELLER) && requestSignupDto.getSellerInfoDto() != null) {
             Seller seller = requestSignupDto.toSeller();
             seller.setPassword(passwordEncoder.encode(seller.getPassword()));
             sellerRepository.save(seller);
             subscription.setMember(seller);
             subscriptionRepository.save(subscription);
+            pointRepository.save(PointHistory.builder()
+                    .serviceName(SN_SIGN_UP_SUBSCRIPTION)
+                    .serviceType(ST_SUBSCRIPTION_PURCHASE)
+                    .point(0L)
+                    .member(seller)
+                    .date(LocalDateTime.now())
+                    .build());
         } else if (requestSignupDto.getRoleType().equals(RoleType.MECHANIC) && requestSignupDto.getMechanicInfoDto() != null) {
             RepairShop repairShop = requestSignupDto.toMechanic();
             repairShop.setPassword(passwordEncoder.encode(repairShop.getPassword()));
             mechanicRepository.save(repairShop);
             subscription.setMember(repairShop);
             subscriptionRepository.save(subscription);
+            pointRepository.save(PointHistory.builder()
+                    .serviceName(SN_SIGN_UP_SUBSCRIPTION)
+                    .serviceType(ST_SUBSCRIPTION_PURCHASE)
+                    .point(0L)
+                    .member(repairShop)
+                    .date(LocalDateTime.now())
+                    .build());
         }
     }
 
@@ -207,6 +233,36 @@ public class MemberService implements UserDetailsService {
                 .msg("회원 정보 수정 완료")
                 .isSuccess(true)
                 .build();
+    }
 
+    public boolean subscribe(Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
+        if (member.isPresent()) {
+            if (member.get().checkPoint(SUBSCRIPTION_PRICE)) {
+                Subscription subscription = null;
+                if (subscriptionRepository.existsByMemberId(memberId)) {
+                    subscription = subscriptionRepository.findByMemberId(memberId);
+                    if (subscription.getEndDate().isBefore(LocalDateTime.now())) {
+                        subscription.setEndDate(LocalDateTime.now().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                    }
+                    subscription.setEndDate(subscription.getEndDate().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                } else {
+                    subscription = new Subscription(LocalDateTime.now().plusDays(PURCHASE_SUBSCRIPTION_DURATION));
+                    subscription.setMember(member.get());
+                }
+                member.get().usePoint(SUBSCRIPTION_PRICE);
+                memberRepository.save(member.get());
+                subscriptionRepository.save(subscription);
+                pointRepository.save(PointHistory.builder()
+                        .serviceName(SN_BASIC_SUBSCRIPTION)
+                        .serviceType(ST_SUBSCRIPTION_PURCHASE)
+                        .point(-SUBSCRIPTION_PRICE)
+                        .member(member.get())
+                        .date(LocalDateTime.now())
+                        .build());
+                return true;
+            }
+        }
+        return false;
     }
 }

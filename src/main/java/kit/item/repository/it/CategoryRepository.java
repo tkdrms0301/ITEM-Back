@@ -18,4 +18,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("select new kit.item.dto.entity.device.CategoryDto(c.id, c.imageUrl, c.name) from CATEGORY c where c.isPart = true")
     List<CategoryDto> findPartAllCategory();
+
+    @Query("select new kit.item.dto.entity.device.CategoryDto(c.id, c.imageUrl, c.name) from CATEGORY c")
+    List<CategoryDto> findAllCategory();
 }

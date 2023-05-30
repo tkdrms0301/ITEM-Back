@@ -1,17 +1,14 @@
 package kit.item.repository.data;
 
 import kit.item.domain.data.PosAndNeg;
-import kit.item.dto.entity.data.DataDto;
 import kit.item.dto.entity.data.PosAndNegDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface PosAndNegRepository extends JpaRepository<PosAndNeg, Long> {
-    @Query("select new kit.item.dto.entity.data.PosAndNegDto(pan.product.name, pan.positive, pan.negative) from POS_AND_NEG pan where pan.product.id =:productId")
+    @Query("select new kit.item.dto.entity.data.PosAndNegDto(pan.positive, pan.negative) from POS_AND_NEG pan where pan.product.id =:productId")
     PosAndNegDto getPosAndNegByProductId(@Param(value = "productId") Long productId);
 }

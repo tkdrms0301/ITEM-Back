@@ -9,7 +9,6 @@ import lombok.*;
 @EqualsAndHashCode
 @ToString
 public class PosAndNegDto {
-    private String productName;
     private Long positive;
     private Long negative;
 }

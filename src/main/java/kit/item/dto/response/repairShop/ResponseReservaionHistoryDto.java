@@ -1,5 +1,6 @@
 package kit.item.dto.response.repairShop;
 
+import kit.item.dto.entity.repairShop.ReservationServiceDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,11 +19,11 @@ public class ResponseReservaionHistoryDto {
     private String shopName;
     private String productName;
     private String prodImg;
-    private List<String> requestServices;
+    private List<ReservationServiceDto> requestServices;
     private List<String> rvRequestImgs;
     private String requestComment;
     private LocalDate date;
     private String time;
     private String status;
-    private List<String> services;
+    private List<ReservationServiceDto> services;
 }

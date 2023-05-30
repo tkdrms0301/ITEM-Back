@@ -1,9 +1,7 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +9,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity(name = "RESPONSE")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class Response {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,10 @@ public class Response {
     private Integer costMin;
     @Column(name = "cost_max")
     private Integer costMax;
-    private Integer duration;
+    @Column(name = "max_time")
+    private Integer maxTime;
+    @Column(name = "min_time")
+    private Integer minTime;
     @Column(name = "response_date")
     private LocalDateTime responseDate;
 

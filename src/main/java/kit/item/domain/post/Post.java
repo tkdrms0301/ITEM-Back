@@ -23,7 +23,7 @@ public class Post {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content" ,length=1000)
+    @Column(name = "content",  columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "date")

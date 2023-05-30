@@ -29,7 +29,7 @@ public class Post {
     @Column(name = "date")
     private LocalDateTime date;
 
-    @Column(name = "date")
+    @Column(name = "report")
     private Long report;
 
     @ManyToOne(fetch = FetchType.LAZY)

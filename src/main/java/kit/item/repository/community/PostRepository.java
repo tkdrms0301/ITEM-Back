@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,5 +34,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Long>{
 
     @Query("SELECT new kit.item.dto.entity.community.PostDataDto(p.id, p.title) FROM POST p JOIN p.comments c WHERE c.member.id = :memberId")
     Page<PostDataDto> findByCommentsMemberId(@Param("memberId") Long memberId,Pageable pageable);
+
+    Long countAllByMemberId(Long memberId);
 }
 

@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .requestMatchers( "/api/auth/signup", "/api/auth/login", "/api/auth/email-check", "/api/auth/nickname-check", "/api/auth/company-number-check",
                         "/api/device/completion-category", "/api/device/part-category", "/api/device/completion-brand", "/api/device/part-brand", "/api/device/completion-product","/api/device/part-product",
                         "/api/file/**", "/api/repair/privateShops","/api/repair/publicShops",
-                        "/api/community/posts/**","/api/community/post/**"
+                        "/api/community/posts/**","/api/community/post/**","/api/market/listByCategory","/api/market/productDetail"
                         ).permitAll()
                 .requestMatchers("/api/member", "/api/repair/reservation/init").hasAuthority("MEMBER")
                 .requestMatchers("/api/seller").hasAuthority("SELLER")

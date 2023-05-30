@@ -17,7 +17,7 @@ public interface RepairServiceReviewRepository extends JpaRepository<RepairServi
     Optional<RepairServiceReview> findByRepairShopIdAndMemberId(Long shopId, Long memberId);
     boolean existsByMemberIdAndRepairShopId(Long memberId, Long shopId);
 
-    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReviewDto(r.id, r.content, r.rating, rep.id, rep.content) " +
+    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReviewDto(r.id, r.content, r.rating, rep.id, rep.content, r.member.nickname, rep.repairShop.nickname) " +
             "from REPAIR_SERVICE_REVIEW r " +
             "LEFT join fetch REPAIR_SERVICE_REPLY rep " +
             "on r.id = rep.repairServiceReview.id " +

@@ -51,7 +51,7 @@ INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'ht
 INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/switch.jpg', true); # 22;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/monitor.jpg', true); # 23;
 
-INSERT INTO brand(brand_name, is_finished) VALUES ('완본체', true); #1;
+INSERT INTO brand(brand_name, is_finished) VALUES ('조립 PC', true); #1;
 INSERT INTO brand(brand_name, is_finished) VALUES ('삼성', false); #2;
 INSERT INTO brand(brand_name, is_finished) VALUES ('LG', false); #3;
 INSERT INTO brand(brand_name, is_finished) VALUES ('기가바이트', false); #4;
@@ -113,7 +113,7 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('조립 PC', 1); # 1;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4;
@@ -390,7 +390,7 @@ VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크
 INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);
 
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 빨라서 좋았습니다.', 5, 1, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 5, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 4, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('안고쳐져서 고생했는데 감사합니다.', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('자주 이용할게요', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 조금 늦어져서 아쉬워여.', 4, 4, 3);
@@ -406,9 +406,29 @@ INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VA
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('친절하고 상세한 설명으로 문제를 해결해줘요!', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 5, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리 시간을 최소화하여 불편을 최대한 줄여줘요!', 5, 1, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 4, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속한 서비스와 함께 문제 예방을 위한 유용해요', 5, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로 해주면 좋았을 텐데..', 3, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고장 진단과 수리 후에도 품질 보증을 제공해요', 4, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속한 서비스와 함께 문제 예방을 위한 유용해요', 4, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객의 개인정보와 기기 정보를 안전하게 보호해줘요', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('전자기기 정비소에서는 고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
 
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 1, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 2, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 3, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 4, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 5, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 6, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 7, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 8, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 9, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 10, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 11, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 12, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 13, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 14, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 15, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 16, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 17, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 18, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 19, 3);
+INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 20, 3);

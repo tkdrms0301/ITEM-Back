@@ -283,9 +283,9 @@ public class RepairShopController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공", null), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 작성 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 중복된 리뷰 작성", null), HttpStatus.OK);
     }
 
     @GetMapping("/review/list")

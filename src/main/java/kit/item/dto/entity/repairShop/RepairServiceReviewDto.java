@@ -16,4 +16,6 @@ public class RepairServiceReviewDto {
     private Long rating;
     private Long replyId;
     private String replyContent;
+    private String userNickname;
+    private String repairShopNickname;
 }

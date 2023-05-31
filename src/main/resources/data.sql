@@ -18,12 +18,15 @@ INSERT INTO member(address, email, name, nickname, password, phone_number, point
 VALUES ('대구광역시 복현로 130', 'test9', '정비사_ID', '정비사3_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
-
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('경북 구미시 옥계2공단로 310-1', 'repair-test3', '정비사2_ID', '정비사2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
+INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
+VALUES ('test description2', 'test shop2', '010-1234-5678', 9, 'NOTEBOOK', 'shop_address_test4');
 
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description2', 'test shop2', '010-1234-5678', 8, 'NOTEBOOK', 'shop_address_test8');
@@ -191,10 +194,13 @@ INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_i
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
-
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 2, null);
+
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 2, 10);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 4, null);
 
 # 포인트 이용내역;
 set @now = '';
@@ -413,9 +419,24 @@ INSERT INTO post (content, date, report, title, member_id) VALUES ('Acer Swift 3
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Microsoft Surface Laptop 4: 우아한 디자인과 탁월한 터치스크린, 원활한 성능으로 유연한 사용자 경험을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 7 DAY), 0, 'Nintendo Switch Lite: 휴대성과 저렴한 가격으로 즐기는 멋진 게임 경험', 3);
 INSERT INTO post (content, date, report, title, member_id) VALUES ('LG Gram 17: 가벼운 무게에도 불구하고 큰 화면과 장기간 사용 가능한 배터리로 탁월한 이동성과 성능을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 3 DAY), 0, 'Samsung QLED Q80T: 생생한 화질과 탁월한 게이밍 성능을 갖춘 스마트 TV', 1);
 
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 4);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 5);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 6);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 7);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 8);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 1);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 4);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 5);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 6);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 7);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 8);
+INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 1);
+
 INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
 VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
 INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);
+INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
+VALUES (4, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 12);
 
 INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
 VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );

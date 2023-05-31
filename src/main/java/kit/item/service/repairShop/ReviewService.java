@@ -52,9 +52,10 @@ public class ReviewService {
         if (member.isEmpty()) {
             return false;
         }
-        if (repairServiceReviewRepository.existsByMemberIdAndRepairShopId(memberId, requestReviewCreateDto.getRepairShopId())) {
-            return false;
-        }
+//        if (repairServiceReviewRepository.existsByMemberIdAndRepairShopId(memberId, requestReviewCreateDto.getRepairShopId())) {
+//            return false;
+//        }
+        // 정비 예약한 결과 date + 3일 이내로 리뷰 작성 가능하도록
         repairServiceReviewRepository.save(RepairServiceReview.builder()
                     .content(requestReviewCreateDto.getContent())
                     .rating(requestReviewCreateDto.getRating())
@@ -131,8 +132,8 @@ public class ReviewService {
         }
         repairServiceReplyRepository.save(RepairServiceReply.builder()
                         .content(requestReplyCreateDto.getContent())
-                        .repairServiceReview(review.get())
                         .repairShop(repairShop.get())
+                        .repairServiceReview(review.get())
                         .build());
         return true;
     }

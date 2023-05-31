@@ -68,9 +68,6 @@ public class DeviceManagementService {
     private List<DeviceDto> getDeviceList(Long memberId, Long categoryId) {
         log.info("DeviceManagementService.getDeviceList");
         List<DeviceDto> selectDevices = itDeviceRepository.findSelectDeviceByMemberId(memberId, categoryId);
-        for (DeviceDto selectDevice : selectDevices) {
-            System.out.println("selectDevice.getId() = " + selectDevice.getId());
-        }
         for (DeviceDto deviceDto : selectDevices) {
             List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
             if (components.isEmpty()) {
@@ -109,79 +106,51 @@ public class DeviceManagementService {
     }
 
     // my device register
-    public boolean createMyDevice(Long memberId, RequestCreateDeviceDto requestCreateDeviceDto) {
+    public DeviceDto createMyDevice(Long memberId, RequestCreateDeviceDto requestCreateDeviceDto) {
         log.info("DeviceManagementService.createMyDevice");
         ItDevice itDevice = new ItDevice();
 
         // member 설정
         Optional<Member> member = memberRepository.findById(memberId);
         if(member.isEmpty()) {
-            return false;
+            return null;
         }
         itDevice.setMember(member.get());
 
         // category 설정
         Optional<Category> category = categoryRepository.findById(requestCreateDeviceDto.getCategoryId());
         if (category.isEmpty()){
-            return false;
+            return null;
         }
         itDevice.setCategory(category.get());
 
         // brand 설정
         Optional<Brand> brand = brandRepository.findById(requestCreateDeviceDto.getBrandId());
         if (brand.isEmpty()){
-            return false;
+            return null;
         }
         itDevice.setBrand(brand.get());
 
         // 제품이름 직접 등록 설정
         if (!requestCreateDeviceDto.getDirectlyRegisterProductName().equals("")) {
             itDevice.setDirectlyRegisteredName(requestCreateDeviceDto.getDirectlyRegisterProductName());
-            itDevice.setProduct(null);
+            if (requestCreateDeviceDto.getCategoryId() == 1 && requestCreateDeviceDto.getBrandId() == 1) {
+                itDevice.setProduct(productRepository.findById(1L).get());
+            } else {
+                itDevice.setProduct(null);
+            }
         }else{
             Optional<Product> product = productRepository.findById(requestCreateDeviceDto.getProductId());
             if (product.isEmpty()){
-                return false;
+                return null;
             }
             itDevice.setDirectlyRegisteredName(null);
             itDevice.setProduct(product.get());
         }
 
         itDeviceRepository.save(itDevice);
-        return true;
+        return itDeviceRepository.findDeviceById(itDevice.getId());
     }
-
-    // my device update
-//    public boolean updateMyDevice(Long memberId, RequestUpdateDeviceDto requestUpdateDeviceDto) {
-//        log.info("DeviceManagementService.updateMyDevice");
-//        Optional<ItDevice> itDevice = itDeviceRepository.findById(requestUpdateDeviceDto.getDeviceId());
-//        if (itDevice.isEmpty()) {
-//            return false;
-//        }
-//        if (!itDevice.get().getMember().getId().equals(memberId)) {
-//            return false;
-//        }
-//        ItDevice device = itDevice.get();
-//
-//        if (itDevice.get().getFinishedProduct() != null) {
-//            itDeviceRepository.deletePartProductsByFinishedProductId(memberId, itDevice.get().getId());
-//            itDevice.get().setFinishedProduct(null);
-//        }
-//
-//        if(requestUpdateDeviceDto.getDirectlyRegisterProductName() != null) {
-//            device.setDirectlyRegisteredName(requestUpdateDeviceDto.getDirectlyRegisterProductName());
-//            device.setCategory(categoryRepository.findById(requestUpdateDeviceDto.getCategoryId()).get());
-//            device.setBrand(brandRepository.findById(requestUpdateDeviceDto.getBrandId()).get());
-//            device.setProduct(null);
-//        } else {
-//            device.setDirectlyRegisteredName(null);
-//            device.setCategory(categoryRepository.findById(requestUpdateDeviceDto.getCategoryId()).get());
-//            device.setBrand(brandRepository.findById(requestUpdateDeviceDto.getBrandId()).get());
-//            device.setProduct(productRepository.findById(requestUpdateDeviceDto.getProductId()).get());
-//        }
-//        itDeviceRepository.save(device);
-//        return true;
-//    }
 
     // my device delete
     public boolean deleteMyDevice(Long memberId, Long deviceId) {
@@ -201,35 +170,35 @@ public class DeviceManagementService {
     }
 
     // my device register
-    public boolean createMyPart(Long memberId, RequestCreatePartDto requestCreatePartDto) {
+    public DeviceDto createMyPart(Long memberId, RequestCreatePartDto requestCreatePartDto) {
         log.info("DeviceManagementService.createMyDevice");
         ItDevice itDevice = new ItDevice();
 
         // member 설정
         Optional<Member> member = memberRepository.findById(memberId);
         if(member.isEmpty()) {
-            return false;
+            return null;
         }
         itDevice.setMember(member.get());
 
         // category 설정
         Optional<Category> category = categoryRepository.findById(requestCreatePartDto.getCategoryId());
         if (category.isEmpty()){
-            return false;
+            return null;
         }
         itDevice.setCategory(category.get());
 
         // brand 설정
         Optional<Brand> brand = brandRepository.findById(requestCreatePartDto.getBrandId());
         if (brand.isEmpty()){
-            return false;
+            return null;
         }
         itDevice.setBrand(brand.get());
 
         // it Device 부품 설정
         Optional<ItDevice> itDevicePart = itDeviceRepository.findById(requestCreatePartDto.getFinishedDeviceId());
         if (itDevicePart.isEmpty()){
-            return false;
+            return null;
         }
         itDevice.setFinishedProduct(itDevicePart.get());
 
@@ -240,14 +209,14 @@ public class DeviceManagementService {
         }else{
             Optional<Product> product = productRepository.findById(requestCreatePartDto.getProductId());
             if (product.isEmpty()){
-                return false;
+                return null;
             }
             itDevice.setDirectlyRegisteredName(null);
             itDevice.setProduct(product.get());
         }
 
         itDeviceRepository.save(itDevice);
-        return true;
+        return itDeviceRepository.findDeviceById(itDevice.getId());
     }
 
     public boolean deleteMyPart(Long memberId, Long deviceId) {

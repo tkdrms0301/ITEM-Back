@@ -62,9 +62,15 @@ public class RepairShopController {
     }
 
     @DeleteMapping("/serviceList")
-    public boolean getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
+    public ResponseEntity getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.deleteServiceByServiceId(memberId, serviceId);
+
+        boolean result = repairShopService.deleteServiceByServiceId(memberId, serviceId);
+        if(result){
+            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+        }else
+            return new ResponseEntity<Boolean>(result, HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping("/serviceList/info")
@@ -73,9 +79,14 @@ public class RepairShopController {
     }
 
     @PutMapping("/serviceList/info")
-    public boolean updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo) {
+    public ResponseEntity updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+
+        boolean result = repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+        if(result){
+            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+        }else
+            return new ResponseEntity<Boolean>(result, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/reservation/init")

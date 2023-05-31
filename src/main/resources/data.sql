@@ -1,9 +1,9 @@
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 1234');
+VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 500000, 'MEMBER', '농협 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER', '기업 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사1_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test4', '일반유저2_ID', '일반유저2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
@@ -13,6 +13,10 @@ VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$1
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('경북 구미시 거양길 15', 'test8', '정비사_ID', '정비사2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-9174-0997', 500000, 'MECHANIC', '대구은행 1234');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('대구광역시 복현로 130', 'test9', '정비사_ID', '정비사3_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
 
 
@@ -21,12 +25,33 @@ VALUES ('company_address', 'company_name', 'company_number', 'company_phone_numb
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
 
+INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
+VALUES ('test description2', 'test shop2', '010-1234-5678', 8, 'NOTEBOOK', 'shop_address_test8');
+
+INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
+VALUES ('test description3', 'test shop3', '010-1234-5678', 9, 'NOTEBOOK', 'shop_address_test9');
+
 INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
-VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', '점검', 25000, 3);
+VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검1', '점검', 25000, 3);
 INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결','교환', 25000 , 3);
+VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결1','교환', 25000 , 3);
 INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리', '수리', 100000,3);
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리1', '수리', 100000,3);
+
+
+INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
+VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '아이폰 폰 점검2', '점검', 25000, 8);
+INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
+VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결2','교환', 25000 , 8);
+INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리2', '수리', 100000, 8);
+
+INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
+VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검3', '점검', 25000, 9);
+INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
+VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결3','교환', 25000 , 9);
+INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리3', '수리', 100000,9);
 
 INSERT INTO official_repair_shop(address, description, name, phone_number)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
@@ -389,8 +414,16 @@ INSERT INTO post (content, date, report, title, member_id) VALUES ('Microsoft Su
 INSERT INTO post (content, date, report, title, member_id) VALUES ('LG Gram 17: 가벼운 무게에도 불구하고 큰 화면과 장기간 사용 가능한 배터리로 탁월한 이동성과 성능을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 3 DAY), 0, 'Samsung QLED Q80T: 생생한 화질과 탁월한 게이밍 성능을 갖춘 스마트 TV', 1);
 
 INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 2 );
+VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
 INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);
+
+INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
+VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
+INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (2, 1);
+
+INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
+VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
+INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (3, 1);
 
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 빨라서 좋았습니다.', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 4, 1, 3);

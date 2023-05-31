@@ -326,9 +326,8 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패", null), HttpStatus.OK);
     }
 
-    @PostMapping("/review/delete")
-    public ResponseEntity<MsgDto> deleteReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody Long reviewId) {
-        System.out.println("reviewId = " + reviewId);
+    @DeleteMapping("/review/delete")
+    public ResponseEntity<MsgDto> deleteReview(@RequestHeader Long reviewId) {
         boolean result = reviewService.deleteReview(reviewId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
@@ -359,9 +358,10 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "답글 수정 실패", null), HttpStatus.OK);
     }
 
-    @PostMapping("/reply/delete")
-    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-                                              @RequestParam Long replyId) {
+
+
+    @DeleteMapping("/reply/delete")
+    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long replyId) {
         System.out.println("replyId = " + replyId);
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.deleteReply(replyId, memberId);

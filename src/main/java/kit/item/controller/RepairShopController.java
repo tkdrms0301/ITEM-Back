@@ -3,6 +3,7 @@ package kit.item.controller;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
+import kit.item.domain.repair.RepairServiceReview;
 import kit.item.dto.common.MsgDto;
 import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -297,6 +299,8 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", reviews), HttpStatus.OK);
     }
 
+
+
     @GetMapping("/review")
     public ResponseEntity<MsgDto> getReview(@RequestParam Long reviewId) {
         RepairServiceReviewDto review = reviewService.getReview(reviewId);
@@ -310,6 +314,7 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReviewUpdateDto requestReviewUpdateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        System.out.println("requestReviewUpdateDto = " + requestReviewUpdateDto);
         boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", null), HttpStatus.OK);
@@ -318,7 +323,8 @@ public class RepairShopController {
     }
 
     @PostMapping("/review/delete")
-    public ResponseEntity<MsgDto> deleteReview(@RequestParam Long reviewId) {
+    public ResponseEntity<MsgDto> deleteReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody Long reviewId) {
+        System.out.println("reviewId = " + reviewId);
         boolean result = reviewService.deleteReview(reviewId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
@@ -330,6 +336,7 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReplyCreateDto requestReplyCreateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        System.out.println("requestReplyCreateDto = " + requestReplyCreateDto);
         boolean result = reviewService.createReply(requestReplyCreateDto, memberId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", null), HttpStatus.OK);
@@ -351,6 +358,7 @@ public class RepairShopController {
     @PostMapping("/reply/delete")
     public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                               @RequestParam Long replyId) {
+        System.out.println("replyId = " + replyId);
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.deleteReply(replyId, memberId);
         if(result) {

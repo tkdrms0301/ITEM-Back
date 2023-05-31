@@ -132,8 +132,8 @@ public class ReviewService {
         }
         repairServiceReplyRepository.save(RepairServiceReply.builder()
                         .content(requestReplyCreateDto.getContent())
-                        .repairServiceReview(review.get())
                         .repairShop(repairShop.get())
+                        .repairServiceReview(review.get())
                         .build());
         return true;
     }

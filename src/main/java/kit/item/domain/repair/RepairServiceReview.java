@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kit.item.domain.member.Member;
 import kit.item.domain.member.RepairShop;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter

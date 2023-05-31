@@ -10,12 +10,10 @@ import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.request.community.RequestCreateCommentDto;
 import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
-import kit.item.dto.response.community.ResponseCommentListDto;
-import kit.item.dto.response.community.ResponsePostDataListDto;
-import kit.item.dto.response.community.ResponsePostDto;
-import kit.item.dto.response.community.ResponsePostListDto;
+import kit.item.dto.response.community.*;
 import kit.item.repository.community.*;
 import kit.item.repository.it.ProductRepository;
+import kit.item.repository.member.MemberRepository;
 import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +42,8 @@ public class CommunityService {
     private final CommentReportRepository commentReportRepository;
     private final ProductRepository productRepository;
     private final PostImageRepository postImageRepository;
+
+    private final MemberRepository memberRepository;
 
     public ResponsePostListDto getPostsList(int page) {
         List<PostDto> posts = getPosts(page, PAGE_SIZE);
@@ -179,7 +179,7 @@ public class CommunityService {
         List<PostImage> existingImages = postImageRepository.findAllByPostId(postId);
         postImageRepository.deleteAll(existingImages);
 
-        if(requestCreatePostDTO.getImages() != null) {
+        if(requestCreatePostDTO.getImages()!= null) {
             List<PostImage> postImages = new ArrayList<>();
             for (String image : requestCreatePostDTO.getImages()) {
                 System.out.println("image = " + image);
@@ -209,6 +209,12 @@ public class CommunityService {
         }
         List<Comment> comments = post.getComments();
         if (comments != null) {
+            for (Comment comment : comments) {
+                List<Comment> childComments = comment.getChildrenComment();
+                if (childComments != null) {
+                    commentRepository.deleteAll(childComments);
+                }
+            }
             commentRepository.deleteAll(comments);
         }
         List<PostImage> postImages = post.getPostImages();
@@ -366,18 +372,33 @@ public class CommunityService {
 
     public ResponsePostListDto getMyPosts(Long memberId,int page) {
         Page<Post> posts = postRepository.findAllByMemberId(memberId, PageRequest.of(page, 10, Sort.by("id").descending()));
+
+        boolean hasMore = posts.hasNext();
+
         List<PostDto> postDtos = posts.stream()
                 .map(PostDto::fromPost)
                 .collect(Collectors.toList());
         return ResponsePostListDto.builder()
                 .posts(postDtos)
+                .hasMore(hasMore)
                 .build();
     }
 
-    public ResponsePostDataListDto getPostsCommentedByMe(Long memberId,int page) {
+    public ResponsePostListDto getPostsCommentedByMe(Long memberId,int page) {
         Page<PostDataDto> posts = postRepository.findByCommentsMemberId(memberId, PageRequest.of(0, 10, Sort.by("id").descending()));
-        return ResponsePostDataListDto.builder()
-                .posts(posts.getContent())
+        boolean hasMore = posts.hasNext();
+
+        List<Post> postList = new ArrayList<>();
+        for(PostDataDto postDataDto : posts.getContent()){
+            postList.add(getPostById(postDataDto.getId()));
+        }
+        List<PostDto> postDtos = postList.stream()
+                .map(PostDto::fromPost)
+                .collect(Collectors.toList());
+
+        return ResponsePostListDto.builder()
+                .posts(postDtos)
+                .hasMore(hasMore)
                 .build();
     }
 
@@ -398,5 +419,18 @@ public class CommunityService {
         return posts.stream()
                 .map(PostDto::fromPost)
                 .collect(Collectors.toList());
+    }
+
+    public Object getMyInfo(Long memberId) {
+
+        Member member = memberRepository.findById(memberId).orElse(null);
+        if (member == null) {
+            return null;
+        }
+        return ResponseMyInfoDto.builder()
+                .nickname(member.getName())
+                .postCount(postRepository.countAllByMemberId(member.getId()))
+                .commentCount(commentRepository.countAllByMemberId(member.getId()))
+                .build();
     }
 }

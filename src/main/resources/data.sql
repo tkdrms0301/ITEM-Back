@@ -12,6 +12,9 @@ INSERT INTO member(address, email, name, nickname, password, phone_number, point
 VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
+INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
+VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
+
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
@@ -28,28 +31,28 @@ VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스�
 INSERT INTO official_repair_shop(address, description, name, phone_number)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
 
-INSERT INTO category(category_name, image_url, is_part) VALUES ('컴퓨터', 'https://item0container.blob.core.windows.net/image/computer.webp', false); # 1;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('노트북', 'https://item0container.blob.core.windows.net/image/noteBook.png', false); # 2;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('휴대폰', 'https://item0container.blob.core.windows.net/image/smartPhone.png', false); # 3;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('테블릿', 'https://item0container.blob.core.windows.net/image/tablet.png', false); # 4;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('그래픽카드', 'https://item0container.blob.core.windows.net/image/graphic_card.jpg', true); # 5;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('cpu', 'https://item0container.blob.core.windows.net/image/cpu.jpg', true); # 6;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('프린터기', 'https://item0container.blob.core.windows.net/image/printer.jpg', true); # 7;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('메인보드', 'https://item0container.blob.core.windows.net/image/mainboard.jpg', true); # 8;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('컴퓨터', 'https://item0container.blob.core.windows.net/image/컴퓨터.webp', false); # 1;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('노트북', 'https://item0container.blob.core.windows.net/image/노트북.webp', false); # 2;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('휴대폰', 'https://item0container.blob.core.windows.net/image/휴대폰.webp', false); # 3;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('테블릿', 'https://item0container.blob.core.windows.net/image/태블릿.webp', false); # 4;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('그래픽카드', 'https://item0container.blob.core.windows.net/image/그래픽카드.webp', true); # 5;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('cpu', 'https://item0container.blob.core.windows.net/image/CPU.webp', true); # 6;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('프린터기', 'https://item0container.blob.core.windows.net/image/프린터.jpg', true); # 7;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('메인보드', 'https://item0container.blob.core.windows.net/image/메인보드.webp', true); # 8;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('RAM', 'https://item0container.blob.core.windows.net/image/ram.jpg', true); # 9;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('SSD', 'https://item0container.blob.core.windows.net/image/ssd.jpg', true); # 10;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('HDD', 'https://item0container.blob.core.windows.net/image/hdd.jpg', true); # 11;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('케이스', 'https://item0container.blob.core.windows.net/image/case.webp', true); # 12;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('파워', 'https://item0container.blob.core.windows.net/image/power.jpg', true); # 13;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('쿨러', 'https://item0container.blob.core.windows.net/image/cooler.jpg', true); # 14;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('키보드', 'https://item0container.blob.core.windows.net/image/keyboard.webp', true); # 15;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('NAS', 'https: //item0container.blob.core.windows.net/image/nas.jpg', true); # 16;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('USB', 'https://item0container.blob.core.windows.net/image/usb.jpg', true); # 17;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('공유기', 'https://item0container.blob.core.windows.net/image/router.jpg', true); # 18;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('USB허브', 'https://item0container.blob.core.windows.net/image/usb.jpg', true); # 19;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'https://item0container.blob.core.windows.net/image/lan.jpg', true); # 20;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/switch.jpg', true); # 22;
-INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/monitor.jpg', true); # 23;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('케이스', 'https://item0container.blob.core.windows.net/image/케이스.webp', true); # 12;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('파워', 'https://item0container.blob.core.windows.net/image/파워.webp', true); # 13;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('쿨러', 'https://item0container.blob.core.windows.net/image/쿨러.webp', true); # 14;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('키보드', 'https://item0container.blob.core.windows.net/image/키보드.webp', true); # 15;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('NAS', 'https://item0container.blob.core.windows.net/image/nas.jpg', true); # 16;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('USB', 'https://item0container.blob.core.windows.net/image/USB.webp', true); # 17;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('공유기', 'https://item0container.blob.core.windows.net/image/공유기.webp', true); # 18;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('USB허브', 'https://item0container.blob.core.windows.net/image/USB허브.webp', true); # 19;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'https://item0container.blob.core.windows.net/image/랜카드.jpg', true); # 20;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/스위치허브.webp', true); # 21;
+INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/모니터.webp', true); # 22;
 
 INSERT INTO brand(brand_name, is_finished) VALUES ('조립 PC', true); #1;
 INSERT INTO brand(brand_name, is_finished) VALUES ('삼성', false); #2;
@@ -432,3 +435,6 @@ INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('�
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 18, 3);
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 19, 3);
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 20, 3);
+
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name ) VALUES (1, 2, 100000, '상품설명입니다.','대한통운',2500 ,'종류', '상품이름');
+INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);

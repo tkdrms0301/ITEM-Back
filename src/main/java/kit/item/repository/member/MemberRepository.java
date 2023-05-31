@@ -19,6 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByEmail(String email);
     boolean existsByNickname(String nickname);
 
+
     @Query("select new kit.item.dto.entity.member.MemberLoginInfoDto(m.nickname, m.roleType) from MEMBER m where m.email like :email")
     Optional<MemberLoginInfoDto> findMemberInfoByEmail(@Param("email") String email);
 
@@ -27,10 +28,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "where m.id=:id")
     Optional<MemberInfoDto> findMemberById(@Param("id") Long id);
 
-    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress, r.repairServiceType) from MEMBER m join fetch REPAIR_SHOP r where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.MechanicInfoDto(r.description, r.shopName, r.shopPhoneNumber, r.shopAddress, r.repairServiceType) from MEMBER m join fetch REPAIR_SHOP r on r.id = m.id where m.id=:id")
     Optional<MechanicInfoDto> findMechanicById(@Param("id") Long id);
 
-    @Query("select new kit.item.dto.entity.member.SellerInfoDto(s.companyName, s.companyNumber, s.companyPhoneNumber, s.description, s.companyAddress) from MEMBER m join fetch SELLER s where m.id=:id")
+    @Query("select new kit.item.dto.entity.member.SellerInfoDto(s.companyName, s.companyNumber, s.companyPhoneNumber, s.description, s.companyAddress) from MEMBER m join fetch SELLER s on s.id = m.id where m.id=:id")
     Optional<SellerInfoDto> findSellerById(@Param("id") Long id);
 
     @Modifying

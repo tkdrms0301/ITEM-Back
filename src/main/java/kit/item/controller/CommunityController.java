@@ -152,6 +152,12 @@ public class CommunityController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return ResponseEntity.ok(new MsgDto(true, "", communityService.getPostsCommentedByMe(memberId, page)));
     }
+    //get nickname, profile image, post count, comment count
+    @GetMapping("/user/myinfo")
+    public ResponseEntity<MsgDto> getMyInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return ResponseEntity.ok(new MsgDto(true, "", communityService.getMyInfo(memberId)));
+    }
 
     //get my devices with token
     @GetMapping("/user/devices")

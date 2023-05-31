@@ -21,9 +21,8 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
     username: root
-    password: tkd5957!@#
+    password: sk002760
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
       ddl-auto: create
@@ -36,7 +35,6 @@ spring:
         use_sql_comments: true
         highlight_sql : true
     generate-ddl: true
-
   sql:
     init:
       mode: always

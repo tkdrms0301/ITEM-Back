@@ -145,6 +145,17 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 
 # 제품;
 INSERT INTO product(product_name, category_brand_id) VALUES ('조립 PC', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 1); # 2;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 1); # 3;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 1); # 4;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로13 MPXT2KH/A', 1); # 5;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGN93KH/A CTO', 1); # 6;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 MVFM2KH/A', 1); # 7;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 1); # 8;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 1); # 9;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 1); # 10;
+INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 1); # 11;
+
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 17); # 4;
@@ -469,6 +480,29 @@ INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VA
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객의 개인정보와 기기 정보를 안전하게 보호해줘요', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('전자기기 정비소에서는 고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
 
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (1, 2, 1190000, '이 시대의 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '완본체','https://item0container.blob.core.windows.net/image/56fef2b9-e2c2-4741-ac14-25bfcffaf630_%EC%BB%B4%ED%84%B01.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/8684ab1c-6e4d-45f2-a63f-d9284046eb8b_%EC%BB%B4%EC%84%A41.jpg', 1);
+# INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
+
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (2, 2, 2300000, '이 시대의 두 번째로 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '2022 맥북에어 MLY33KH/A','https://item0container.blob.core.windows.net/image/dcfac119-d978-4477-a591-371075919cfb_%EC%BB%B42.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/38e2884e-8c95-45a3-b264-a63b085ac18d_%EC%BB%B4%EC%84%A42.jpg', 2);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (3, 2, 1500000, '이 시대의 세 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', '2023 맥북프로16 MNWA3KH/A','https://item0container.blob.core.windows.net/image/570c38da-3fbc-45d1-b114-ea08e4fbdc00_%EC%BB%B43.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/4bc09d9b-6b11-4c96-a65d-40b72b891530_%EC%BB%B4%EC%84%A43.jpg', 3);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (4, 2, 1120000, '이 시대의 네 번째로 최고의 컴퓨터','로젠택배',2500 ,'컴퓨터', '2020 맥북에어 MGNA3KH/A','https://item0container.blob.core.windows.net/image/18241f6d-456b-46c4-a744-4f7a230b40c8_%EC%BB%B44.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/87881647-ef56-49ef-b465-b668932763e5_%EC%BB%B4%EC%84%A44.jpg', 4);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (5, 2, 1199000, '이 시대의 다섯 번째로 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '삼성 게임용 230511 (16GB, M.2 500GB)','https://item0container.blob.core.windows.net/image/25653ccf-5af2-4cee-9c2b-357d0c803248_%EC%BB%B45.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/4073051e-0afb-4a0c-876b-2e28103a0da8_%EC%BB%B4%EC%84%A45.jpg', 5);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (6, 2, 3240000, '이 시대의 여섯 번째로 최고의 컴퓨터','로젠택배',2500 ,'컴퓨터', '삼성 PRO - I5M51 (16GB, M.2 512GB)','https://item0container.blob.core.windows.net/image/75074b7d-74d0-4ad6-bd44-16fedfd47908_%EC%BB%B46.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/9927ee9f-fddc-4d86-8085-089fc70b985e_%EC%BB%B4%EC%84%A46.jpg', 6);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (7, 2, 2870000, '이 시대의 일곱 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', '2020 맥북에어 MVH22KH/A CTO','https://item0container.blob.core.windows.net/image/f5d1abba-fd50-489b-9978-ce68909fe761_%EC%BB%B47.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/e408e9f4-e5ef-4ae6-9d6a-b7555ec6d877_%EC%BB%B4%EC%84%A47.jpg', 7);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (8, 2, 980000, '이 시대의 여덟 번째로 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '2020 맥북에어 MGN93KH/A CTO','https://item0container.blob.core.windows.net/image/8ac63165-ae78-4ed7-865f-bc2bb169eb1c_%EC%BB%B48.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/2f52ec69-895b-4459-b414-962f76121346_%EC%BB%B4%EC%84%A48.jpg', 8);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (9, 2, 3100000, '이 시대의 아홉 번째로 최고의 컴퓨터','로젠택배',2500 ,'컴퓨터', '삼성 PRO - I5M51 (16GB, M.2 512GB)','https://item0container.blob.core.windows.net/image/940a4559-8f82-452f-8c4a-eae4f6d8c5d0_%EC%BB%B49.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/bd3f1a8f-0cc3-475b-84b9-7e457297cc8c_%EC%BB%B4%EC%84%A49.jpg', 9);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (10, 2, 5420000, '이 시대의 열 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', 'LG 875 게이밍울트라560X','https://item0container.blob.core.windows.net/image/3cdc3c9f-ef31-4517-8aa6-8595ad1971c7_%EC%BB%B410.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3a74f00d-6c60-47d0-a743-b9c4fbf76c05_%EC%BB%B4%EC%84%A410.jpg', 10);
+
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 1, 3);
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 2, 3);
 INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 3, 3);
@@ -492,3 +526,4 @@ INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('�
 
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name ) VALUES (1, 2, 100000, '상품설명입니다.','대한통운',2500 ,'종류', '상품이름');
 INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
+

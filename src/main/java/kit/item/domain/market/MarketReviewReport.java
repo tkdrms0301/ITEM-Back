@@ -4,15 +4,15 @@ package kit.item.domain.market;
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
 import kit.item.enums.ReportType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 @Getter
 @NoArgsConstructor
 @Entity(name = "MARKET_REVIEW_REPORT")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class MarketReviewReport {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

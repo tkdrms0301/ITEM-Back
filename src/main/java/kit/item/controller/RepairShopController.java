@@ -198,13 +198,17 @@ public class RepairShopController {
     }
 
     @PostMapping("/reservation/accept")
-    public boolean acceptReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
-        return repairShopService.acceptReservation(requestReservationStateUpdateDto.getReservationId());
+    public boolean acceptReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                     @RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.acceptReservation(requestReservationStateUpdateDto.getReservationId(), memberId);
     }
 
     @PostMapping("/reservation/reject")
-    public boolean rejectReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
-        return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId());
+    public boolean rejectReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                     @RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId(), memberId);
     }
     @PostMapping("/reservation/cancel")
     public boolean cancelReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {

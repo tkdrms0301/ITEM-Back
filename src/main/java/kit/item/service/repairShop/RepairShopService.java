@@ -702,9 +702,11 @@ public class RepairShopService {
         }
         return false;
     }
-    public boolean acceptReservation(Long reservationId) {
+    public boolean acceptReservation(Long reservationId, Long memberId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
+            if (!reservation.get().getRepairShop().getId().equals(memberId))
+                return false;
             reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
             reservationRepository.save(reservation.get());
 
@@ -830,9 +832,12 @@ public class RepairShopService {
         return false;
     }
 
-    public boolean rejectReservation(Long reservationId) {
+    public boolean rejectReservation(Long reservationId, Long memberId) {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
+            if (!reservation.get().getRepairShop().getId().equals(memberId))
+                return false;
+
             reservation.get().setState(ReservationStateType.REJECTED.getKrName());
             reservationRepository.save(reservation.get());
 

@@ -14,13 +14,11 @@ import java.util.Optional;
 
 @Repository
 public interface RepairServiceReviewRepository extends JpaRepository<RepairServiceReview, Long> {
-    Optional<RepairServiceReview> findByRepairShopIdAndMemberId(Long shopId, Long memberId);
-    boolean existsByMemberIdAndRepairShopId(Long memberId, Long shopId);
-
-    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReviewDto(r.id, r.content, r.rating, rep.id, rep.content) " +
-            "from REPAIR_SERVICE_REVIEW r " +
-            "LEFT join fetch REPAIR_SERVICE_REPLY rep " +
-            "on r.id = rep.repairServiceReview.id " +
-            "where r.repairShop.id = :shopId")
+    @Query("SELECT new kit.item.dto.entity.repairShop.RepairServiceReviewDto(rw.id, rw.content, rw.rating, rr.id, rr.content, m.nickname, rs.nickname) " +
+            "FROM REPAIR_SERVICE_REVIEW rw " +
+            "LEFT JOIN REPAIR_SERVICE_REPLY rr ON rw.id = rr.repairServiceReview.id " +
+            "LEFT JOIN rw.member m " +
+            "LEFT JOIN rr.repairShop rs " +
+            "where rw.repairShop.id = :shopId")
     Page<RepairServiceReviewDto> findAllByRepairShopId(@Param(value = "shopId") Long shopId, Pageable page);
 }

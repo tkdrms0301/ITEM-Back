@@ -1,5 +1,6 @@
 package kit.item.dto.entity.repairShop;
 
+import kit.item.domain.repair.RepairServiceReply;
 import kit.item.domain.repair.RepairServiceReview;
 import lombok.*;
 
@@ -16,4 +17,6 @@ public class RepairServiceReviewDto {
     private Long rating;
     private Long replyId;
     private String replyContent;
+    private String userNickname;
+    private String repairShopNickname;
 }

@@ -2,10 +2,7 @@ package kit.item.controller;
 
 import kit.item.domain.it.Product;
 import kit.item.dto.common.MsgDto;
-import kit.item.dto.entity.device.BrandDto;
-import kit.item.dto.entity.device.CategoryDto;
-import kit.item.dto.entity.device.MyDeviceTypeDto;
-import kit.item.dto.entity.device.ProductDto;
+import kit.item.dto.entity.device.*;
 import kit.item.dto.request.device.*;
 import kit.item.repository.it.CategoryBrandRepository;
 import kit.item.service.device.DeviceManagementService;
@@ -95,8 +92,9 @@ public class DeviceManagementController {
     @PostMapping("/create-device")
     public ResponseEntity<MsgDto> createDevice(@RequestHeader(value = X_AUTH_TOKEN) String accessToken, @RequestBody RequestCreateDeviceDto requestCreateDeviceDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        if(deviceManagementService.createMyDevice(memberId, requestCreateDeviceDto)) {
-            return new ResponseEntity<>(new MsgDto(true, "기기 등록 성공", null), HttpStatus.OK);
+        DeviceDto myDevice = deviceManagementService.createMyDevice(memberId, requestCreateDeviceDto);
+        if(myDevice != null) {
+            return new ResponseEntity<>(new MsgDto(true, "기기 등록 성공", myDevice), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "기기 등록 실패", null), HttpStatus.OK);
     }
@@ -122,8 +120,9 @@ public class DeviceManagementController {
     @PostMapping("/create-part")
     public ResponseEntity<MsgDto> createPart(@RequestHeader(value = X_AUTH_TOKEN) String accessToken, @RequestBody RequestCreatePartDto requestCreatePartDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        if(deviceManagementService.createMyPart(memberId, requestCreatePartDto)) {
-            return new ResponseEntity<>(new MsgDto(true, "부품 등록 성공", null), HttpStatus.OK);
+        DeviceDto deviceDto = deviceManagementService.createMyPart(memberId, requestCreatePartDto);
+        if(deviceDto != null) {
+            return new ResponseEntity<>(new MsgDto(true, "부품 등록 성공", deviceDto), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "부품 등록 실패", null), HttpStatus.OK);
     }

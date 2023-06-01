@@ -3,6 +3,7 @@ package kit.item.controller;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import kit.item.domain.member.Member;
+import kit.item.domain.repair.RepairServiceReview;
 import kit.item.dto.common.MsgDto;
 import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.repairShop.EnableTimesDto;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,9 +62,15 @@ public class RepairShopController {
     }
 
     @DeleteMapping("/serviceList")
-    public boolean getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
+    public ResponseEntity getServiceList(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long serviceId) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.deleteServiceByServiceId(memberId, serviceId);
+
+        boolean result = repairShopService.deleteServiceByServiceId(memberId, serviceId);
+        if(result){
+            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+        }else
+            return new ResponseEntity<Boolean>(result, HttpStatus.BAD_REQUEST);
+
     }
 
     @GetMapping("/serviceList/info")
@@ -71,9 +79,14 @@ public class RepairShopController {
     }
 
     @PutMapping("/serviceList/info")
-    public boolean updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo) {
+    public ResponseEntity updateServiceInfo(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestServiceUpdateInfo requestServiceUpdateInfo) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+
+        boolean result = repairShopService.updateServiceByServiceId(memberId, requestServiceUpdateInfo);
+        if(result){
+            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+        }else
+            return new ResponseEntity<Boolean>(result, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/reservation/init")
@@ -287,9 +300,9 @@ public class RepairShopController {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 생성 성공", null), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 작성 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 생성 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 중복된 리뷰 작성", null), HttpStatus.OK);
     }
 
     @GetMapping("/review/list")
@@ -300,6 +313,8 @@ public class RepairShopController {
         }
         return new ResponseEntity<>(new MsgDto(true, "리뷰 조회", reviews), HttpStatus.OK);
     }
+
+
 
     @GetMapping("/review")
     public ResponseEntity<MsgDto> getReview(@RequestParam Long reviewId) {
@@ -314,6 +329,7 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReviewUpdateDto requestReviewUpdateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        System.out.println("requestReviewUpdateDto = " + requestReviewUpdateDto);
         boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", null), HttpStatus.OK);
@@ -321,8 +337,8 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패", null), HttpStatus.OK);
     }
 
-    @PostMapping("/review/delete")
-    public ResponseEntity<MsgDto> deleteReview(@RequestParam Long reviewId) {
+    @DeleteMapping("/review/delete")
+    public ResponseEntity<MsgDto> deleteReview(@RequestHeader Long reviewId) {
         boolean result = reviewService.deleteReview(reviewId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
@@ -334,6 +350,7 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReplyCreateDto requestReplyCreateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        System.out.println("requestReplyCreateDto = " + requestReplyCreateDto);
         boolean result = reviewService.createReply(requestReplyCreateDto, memberId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", null), HttpStatus.OK);
@@ -352,9 +369,11 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "답글 수정 실패", null), HttpStatus.OK);
     }
 
-    @PostMapping("/reply/delete")
-    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-                                              @RequestParam Long replyId) {
+
+
+    @DeleteMapping("/reply/delete")
+    public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long replyId) {
+        System.out.println("replyId = " + replyId);
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         boolean result = reviewService.deleteReply(replyId, memberId);
         if(result) {

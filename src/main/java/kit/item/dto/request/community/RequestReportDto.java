@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestReportDto {
+    private Long id;
     private String reason;
     private ReportType reportType;
 }

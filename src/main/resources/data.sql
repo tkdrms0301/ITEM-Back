@@ -19,18 +19,15 @@ VALUES ('대구광역시 복현로 130', 'test9', '정비사_ID', '정비사3_ID
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'repair-test3', '정비사2_ID', '정비사2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+VALUES ('경북 구미시 옥계2공단로 310-1', 'repair-test3', '정비사2_ID', '정비사4_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
-INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
-VALUES ('test description2', 'test shop2', '010-1234-5678', 9, 'NOTEBOOK', 'shop_address_test4');
 
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description2', 'test shop2', '010-1234-5678', 8, 'NOTEBOOK', 'shop_address_test8');
-
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
 VALUES ('test description3', 'test shop3', '010-1234-5678', 9, 'NOTEBOOK', 'shop_address_test9');
 

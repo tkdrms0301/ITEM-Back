@@ -1,17 +1,19 @@
 package kit.item.service.market;
 
 import kit.item.domain.market.MarketReview;
+import kit.item.domain.market.MarketReviewReport;
 import kit.item.domain.market.SaleProduct;
 import kit.item.domain.member.Member;
+import kit.item.domain.post.Post;
+import kit.item.domain.post.PostReport;
 import kit.item.dto.entity.device.CategoryDto;
-import kit.item.dto.entity.market.CategoryInfoDto;
-import kit.item.dto.entity.market.MarketReviewDto;
-import kit.item.dto.entity.market.SaleProductInfoDto;
-import kit.item.dto.entity.market.SaleProductReviewInfoDto;
+import kit.item.dto.entity.market.*;
 import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
+import kit.item.dto.request.community.RequestReportDto;
 import kit.item.dto.request.market.RequestMarketReviewCreateDto;
 import kit.item.dto.request.market.RequestMarketReviewUpdateDto;
 import kit.item.repository.it.CategoryRepository;
+import kit.item.repository.market.MarketReviewReportRepository;
 import kit.item.repository.market.MarketReviewRepository;
 import kit.item.repository.market.SaleProductRepository;
 import kit.item.repository.member.MemberRepository;
@@ -38,7 +40,9 @@ public class MarketService {
     private final MarketReviewRepository marketReviewRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
-    private static final int PAGE_SIZE = 10;
+    private final MarketReviewReportRepository marketReviewReportRepository;
+
+    private final int DELETE_REVIEW_COUNT = 10;
 
 
     //카테고리 id로 찾기
@@ -46,9 +50,10 @@ public class MarketService {
 
         List<SaleProductInfoDto> saleProductInfoDtoList = new ArrayList<>();
         List<SaleProduct> saleProducts = saleProductRepository.findByProduct_CategoryBrand_Category_Id(categoryId);
+        System.out.println("saleProducts = " + saleProducts);
         saleProducts.stream().forEach(
                 saleProduct -> {
-
+                    System.out.println("saleProduct = " + saleProduct);
                     List<String> imgDetailUrlList = new ArrayList<>();
                     saleProduct.getImageDetails().stream().forEach(
                             imageDetail -> {
@@ -144,5 +149,76 @@ public class MarketService {
         return categoryInfoDtoList;
     }
 
+    public boolean createMarketReview(Long memberId, RequestMarketReviewCreateDto requestMarketReviewCreateDto) {
+        MarketReview exsistMarketReview = marketReviewRepository.findByMember_IdAndSaleProduct_Id(memberId, requestMarketReviewCreateDto.getSaleProductId());
 
+        if (exsistMarketReview != null) {
+            return false;
+        }
+
+        Member member = memberRepository.findById(memberId).get();
+        SaleProduct saleProduct = saleProductRepository.findById(requestMarketReviewCreateDto.getSaleProductId()).get();
+
+        MarketReview marketReview = MarketReview.builder()
+                .member(member)
+                .comment(requestMarketReviewCreateDto.getComment())
+                .date(LocalDateTime.now())
+                .rating(requestMarketReviewCreateDto.getRating())
+                .saleProduct(saleProduct)
+                .build();
+        marketReviewRepository.save(marketReview);
+        return true;
+    }
+
+    public boolean updateMarketReview(Long memberId, RequestMarketReviewUpdateDto requestMarketReviewUpdateDto) {
+        MarketReview beforeMarketReview = marketReviewRepository.findByMember_IdAndSaleProduct_Id(memberId, requestMarketReviewUpdateDto.getSaleProductId());
+
+        beforeMarketReview.setComment(requestMarketReviewUpdateDto.getComment());
+        beforeMarketReview.setDate(LocalDateTime.now());
+        beforeMarketReview.setRating(requestMarketReviewUpdateDto.getRating());
+
+        marketReviewRepository.save(beforeMarketReview);
+
+        return true;
+    }
+
+    public boolean deleteMarketReview(Long id) {
+        Optional<MarketReview> marketReview = marketReviewRepository.findById(id);
+        if (marketReview.isPresent()){
+            marketReviewRepository.delete(marketReview.get());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean reportMarketReview(Long memberId, RequestReportDto requestReportDto) {
+        Optional<MarketReview> marketReview = marketReviewRepository.findById(requestReportDto.getId());
+        if (marketReview.isPresent()){
+
+            MarketReviewReport byMemberIdAndMarketReviewId = marketReviewReportRepository.findByMember_IdAndMarketReview_Id(memberId, requestReportDto.getId());
+            if (byMemberIdAndMarketReviewId != null){
+                return false;
+            }
+
+            MarketReviewReport marketReviewReport = MarketReviewReport.builder()
+                    .reason(requestReportDto.getReason())
+                    .reportType(requestReportDto.getReportType())
+                    .member(Member.builder()
+                            .id(memberId)
+                            .build())
+                    .marketReview(marketReview.get())
+                    .build();
+            marketReviewReportRepository.save(marketReviewReport);
+
+            ReportCountDto reportCountDto = marketReviewReportRepository.countBymarketReviewId(requestReportDto.getId());
+
+            if (reportCountDto.getCount() >= DELETE_REVIEW_COUNT){
+                marketReviewReportRepository.deleteByMarketReview(marketReview.get());
+                marketReviewRepository.delete(marketReview.get());
+            }
+
+            return true;
+        }
+        return false;
+    }
 }

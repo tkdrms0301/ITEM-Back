@@ -342,7 +342,7 @@ public class RepairShopController {
     }
 
     @DeleteMapping("/review/delete")
-    public ResponseEntity<MsgDto> deleteReview(@RequestHeader Long reviewId) {
+    public ResponseEntity<MsgDto> deleteReview(Long reviewId) {
         boolean result = reviewService.deleteReview(reviewId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);

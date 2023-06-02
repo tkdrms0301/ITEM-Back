@@ -13,16 +13,16 @@ spring:
     multipart:
       max-file-size: 30MB
       max-request-size: 30MB
-#  datasource:
-#    url: jdbc:mysql://itemtest.mysql.database.azure.com:3306/item?serverTimezone=Asia/Seoul
-#    username: adminuser
-#    password: 1q2w3e4r!
-#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
-    username: root
-    password: sk002760
+    url: jdbc:mysql://itemtest.mysql.database.azure.com:3306/item?serverTimezone=Asia/Seoul
+    username: adminuser
+    password: 1q2w3e4r!
     driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
+#    username: root
+#    password: sk002760
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: create
@@ -42,3 +42,5 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
+serverUrl: https://f657-202-31-138-11.ngrok-free.app

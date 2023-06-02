@@ -26,13 +26,22 @@ public class AzureBlobService {
 	BlobContainerClient blobContainerClient;
 
 	public String upload(MultipartFile multipartFile) throws IOException {
+		if(
+				!multipartFile.getContentType().equals("image/png") &&
+				!multipartFile.getContentType().equals("image/jpg") &&
+				!multipartFile.getContentType().equals("image/jpeg") &&
+				!multipartFile.getContentType().equals("image/gif") &&
+				!multipartFile.getContentType().equals("image/webp")
+		)
+			return "NOT_IMAGE";
+		else{
+			// Todo UUID
+			String fileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
+			BlobClient blob = blobContainerClient.getBlobClient(fileName);
+			blob.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
 
-		// Todo UUID
-		String fileName = UUID.randomUUID().toString() + "_" + multipartFile.getOriginalFilename();
-		BlobClient blob = blobContainerClient.getBlobClient(fileName);
-		blob.upload(multipartFile.getInputStream(), multipartFile.getSize(), true);
-
-		return blob.getBlobUrl();
+			return blob.getBlobUrl();
+		}
 	}
 
 	public byte[] getFile(String fileName) throws URISyntaxException {

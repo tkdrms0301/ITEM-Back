@@ -17,6 +17,7 @@ import kit.item.repository.member.MemberRepository;
 import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,9 @@ public class CommunityService {
     private final PostImageRepository postImageRepository;
 
     private final MemberRepository memberRepository;
+
+    @Value("${serverUrl}")
+    private String serverUrl;
 
     public ResponsePostListDto getPostsList(int page) {
         List<PostDto> posts = getPosts(page, PAGE_SIZE);
@@ -109,7 +113,7 @@ public class CommunityService {
         }
         String json = "{\"title\":\"" + title + "\",\"content\":\"" + content + "\",\"productId\":\"" + productId + "\"}";
 //        try {
-//            String res = HttpUtil.postJson("http://localhost:5000/getCommunityData", json);
+//            String res = HttpUtil.postJson(serverUrl+"/getCommunityData", json);
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }

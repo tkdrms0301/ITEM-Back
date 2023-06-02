@@ -25,7 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +43,9 @@ public class MarketService {
     private final MarketReviewReportRepository marketReviewReportRepository;
 
     private final int DELETE_REVIEW_COUNT = 10;
+
+    @Value("${serverUrl}")
+    private String serverUrl;
 
 
     //카테고리 id로 찾기

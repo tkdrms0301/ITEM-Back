@@ -1,7 +1,5 @@
 package kit.item.service.market;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kit.item.domain.market.MarketReview;
 import kit.item.domain.market.MarketReviewReport;
 import kit.item.domain.market.SaleProduct;
@@ -12,8 +10,6 @@ import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.market.*;
 import kit.item.dto.entity.repairShop.RepairServiceReviewDto;
 import kit.item.dto.request.community.RequestReportDto;
-import kit.item.dto.request.data_server.RequestPostDto;
-import kit.item.dto.request.data_server.RequestReviewDto;
 import kit.item.dto.request.market.RequestMarketReviewCreateDto;
 import kit.item.dto.request.market.RequestMarketReviewUpdateDto;
 import kit.item.repository.it.CategoryRepository;
@@ -21,14 +17,11 @@ import kit.item.repository.market.MarketReviewReportRepository;
 import kit.item.repository.market.MarketReviewRepository;
 import kit.item.repository.market.SaleProductRepository;
 import kit.item.repository.member.MemberRepository;
-import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +39,6 @@ public class MarketService {
     private final MarketReviewReportRepository marketReviewReportRepository;
 
     private final int DELETE_REVIEW_COUNT = 10;
-
-    @Value("${serverUrl}")
-    private String serverUrl;
 
 
     //카테고리 id로 찾기
@@ -168,28 +158,8 @@ public class MarketService {
             return false;
         }
 
-
-
         Member member = memberRepository.findById(memberId).get();
         SaleProduct saleProduct = saleProductRepository.findById(requestMarketReviewCreateDto.getSaleProductId()).get();
-
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        RequestReviewDto requestReviewDto = RequestReviewDto.builder()
-                .productId(saleProduct.getProduct().getId())
-                .review(requestMarketReviewCreateDto.getComment())
-                .build();
-        String json = null;
-        try {
-            json = objectMapper.writeValueAsString(requestReviewDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String res = HttpUtil.postJson(serverUrl+"/sentiment-classification", json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         MarketReview marketReview = MarketReview.builder()
                 .member(member)

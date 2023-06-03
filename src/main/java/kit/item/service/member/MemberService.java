@@ -134,6 +134,21 @@ public class MemberService implements UserDetailsService {
         return false;
     }
 
+    public boolean emailCheckUpdate(String email, Long memberId) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByEmailAndIdNot(email, memberId);
+    }
+
+    public boolean nicknameCheckUpdate(String nickname, Long memberId) {
+        log.info("MemberService.emailCheck");
+        return memberRepository.existsByNicknameAndIdNot(nickname, memberId);
+    }
+
+    public boolean companyNumberCheckUpdate(String companyNumber, Long memberId) {
+        log.info("MemberService.companyNumberCheck");
+        return sellerRepository.existsByCompanyNumberAndIdNot(companyNumber, memberId);
+    }
+
     public MemberLoginInfoDto getLoginInfo(RequestLoginDto requestLoginDto) {
         log.info("MemberService.getLoginInfo");
         Optional<MemberLoginInfoDto> memberInfoDto = memberRepository.findMemberInfoByEmail(requestLoginDto.getEmail());

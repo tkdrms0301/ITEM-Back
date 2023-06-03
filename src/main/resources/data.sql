@@ -1,9 +1,9 @@
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 500000, 'MEMBER', '농협 1234');
+VALUES ('test address1', 'test1', '일반유저_ID', '일반유저_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address2', 'test2', '판매자_ID', '판매자_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 20000, 'SELLER', '기업 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사1_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+VALUES ('경북 구미시 옥계2공단로 310-1', 'test3', '정비사_ID', '정비사_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test4', '일반유저2_ID', '일반유저2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
@@ -13,45 +13,22 @@ VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$1
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 거양길 15', 'test8', '정비사_ID', '정비사2_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-9174-0997', 500000, 'MECHANIC', '대구은행 1234');
-INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('대구광역시 복현로 130', 'test9', '정비사_ID', '정비사3_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+VALUES ('test address1', 'test8', '일반유저6_ID', '일반유저6_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
-INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'repair3', '정비사4_ID', '정비사4_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
-INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('경북 구미시 옥계2공단로 310-1', 'repair-test3', '정비사2_ID', '정비사4_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-8765-1234', 500000, 'MECHANIC', '대구은행 1234');
+
+
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
-VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test1');
-INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
-VALUES ('test description2', 'test shop2', '010-1234-5678', 8, 'NOTEBOOK', 'shop_address_test2');
-INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
-VALUES ('test description3', 'test shop3', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
+VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
 
 INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
-VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검1', '점검', 25000, 3);
+VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', '점검', 25000, 3);
 INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결1','교환', 25000 , 3);
+VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결','교환', 25000 , 3);
 INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리1', '수리', 100000,3);
-
-
-INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
-VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '아이폰 폰 점검2', '점검', 25000, 8);
-INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결2','교환', 25000 , 8);
-INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리2', '수리', 100000, 8);
-
-INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
-VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검3', '점검', 25000, 9);
-INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('자체 프로그램 오류 발생 시 해결해드립니다.', '소프트웨어 오류 해결3','교환', 25000 , 9);
-INSERT INTO repair_service(description, service_name, service_type,  service_price, repair_shop_id)
-VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리3', '수리', 100000,9);
+VALUES ('노트북 및 데스크탑 수리해드립니다.', '노트북/데스크탑 수리', '수리', 100000,3);
 
 INSERT INTO official_repair_shop(address, description, name, phone_number)
 VALUES ('경북 구미시 옥계2공단로 310-1', 'test description2', 'test shop2', '010-1234-5678');
@@ -79,7 +56,7 @@ INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'ht
 INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/스위치허브.webp', true); # 21;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/모니터.webp', true); # 22;
 
-INSERT INTO brand(brand_name, is_finished) VALUES ('조립 PC', true); #1;
+INSERT INTO brand(brand_name, is_finished) VALUES ('완본체', true); #1;
 INSERT INTO brand(brand_name, is_finished) VALUES ('삼성', false); #2;
 INSERT INTO brand(brand_name, is_finished) VALUES ('LG', false); #3;
 INSERT INTO brand(brand_name, is_finished) VALUES ('기가바이트', false); #4;
@@ -141,7 +118,7 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('조립 PC', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 1); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 1); # 3;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 1); # 4;
@@ -151,7 +128,6 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('2019 맥북에어 
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MVH22KH/A CTO', 1); # 8;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2017 맥북프로15 MPTV2KH/A', 1); # 9;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로13 MLVP2KH/A', 1); # 10;
-INSERT INTO product(product_name, category_brand_id) VALUES ('2016 맥북프로15 MLH32KH/A', 1); # 11;
 
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 17); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 17); # 3;
@@ -202,13 +178,10 @@ INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_i
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
+
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 2, null);
-
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 2, 10);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 4, null);
 
 # 포인트 이용내역;
 set @now = '';
@@ -427,60 +400,12 @@ INSERT INTO post (content, date, report, title, member_id) VALUES ('Acer Swift 3
 INSERT INTO post (content, date, report, title, member_id) VALUES ('Microsoft Surface Laptop 4: 우아한 디자인과 탁월한 터치스크린, 원활한 성능으로 유연한 사용자 경험을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 7 DAY), 0, 'Nintendo Switch Lite: 휴대성과 저렴한 가격으로 즐기는 멋진 게임 경험', 3);
 INSERT INTO post (content, date, report, title, member_id) VALUES ('LG Gram 17: 가벼운 무게에도 불구하고 큰 화면과 장기간 사용 가능한 배터리로 탁월한 이동성과 성능을 제공하는 노트북입니다.', DATE_ADD(CURDATE(),INTERVAL 3 DAY), 0, 'Samsung QLED Q80T: 생생한 화질과 탁월한 게이밍 성능을 갖춘 스마트 TV', 1);
 
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 4);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 5);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 6);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 7);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 8);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 1, 1);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 4);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 5);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 6);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 7);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 8);
-INSERT INTO comment (content, date, post_id, member_id) VALUES ('좋은 정보 감사합니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 2, 1);
-
 INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
+VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 2 );
 INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (1, 1);
 
-INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (4, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 및 데스크탑 수리해드립니다.','2023-05-01 17:30:00', 12);
-INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (2, 1);
-
-INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
-INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (3, 1);
-
-INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 3, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
-INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (4, 1);
-
-INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 9, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
-INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (5, 7);
-
-INSERT INTO reservation(member_id, repair_shop_id, reservation_date, state, comment, application_date, it_device_id)
-VALUES (1, 9, '2023-06-01 17:30:00',  '예약 대기',  '노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..','2023-05-01 17:30:00', 2 );
-INSERT INTO repair_service_reservation(reservation_id, repair_service_id) VALUES (6, 7);
-
-# insert into response(comment, cost_max, cost_min, max_time, min_time, response_date) values ('test1', 10000, 1000, 30, 0, CURDATE());
-# insert into response(comment, cost_max, cost_min, max_time, min_time, response_date) values ('test2', 10000, 1000, 30, 0, CURDATE());
-# insert into response(comment, cost_max, cost_min, max_time, min_time, response_date) values ('test3', 10000, 1000, 30, 0, CURDATE());
-# insert into response(comment, cost_max, cost_min, max_time, min_time, response_date) values ('test4', 10000, 1000, 30, 0, CURDATE());
-
-INSERT INTO estimate(date, description, state, it_device_id, member_id, repair_shop_id)
-VALUES ('2023-08-01 17:30:00', '33노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..', '응답 대기', 1, 1, 3);
-INSERT INTO estimate(date, description, state, it_device_id, member_id, repair_shop_id)
-VALUES ('2023-08-01 17:30:00', '33노트북 배터리가 너무 빨리 닳아요 점검 부탁드립니다..', '응답 대기', 2, 1, 3);
-INSERT INTO estimate(date, description, state, it_device_id, member_id, repair_shop_id)
-VALUES ('2023-08-01 17:30:00', '99너무 빨리 닳아요 점검 부탁드립니다..', '응답 대기', 9, 2, 9);
-INSERT INTO estimate(date, description, state, it_device_id, member_id, repair_shop_id)
-VALUES ('2023-08-01 17:30:00', '99너무 빨리 닳아요 점검 부탁드립니다..', '응답 대기', 10, 2, 9);
-
-
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 빨라서 좋았습니다.', 5, 1, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 4, 1, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('깔끔하게 고쳐졌어요.', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('안고쳐져서 고생했는데 감사합니다.', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('자주 이용할게요', 5, 1, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리가 조금 늦어져서 아쉬워여.', 4, 4, 3);
@@ -496,9 +421,9 @@ INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VA
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('친절하고 상세한 설명으로 문제를 해결해줘요!', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 5, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('수리 시간을 최소화하여 불편을 최대한 줄여줘요!', 5, 1, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로 해주면 좋았을 텐데..', 3, 4, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고장 진단과 수리 후에도 품질 보증을 제공해요', 4, 4, 3);
-INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속한 서비스와 함께 문제 예방을 위한 유용해요', 4, 6, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('원격으로도 문제를 진단하고 해결해줘요!', 5, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
+INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('신속한 서비스와 함께 문제 예방을 위한 유용해요', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객의 개인정보와 기기 정보를 안전하게 보호해줘요', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('전자기기 정비소에서는 고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
 
@@ -525,29 +450,53 @@ INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0con
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (10, 2, 5420000, '이 시대의 열 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', 'LG 875 게이밍울트라560X','https://item0container.blob.core.windows.net/image/3cdc3c9f-ef31-4517-8aa6-8595ad1971c7_%EC%BB%B410.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3a74f00d-6c60-47d0-a743-b9c4fbf76c05_%EC%BB%B4%EC%84%A410.jpg', 10);
 
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 1, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 2, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 3, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 4, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 5, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 6, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 7, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 8, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 9, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 10, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 11, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 12, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 13, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 14, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 15, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 16, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 17, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 18, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 19, 3);
-INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('고객님의 만족도를 높이기 위해 노력하겠습니다.', 20, 3);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (11, 2, 1190000, '이 시대의 최고의 노트북','대한통운',2500 ,'노트북', '삼성 갤럭시 북3 프로 NT940XFG-KC51E','https://item0container.blob.core.windows.net/image/8117f692-6082-4d22-8c94-e47133050cca_%EB%85%B81.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/b834dcdb-aa1e-48f2-8b0a-cbbfafd360a9_%EB%85%B8%EC%84%A41.jpg', 11);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (12, 2, 2300000, '이 시대의 두 번째로 최고의 노트북','대한통운',2500 ,'노트북', '삼성 갤럭시 북3 프로 NT960XFG-KC71G','https://item0container.blob.core.windows.net/image/2b0f9bed-242c-40e3-9871-b6fe1f7f3f60_%EB%85%B82.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/557a7be7-cce6-4681-9bbf-b9c996c8a10d_%EB%85%B8%EC%84%A42.jpg', 12);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (13, 2, 1500000, '이 시대의 세 번째로 최고의 노트북','우체국 택배',2500 ,'노트북', '2017 맥북프로13 MPXT2KH/A','https://item0container.blob.core.windows.net/image/fcef06b8-856a-45b8-97c7-28ea323ba646_%EB%85%B83.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/b087901e-e354-477f-a396-88a1de6f6545_%EB%85%B8%EC%84%A43.jpg', 13);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (14, 2, 1120000, '이 시대의 네 번째로 최고의 노트북','로젠택배',2500 ,'노트북', '맥북에어 M1칩 13형 256GB Space Gray - MGN63KH/A','https://item0container.blob.core.windows.net/image/f1b4823d-07a3-4de4-b48f-737792e15b39_%EB%85%B84.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/38af32ae-fde5-48f1-baa4-81654b8cb6db_%EB%85%B8%EC%84%A44.jpg', 14);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (15, 2, 1199000, '이 시대의 다섯 번째로 최고의 노트북','대한통운',2500 ,'노트북', '2023 990그램 노트북 15Z90RT-G.AA50K','https://item0container.blob.core.windows.net/image/acd807af-f893-4ca5-9124-1859588a408a_%EB%85%B85.png' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3cc266b1-0287-4a13-a21c-b810261ab8e0_%EB%85%B8%EC%84%A45.jpg', 15);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (16, 2, 3240000, '이 시대의 여섯 번째로 최고의 노트북','로젠택배',2500 ,'노트북', '삼성 PRO - I5M51 (16GB, M.2 512GB)','https://item0container.blob.core.windows.net/image/7d917543-763c-448b-8130-39050a18a0d6_%EB%85%B86.png' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/0b699467-616f-45e1-8085-a1b1b6a52812_%EB%85%B8%EC%84%A46.png', 16);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (17, 2, 2870000, '이 시대의 일곱 번째로 최고의 노트북','우체국 택배',2500 ,'노트북', '2020 맥북에어 MVH22KH/A CTO','https://item0container.blob.core.windows.net/image/4a0eb67f-1a2c-47d2-b510-a9e46b5242cc_%EB%85%B87.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/846ea5d7-b992-438f-9a34-a14f1d4585fd_%EB%85%B8%EC%84%A47.jpg', 17);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (18, 2, 980000, '이 시대의 여덟 번째로 최고의 노트북','대한통운',2500 ,'노트북', '2020 맥북에어 MGN93KH/A CTO','https://item0container.blob.core.windows.net/image/d3b596fa-0577-46d0-a2c7-f62b681c8f75_%EB%85%B88.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/486efafe-699f-4800-9837-8c64f7fdc177_%EB%85%B8%EC%84%A48.jpg', 18);
 
-INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name ) VALUES (1, 2, 100000, '상품설명입니다.','대한통운',2500 ,'종류', '상품이름');
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('배송도 빠르고 성능 좋네요', '2021-05-01 17:30:00', 4, 4, 1);
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 3, 5, 1);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (26, 2, 1190000, '이 시대의 최고의 휴대폰','대한통운',2500 ,'휴대폰', '삼성전자 갤럭시S22 울트라','https://item0container.blob.core.windows.net/image/26956f2a-59de-4de9-940d-b736d1027d4f_%ED%8F%B01.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/4a9e85b3-2d60-4a97-bfd9-988c924efffa_%ED%8F%B0%EC%84%A41.jpg', 19);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (27, 2, 2300000, '이 시대의 두 번째로 최고의 휴대폰','대한통운',2500 ,'휴대폰', '삼성전자 갤럭시S23','https://item0container.blob.core.windows.net/image/17923178-23e9-4b42-b5b0-c24604195150_%ED%8F%B02.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/9c7a41d7-6938-4fee-9ae1-0f9abce63f0c_%ED%8F%B0%EC%84%A42.jpg', 20);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (28, 2, 1500000, '이 시대의 세 번째로 최고의 휴대폰','우체국 택배',2500 ,'휴대폰', '삼성전자 갤럭시S23 울트라','https://item0container.blob.core.windows.net/image/a08443ef-795f-497d-82f4-b903744a5b8c_%ED%8F%B03.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/f2241a22-3ab9-454d-82fc-e9db15670e87_%ED%8F%B0%EC%84%A43.jpg', 21);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (29, 2, 1120000, '이 시대의 네 번째로 최고의 휴대폰','로젠택배',2500 ,'휴대폰', '삼성전자 Z 플립','https://item0container.blob.core.windows.net/image/96a5e074-2aa7-4000-ab0b-96805226e1da_%ED%8F%B04.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/727231c0-03fa-4195-9686-f83b48373125_%ED%8F%B0%EC%84%A44.jpg', 22);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (30, 2, 1199000, '이 시대의 다섯 번째로 최고의 휴대폰','대한통운',2500 ,'휴대폰', 'APPLE 아이폰14 프로','https://item0container.blob.core.windows.net/image/a30bd719-2f09-4a09-b88c-5694606422ee_%ED%8F%B05.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/aa3ad62b-89b5-418b-a9b7-ce9923ec7f18_%ED%8F%B0%EC%84%A45.jpg', 23);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (31, 2, 3240000, '이 시대의 여섯 번째로 최고의 휴대폰','로젠택배',2500 ,'휴대폰', 'APPLE 아이폰14','https://item0container.blob.core.windows.net/image/bbade028-c08e-434b-a47c-591d78eae7b2_%ED%8F%B06.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/dc8b3ae5-3370-4dcc-9804-54a1c935bef4_%ED%8F%B0%EC%84%A46.jpg', 24);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (32, 2, 2870000, '이 시대의 일곱 번째로 최고의 휴대폰','우체국 택배',2500 ,'휴대폰', 'APPLE 아이폰13 미니','https://item0container.blob.core.windows.net/image/f6814c46-78b7-433a-a83c-ab9cfa1c7eac_%ED%8F%B07.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/7d1a2abe-daf1-474a-b6e7-dd9027c609a3_%ED%8F%B0%EC%84%A47.jpg', 25);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (33, 2, 980000, '이 시대의 여덟 번째로 최고의 휴대폰','대한통운',2500 ,'휴대폰', 'APPLE 아이폰14 프로 맥스','https://item0container.blob.core.windows.net/image/9d123049-cbc9-4b74-a9d8-9e7e9a80d60f_%ED%8F%B08.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/9993a5a5-e1f9-4b11-9218-29968b3d3320_%ED%8F%B0%EC%84%A48.jpg', 26);
 
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (37, 2, 1190000, '이 시대의 최고의 테블릿','대한통운',2500 ,'테블릿', '삼성전자 갤럭시탭S8','https://item0container.blob.core.windows.net/image/3542465d-9116-4542-96d4-f905cb033323_%ED%85%8C1.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/ac8644e9-6c7d-4c3a-8963-82005c144f4b_%ED%85%8C%EC%84%A41.jpg', 27);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (38, 2, 2300000, '이 시대의 두 번째로 최고의 테블릿','대한통운',2500 ,'테블릿', '삼성전자 갤럭시탭S7','https://item0container.blob.core.windows.net/image/0345e871-3574-47f8-a314-994add0f945a_%ED%85%8C2.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/602081d2-3c8c-4c2c-b781-21f791ee7def_%ED%85%8C%EC%84%A42.jpg', 28);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (39, 2, 1500000, '이 시대의 세 번째로 최고의 테블릿','우체국 택배',2500 ,'테블릿', '삼성전자 갤럭시탭A8','https://item0container.blob.core.windows.net/image/7023c757-c5d0-4538-9785-cb3859b8b48f_%ED%85%8C3.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/cf9d76ef-683c-4ff2-8eab-930118c3f0d8_%ED%84%B0%EC%84%A43.jpg', 29);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (40, 2, 1120000, '이 시대의 네 번째로 최고의 테블릿','로젠택배',2500 ,'테블릿', '레노버 Legion Y700','https://item0container.blob.core.windows.net/image/c39c42a1-d7fe-4151-9707-147a7c9f8353_%ED%85%8C4.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/0b6fdd93-0935-4245-8012-3cbaefa212b9_%ED%85%8C%EC%84%A44.jpg', 30);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (41, 2, 1199000, '이 시대의 다섯 번째로 최고의 테블릿','대한통운',2500 ,'테블릿', '레노버 XiaoxinPad 2022','https://item0container.blob.core.windows.net/image/74e92999-a31c-4f8f-8162-b1fb12faa42b_%ED%85%8C5.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/093ef8af-230b-4565-ae6c-2a9acb8f60ea_%ED%85%8C%EC%84%A45.jpg', 31);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (42, 2, 3240000, '이 시대의 여섯 번째로 최고의 테블릿','로젠택배',2500 ,'테블릿', 'APPLE 아이패드 프로 11','https://item0container.blob.core.windows.net/image/fa230e88-cc93-4f0f-a138-2c4651a9e08d_%ED%85%8C6.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/a213a31d-67bd-49b1-9410-c0f0f1404d30_%ED%85%8C%EC%84%A46.jpg', 32);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (43, 2, 2870000, '이 시대의 일곱 번째로 최고의 테블릿','우체국 택배',2500 ,'테블릿', 'APPLE 아이패드 프로 12.9','https://item0container.blob.core.windows.net/image/2329a704-1396-4624-bb1d-bc6059fa0ecd_%ED%85%8C7.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/55b06838-6991-4deb-8b12-bb258d419ff8_%ED%85%8C%EC%84%A47.jpg', 33);
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (44, 2, 980000, '이 시대의 여덟 번째로 최고의 테블릿','대한통운',2500 ,'테블릿', 'APPLE 아이패드 9세대','https://item0container.blob.core.windows.net/image/04b72400-9f37-4294-916f-d7586cf0d021_%ED%85%8C8.jpg' );
+INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3227cfd4-f01b-40a7-b649-f507bf863d28_%ED%85%8C%EC%84%A48.jpg', 34);

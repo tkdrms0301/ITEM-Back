@@ -350,6 +350,15 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패", null), HttpStatus.OK);
     }
 
+    @PostMapping("/review/report")
+    public ResponseEntity<MsgDto> reportReview(Long reviewId) {
+        boolean result = reviewService.deleteReview(reviewId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패", null), HttpStatus.OK);
+    }
+
     @PostMapping("/reply/create")
     public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReplyCreateDto requestReplyCreateDto) {

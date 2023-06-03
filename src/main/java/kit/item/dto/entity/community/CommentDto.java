@@ -30,7 +30,7 @@ public class CommentDto {
                 .date(comment.getDate())
                 .report(comment.getReport())
                 .memberId(comment.getMember().getId())
-                .memberName(comment.getMember().getName())
+                .memberName(comment.getMember().getNickname())
                 .comments(comment.getChildrenComment() == null ? null : comment.getChildrenComment().stream()
                         .map(CommentDto::fromComment)
                         .toList())

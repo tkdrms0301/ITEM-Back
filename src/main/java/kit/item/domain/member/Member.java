@@ -10,10 +10,7 @@ import kit.item.domain.post.Comment;
 import kit.item.domain.post.CommentReport;
 import kit.item.domain.post.Post;
 import kit.item.domain.post.PostReport;
-import kit.item.domain.repair.Estimate;
-import kit.item.domain.repair.RepairResultReport;
-import kit.item.domain.repair.RepairServiceReview;
-import kit.item.domain.repair.Reservation;
+import kit.item.domain.repair.*;
 import kit.item.enums.RoleType;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -118,9 +115,17 @@ public class Member implements UserDetails {
     @ToString.Exclude
     private List<RepairResultReport> repairResultReports = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "member")
     @ToString.Exclude
     private Subscription subscription;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @ToString.Exclude
+    private List<RepairServiceReviewReport> repairServiceReviewReports = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
+    @ToString.Exclude
+    private List<RepairServiceReplyReport> repairServiceReplyReports = new ArrayList<>();
 
     public void setRepairServiceReviews(List<RepairServiceReview> repairServiceReviews) {
         this.repairServiceReviews = repairServiceReviews;

@@ -37,6 +37,10 @@ public class DataController {
         }
         List<String> words = requestDataDto.getWords();
         List<Long> products = requestDataDto.getProducts();
+
+        List<String> preprocessingWords = new ArrayList<>();
+
+
         List<DataResultDto> dataList = dataService.getDataList(words, products);
         if (dataList.isEmpty()) {
             return new ResponseEntity<>(new MsgDto(true, "조회된 제품 데이터가 없음", new ArrayList<>()), HttpStatus.OK);

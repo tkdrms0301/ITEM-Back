@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import kit.item.domain.member.RepairShop;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,4 +29,8 @@ public class RepairServiceReply {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repair_shop_id")
     private RepairShop repairShop;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairServiceReply")
+    @ToString.Exclude
+    private List<RepairServiceReplyReport> repairServiceReplyReports = new ArrayList<>();
 }

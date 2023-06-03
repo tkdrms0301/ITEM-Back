@@ -548,4 +548,6 @@ INSERT INTO repair_service_reply(content, review_id, repair_shop_id) VALUES ('�
 
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name ) VALUES (1, 2, 100000, '상품설명입니다.','대한통운',2500 ,'종류', '상품이름');
 INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
+INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('배송도 빠르고 성능 좋네요', '2021-05-01 17:30:00', 4, 4, 1);
+INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 3, 5, 1);
 

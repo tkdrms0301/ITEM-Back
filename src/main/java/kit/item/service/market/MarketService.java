@@ -19,10 +19,6 @@ import kit.item.repository.market.SaleProductRepository;
 import kit.item.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,8 +121,14 @@ public class MarketService {
         );
 
         //평균 리뷰 점수
-        Long avgRating = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().mapToLong(marketReview -> marketReview.getRating()).sum();
+        List<MarketReview> reviews = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId());
+        double avgRating = reviews.stream()
+                .mapToLong(MarketReview::getRating)
+                .average()
+                .orElse(0);
 
+// 평균 리뷰 점수를 출력합니다.
+        System.out.println("평균 리뷰 점수: " + avgRating);
         //상품 리스트에 추가
         SaleProductInfoDto saleProductInfoDto = SaleProductInfoDto.builder()
                 .id(saleProduct.getId())

@@ -18,14 +18,19 @@ spring:
 #    username: adminuser
 #    password: 1q2w3e4r!
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
+#    username: root
+#    password: tkd5957!@#
+#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://localhost:3306/item?serverTimezone=Asia/Seoul
-    username: root
-    password: tkd5957!@#
+    url: jdbc:mysql://20.214.202.113:3306/item?serverTimezone=Asia/Seoul
+    username: adminuser
+    password: 1q2w3e4r
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     defer-datasource-initialization: true
 
     properties:
@@ -35,10 +40,12 @@ spring:
         use_sql_comments: true
         highlight_sql : true
     generate-ddl: true
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
   mvc:
     hiddenmethod:
       filter:
         enabled: true
+        
+serverUrl: https://d565-202-31-138-11.ngrok-free.app

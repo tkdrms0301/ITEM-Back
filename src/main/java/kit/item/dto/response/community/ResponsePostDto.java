@@ -30,7 +30,7 @@ public class ResponsePostDto {
                     .title(post.getTitle())
                     .content(post.getContent())
                     .memberId(post.getMember().getId())
-                    .memberName(post.getMember().getName())
+                    .memberName(post.getMember().getNickname())
                     .date(post.getDate())
                     .images(
                             post.getPostImages().stream()

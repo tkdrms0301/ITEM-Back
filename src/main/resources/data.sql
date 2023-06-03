@@ -69,7 +69,6 @@ INSERT INTO brand(brand_name, is_finished) VALUES ('레노버', false); #10;
 INSERT INTO brand(brand_name, is_finished) VALUES ('애플', false); #11;
 INSERT INTO brand(brand_name, is_finished) VALUES ('샤오미', false); #12;
 
-
 # 카테고리-브랜드;
 # 컴퓨터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (1, 1); # 1 / 1 완본체 1 컴퓨터;
@@ -173,21 +172,16 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('RTX 3070', 25); # 
 INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); # 38 / 26 인텔 cpu;
 
 # IT 기기 관리;
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 4, 1, null);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
---
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
--- INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
-
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 3, 2, 29, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 44, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 47, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 4, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
+
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
 
 # 포인트 이용내역;
 set @now = '';
@@ -313,35 +307,35 @@ INSERT INTO data(count, vocab, product_id) VALUES (160, '성능', 18);
 INSERT INTO data(count, vocab, product_id) VALUES (170, '좋다', 19);
 
 # 긍/부정 데이터;
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (2, 200, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (3, 155, 144);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (4, 123, 123);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (5, 199, 111);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (6, 166, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (7, 200, 222);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (8, 11, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (9, 144, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (10, 200, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (11, 122, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (12, 124, 5);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (13, 200, 77);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (14, 200, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (15, 111, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (16, 197, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (17, 123, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (18, 166, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (19, 170, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (20, 150, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (21, 111, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (22, 123, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (23, 111, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (24, 233, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (25, 111, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (26, 164, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (27, 111, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (28, 72, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (29, 155, 138);
-# INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (30, 234, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (2, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (3, 155, 144);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (4, 123, 123);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (5, 199, 111);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (6, 166, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (7, 200, 222);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (8, 11, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (9, 144, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (10, 200, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (11, 122, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (12, 124, 5);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (13, 200, 77);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (14, 200, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (15, 111, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (16, 197, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (17, 123, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (18, 166, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (19, 170, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (20, 150, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (21, 111, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (22, 123, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (23, 111, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (24, 233, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (25, 111, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (26, 164, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (27, 111, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (28, 72, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (29, 155, 138);
+INSERT INTO pos_and_neg(product_id, positive, negative) VALUES (30, 234, 138);
 
 -- 커뮤니티 글
 INSERT INTO post (content, date, report, title, member_id) VALUES ('iPhone 12 Pro는 뛰어난 성능과 멋진 디자인을 가진 최신 스마트폰입니다. A14 Bionic 칩과 함께 제공되는 RAM 용량은 탁월한 멀티태스킹을 가능하게 해주며, 최고의 스마트폰 중 하나입니다.', DATE_ADD(CURDATE(),INTERVAL 1 DAY), 0, '탁월한 성능과 멋진 디자인, Apple iPhone 12 Pro 리뷰', 1);
@@ -506,44 +500,3 @@ INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,d
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/55b06838-6991-4deb-8b12-bb258d419ff8_%ED%85%8C%EC%84%A47.jpg', 33);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (44, 2, 980000, '이 시대의 여덟 번째로 최고의 테블릿','대한통운',2500 ,'테블릿', 'APPLE 아이패드 9세대','https://item0container.blob.core.windows.net/image/04b72400-9f37-4294-916f-d7586cf0d021_%ED%85%8C8.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3227cfd4-f01b-40a7-b649-f507bf863d28_%ED%85%8C%EC%84%A48.jpg', 34);
-
-
-
-ALTER TABLE basket ENCRYPTION='Y';
-ALTER TABLE brand ENCRYPTION='Y';
-ALTER TABLE category ENCRYPTION='Y';
-ALTER TABLE category_brand ENCRYPTION='Y';
-ALTER TABLE comment ENCRYPTION='Y';
-ALTER TABLE comment_report ENCRYPTION='Y';
-ALTER TABLE data ENCRYPTION='Y';
-ALTER TABLE estimate ENCRYPTION='Y';
-ALTER TABLE estimate_image ENCRYPTION='Y';
-ALTER TABLE it_device ENCRYPTION='Y';
-ALTER TABLE market_reply ENCRYPTION='Y';
-ALTER TABLE market_review ENCRYPTION='Y';
-ALTER TABLE market_review_report ENCRYPTION='Y';
-ALTER TABLE member ENCRYPTION='Y';
-ALTER TABLE official_repair_shop ENCRYPTION='Y';
-ALTER TABLE point_history ENCRYPTION='Y';
-ALTER TABLE pos_and_neg ENCRYPTION='Y';
-ALTER TABLE post ENCRYPTION='Y';
-ALTER TABLE post_image ENCRYPTION='Y';
-ALTER TABLE post_report ENCRYPTION='Y';
-ALTER TABLE product ENCRYPTION='Y';
-ALTER TABLE product_image_detail ENCRYPTION='Y';
-ALTER TABLE repair_result ENCRYPTION='Y';
-ALTER TABLE repair_result_image ENCRYPTION='Y';
-ALTER TABLE repair_result_report ENCRYPTION='Y';
-ALTER TABLE repair_service ENCRYPTION='Y';
-ALTER TABLE repair_service_reply ENCRYPTION='Y';
-ALTER TABLE repair_service_reservation ENCRYPTION='Y';
-ALTER TABLE repair_service_review ENCRYPTION='Y';
-ALTER TABLE repair_shop ENCRYPTION='Y';
-ALTER TABLE reservation ENCRYPTION='Y';
-ALTER TABLE reservation_image ENCRYPTION='Y';
-ALTER TABLE response ENCRYPTION='Y';
-ALTER TABLE sale_history ENCRYPTION='Y';
-ALTER TABLE sale_product ENCRYPTION='Y';
-ALTER TABLE sale_product_report ENCRYPTION='Y';
-ALTER TABLE seller ENCRYPTION='Y';
-ALTER TABLE subscription ENCRYPTION='Y';

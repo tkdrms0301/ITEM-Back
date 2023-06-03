@@ -48,7 +48,7 @@ public class ResponsePostDto {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .memberId(post.getMember().getId())
-                .memberName(post.getMember().getNickname())
+                .memberName(post.getMember().getName())
                 .date(post.getDate())
                 .productName(post.getProduct().getName())
                 .productId(post.getProduct().getId())

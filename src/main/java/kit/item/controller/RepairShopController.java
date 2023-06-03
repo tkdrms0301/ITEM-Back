@@ -197,7 +197,6 @@ public class RepairShopController {
         return repairShopService.findReservationHistoryMechanic(memberId);
     }
 
-    @PostMapping("/reservation/accept")
     public boolean acceptReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
         Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return repairShopService.acceptReservation(repairShopId,requestReservationStateUpdateDto.getReservationId());
@@ -300,9 +299,9 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> createReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReviewCreateDto requestReviewCreateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        boolean result = reviewService.createReview(requestReviewCreateDto, memberId);
-        if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 작성 성공", null), HttpStatus.OK);
+        RepairServiceReviewDto repairServiceReviewDto = reviewService.createReview(requestReviewCreateDto, memberId);
+        if(repairServiceReviewDto != null) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 작성 성공", repairServiceReviewDto), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "리뷰 중복된 리뷰 작성", null), HttpStatus.OK);
     }
@@ -331,10 +330,9 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> updateReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReviewUpdateDto requestReviewUpdateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        System.out.println("requestReviewUpdateDto = " + requestReviewUpdateDto);
-        boolean result = reviewService.updateReview(requestReviewUpdateDto, memberId);
-        if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", null), HttpStatus.OK);
+        RepairServiceReviewDto repairServiceReviewDto = reviewService.updateReview(requestReviewUpdateDto, memberId);
+        if(repairServiceReviewDto != null) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 수정 성공", repairServiceReviewDto), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "리뷰 수정 실패", null), HttpStatus.OK);
     }
@@ -349,14 +347,24 @@ public class RepairShopController {
         return new ResponseEntity<>(new MsgDto(false, "리뷰 삭제 실패", null), HttpStatus.OK);
     }
 
+    @PostMapping("/review/report")
+    public ResponseEntity<MsgDto> reportRepairServiceReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                            @RequestBody RequestReviewReportDto requestReviewReportDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.createReviewReport(requestReviewReportDto, memberId);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "리뷰 신고 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "리뷰 신고 실패", null), HttpStatus.OK);
+    }
+
     @PostMapping("/reply/create")
     public ResponseEntity<MsgDto> createReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReplyCreateDto requestReplyCreateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        System.out.println("requestReplyCreateDto = " + requestReplyCreateDto);
-        boolean result = reviewService.createReply(requestReplyCreateDto, memberId);
-        if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", null), HttpStatus.OK);
+        RepairServiceReviewDto repairServiceReviewDto = reviewService.createReply(requestReplyCreateDto, memberId);
+        if(repairServiceReviewDto != null) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", repairServiceReviewDto), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "답글 생성 실패", null), HttpStatus.OK);
     }
@@ -365,9 +373,9 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> updateReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
                                                @RequestBody RequestReplyUpdateDto requestReplyUpdateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        boolean result = reviewService.updateReply(requestReplyUpdateDto, memberId);
-        if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "답글 수정 성공", null), HttpStatus.OK);
+        RepairServiceReviewDto repairServiceReviewDto = reviewService.updateReply(requestReplyUpdateDto, memberId);
+        if(repairServiceReviewDto != null) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 수정 성공", repairServiceReviewDto), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "답글 수정 실패", null), HttpStatus.OK);
     }
@@ -378,11 +386,20 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long replyId) {
         System.out.println("replyId = " + replyId);
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        boolean result = reviewService.deleteReply(replyId, memberId);
-        if(result) {
+        if(reviewService.deleteReply(replyId, memberId)) {
             return new ResponseEntity<>(new MsgDto(true, "답글 삭제 성공", null), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "답글 삭제 실패", null), HttpStatus.OK);
+    }
+
+    @PostMapping("/reply/report")
+    public ResponseEntity<MsgDto> reportRepairServiceReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
+                                                           @RequestBody RequestReplyReportDto requestReplyReportDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        if(reviewService.createReplyReport(requestReplyReportDto, memberId)) {
+            return new ResponseEntity<>(new MsgDto(true, "답글 신고 성공", null), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new MsgDto(false, "답글 신고 실패", null), HttpStatus.OK);
     }
 }
 

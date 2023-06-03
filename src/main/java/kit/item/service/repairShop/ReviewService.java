@@ -58,7 +58,19 @@ public class ReviewService {
                 .repairShop(repairShop.get())
                 .build();
         repairServiceReviewRepository.save(repairServiceReview);
-        return repairServiceReviewRepository.findByReviewId(repairServiceReview.getId());
+        Optional<RepairServiceReview> createdReview = repairServiceReviewRepository.findById(repairServiceReview.getId());
+        if (createdReview.isEmpty()) {
+            return null;
+        }
+        return RepairServiceReviewDto.builder()
+                .reviewId(createdReview.get().getId())
+                .reviewContent(createdReview.get().getContent())
+                .rating(createdReview.get().getRating())
+                .replyId(createdReview.get().getRepairServiceReply() != null ? createdReview.get().getRepairServiceReply().getId() : null)
+                .replyContent(createdReview.get().getRepairServiceReply() != null ? createdReview.get().getRepairServiceReply().getContent() : null)
+                .repairShopNickname(createdReview.get().getRepairShop().getNickname())
+                .userNickname(createdReview.get().getMember().getNickname())
+                .build();
     }
 
     public Page<RepairServiceReviewDto> getReviews(int page, Long shopId) {
@@ -102,7 +114,19 @@ public class ReviewService {
         repairServiceReview.get().setRating(requestReviewUpdateDto.getRating());
         RepairServiceReview savedReview = repairServiceReview.get();
         repairServiceReviewRepository.save(savedReview);
-        return repairServiceReviewRepository.findByReviewId(savedReview.getId());
+        Optional<RepairServiceReview> updatedReview = repairServiceReviewRepository.findById(savedReview.getId());
+        if (updatedReview.isEmpty()) {
+            return null;
+        }
+        return RepairServiceReviewDto.builder()
+                .reviewId(updatedReview.get().getId())
+                .reviewContent(updatedReview.get().getContent())
+                .rating(updatedReview.get().getRating())
+                .replyId(updatedReview.get().getRepairServiceReply() != null ? updatedReview.get().getRepairServiceReply().getId() : null)
+                .replyContent(updatedReview.get().getRepairServiceReply() != null ? updatedReview.get().getRepairServiceReply().getContent() : null)
+                .repairShopNickname(updatedReview.get().getRepairShop().getNickname())
+                .userNickname(updatedReview.get().getMember().getNickname())
+                .build();
     }
 
     public boolean deleteReview(Long memberId, Long reviewId) {
@@ -133,7 +157,20 @@ public class ReviewService {
                 .repairShop(repairShop.get())
                 .build();
         repairServiceReplyRepository.save(repairServiceReply);
-        return repairServiceReviewRepository.findByReviewId(repairServiceReply.getRepairServiceReview().getId());
+        Optional<RepairServiceReview> createdReply = repairServiceReviewRepository.findById(repairServiceReply.getRepairServiceReview().getId());
+        if (createdReply.isEmpty()) {
+            return null;
+        }
+
+        return RepairServiceReviewDto.builder()
+                .reviewId(createdReply.get().getId())
+                .reviewContent(createdReply.get().getContent())
+                .rating(createdReply.get().getRating())
+                .replyId(repairServiceReply.getId())
+                .replyContent(repairServiceReply.getContent())
+                .repairShopNickname(createdReply.get().getRepairShop().getNickname())
+                .userNickname(createdReply.get().getMember().getNickname())
+                .build();
     }
 
     public RepairServiceReviewDto updateReply(RequestReplyUpdateDto requestReplyUpdateDto, Long memberId) {
@@ -147,7 +184,20 @@ public class ReviewService {
         RepairServiceReply savedReply = repairServiceReply.get();
         savedReply.setContent(requestReplyUpdateDto.getContent());
         repairServiceReplyRepository.save(savedReply);
-        return repairServiceReviewRepository.findByReviewId(savedReply.getId());
+        Optional<RepairServiceReview> updatedReply = repairServiceReviewRepository.findById(requestReplyUpdateDto.getReviewId());
+        if (updatedReply.isEmpty()) {
+            return null;
+        }
+        RepairServiceReview savedReview = updatedReply.get();
+        return RepairServiceReviewDto.builder()
+                .reviewId(savedReview.getId())
+                .reviewContent(savedReview.getContent())
+                .rating(savedReview.getRating())
+                .replyId(savedReply.getId())
+                .replyContent(savedReply.getContent())
+                .repairShopNickname(savedReview.getRepairShop().getNickname())
+                .userNickname(savedReview.getMember().getNickname())
+                .build();
     }
 
     public boolean deleteReply(Long replyId, Long memberId) {

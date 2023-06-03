@@ -21,7 +21,7 @@ VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$
 INSERT INTO seller(company_address, company_name, company_number, company_phone_number, description, member_id)
 VALUES ('company_address', 'company_name', 'company_number', 'company_phone_number', 'seller description', 2);
 INSERT INTO repair_shop(description, shop_name, shop_phone_number, member_id, repair_service_type, shop_address)
-VALUES ('test description1', 'test shop1', '010-1234-5678', 3, 'NOTEBOOK', 'shop_address_test3');
+VALUES ('test description1', 'test shop1', '010-1234-5678', 3, '노트북', 'shop_address_test3');
 
 INSERT INTO repair_service(description, service_name, service_type, service_price, repair_shop_id)
 VALUES ('갤럭시 폰에 대한 전체적인 점검을 진행합니다.', '안드로이드 폰 점검', '점검', 25000, 3);

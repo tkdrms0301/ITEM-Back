@@ -500,3 +500,44 @@ INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,d
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/55b06838-6991-4deb-8b12-bb258d419ff8_%ED%85%8C%EC%84%A47.jpg', 33);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (44, 2, 980000, '이 시대의 여덟 번째로 최고의 테블릿','대한통운',2500 ,'테블릿', 'APPLE 아이패드 9세대','https://item0container.blob.core.windows.net/image/04b72400-9f37-4294-916f-d7586cf0d021_%ED%85%8C8.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3227cfd4-f01b-40a7-b649-f507bf863d28_%ED%85%8C%EC%84%A48.jpg', 34);
+
+
+
+ALTER TABLE basket ENCRYPTION='Y';
+ALTER TABLE brand ENCRYPTION='Y';
+ALTER TABLE category ENCRYPTION='Y';
+ALTER TABLE category_brand ENCRYPTION='Y';
+ALTER TABLE comment ENCRYPTION='Y';
+ALTER TABLE comment_report ENCRYPTION='Y';
+ALTER TABLE data ENCRYPTION='Y';
+ALTER TABLE estimate ENCRYPTION='Y';
+ALTER TABLE estimate_image ENCRYPTION='Y';
+ALTER TABLE it_device ENCRYPTION='Y';
+ALTER TABLE market_reply ENCRYPTION='Y';
+ALTER TABLE market_review ENCRYPTION='Y';
+ALTER TABLE market_review_report ENCRYPTION='Y';
+ALTER TABLE member ENCRYPTION='Y';
+ALTER TABLE official_repair_shop ENCRYPTION='Y';
+ALTER TABLE point_history ENCRYPTION='Y';
+ALTER TABLE pos_and_neg ENCRYPTION='Y';
+ALTER TABLE post ENCRYPTION='Y';
+ALTER TABLE post_image ENCRYPTION='Y';
+ALTER TABLE post_report ENCRYPTION='Y';
+ALTER TABLE product ENCRYPTION='Y';
+ALTER TABLE product_image_detail ENCRYPTION='Y';
+ALTER TABLE repair_result ENCRYPTION='Y';
+ALTER TABLE repair_result_image ENCRYPTION='Y';
+ALTER TABLE repair_result_report ENCRYPTION='Y';
+ALTER TABLE repair_service ENCRYPTION='Y';
+ALTER TABLE repair_service_reply ENCRYPTION='Y';
+ALTER TABLE repair_service_reservation ENCRYPTION='Y';
+ALTER TABLE repair_service_review ENCRYPTION='Y';
+ALTER TABLE repair_shop ENCRYPTION='Y';
+ALTER TABLE reservation ENCRYPTION='Y';
+ALTER TABLE reservation_image ENCRYPTION='Y';
+ALTER TABLE response ENCRYPTION='Y';
+ALTER TABLE sale_history ENCRYPTION='Y';
+ALTER TABLE sale_product ENCRYPTION='Y';
+ALTER TABLE sale_product_report ENCRYPTION='Y';
+ALTER TABLE seller ENCRYPTION='Y';
+ALTER TABLE subscription ENCRYPTION='Y';

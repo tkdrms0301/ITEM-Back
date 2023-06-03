@@ -57,8 +57,9 @@ public class MarketController {
     }
 
     @PostMapping("/deleteReview")
-    public boolean deleteReview(@RequestBody RequestMarketReviewDeleteDto requestMarketReviewDeleteDto) {
-        return marketService.deleteMarketReview(requestMarketReviewDeleteDto.getId());
+    public boolean deleteReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestMarketReviewDeleteDto requestMarketReviewDeleteDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return marketService.deleteMarketReview(memberId, requestMarketReviewDeleteDto.getId());
     }
 
     @PostMapping("/reportReview")
@@ -73,4 +74,8 @@ public class MarketController {
         return ResponseEntity.ok(new MsgDto(true, "",marketService.reportMarketReview(memberId, requestReportDto)));
     }
 
+    @GetMapping("/search")
+    public List<SaleProductInfoDto> searchProducts(@RequestParam String keyword) {
+        return marketService.searchProducts(keyword);
+    }
 }

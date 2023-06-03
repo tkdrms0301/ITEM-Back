@@ -13,8 +13,6 @@ VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$1
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('test address1', 'test8', '일반유저6_ID', '일반유저6_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
-INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
 
 

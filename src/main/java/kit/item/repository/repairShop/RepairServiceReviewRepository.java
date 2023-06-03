@@ -21,4 +21,6 @@ public interface RepairServiceReviewRepository extends JpaRepository<RepairServi
             "LEFT JOIN rr.repairShop rs " +
             "where rw.repairShop.id = :shopId")
     Page<RepairServiceReviewDto> findAllByRepairShopId(@Param(value = "shopId") Long shopId, Pageable page);
+
+    Optional<RepairServiceReview> findByIdAndMember_Id(Long id, Long memberId);
 }

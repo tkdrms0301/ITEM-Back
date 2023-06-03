@@ -15,6 +15,8 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
+    Optional<Reservation> findByIdAndRepairShopId(Long reservationId, Long repairShopId);
+
     Optional<Reservation> findById(Long reservationId);
     @Query("SELECT r FROM RESERVATION r JOIN r.member m JOIN r.repairServiceReservations rs JOIN rs.repairService rsr WHERE rsr.repairShop.id = :repairShopId AND r.state IN ('정비 완료', '예약 완료')")
     List<Reservation> findUnableReservationByRepairShopId(@Param("repairShopId") Long repairShopId);

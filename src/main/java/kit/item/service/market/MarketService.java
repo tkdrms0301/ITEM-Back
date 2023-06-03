@@ -168,9 +168,15 @@ public class MarketService {
             return false;
         }
 
+
+
+        Member member = memberRepository.findById(memberId).get();
+        SaleProduct saleProduct = saleProductRepository.findById(requestMarketReviewCreateDto.getSaleProductId()).get();
+
+
         ObjectMapper objectMapper = new ObjectMapper();
         RequestReviewDto requestReviewDto = RequestReviewDto.builder()
-                .productId(requestMarketReviewCreateDto.getSaleProductId())
+                .productId(saleProduct.getProduct().getId())
                 .review(requestMarketReviewCreateDto.getComment())
                 .build();
         String json = null;
@@ -184,9 +190,6 @@ public class MarketService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        Member member = memberRepository.findById(memberId).get();
-        SaleProduct saleProduct = saleProductRepository.findById(requestMarketReviewCreateDto.getSaleProductId()).get();
 
         MarketReview marketReview = MarketReview.builder()
                 .member(member)

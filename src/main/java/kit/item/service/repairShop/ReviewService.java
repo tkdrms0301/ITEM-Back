@@ -108,8 +108,8 @@ public class ReviewService {
         return true;
     }
 
-    public boolean deleteReview(Long reviewId) {
-        Optional<RepairServiceReview> repairServiceReview = repairServiceReviewRepository.findById(reviewId);
+    public boolean deleteReview(Long memberId, Long reviewId) {
+        Optional<RepairServiceReview> repairServiceReview = repairServiceReviewRepository.findByIdAndMember_Id(reviewId, memberId);
         if (repairServiceReview.isEmpty()) {
             return false;
         }

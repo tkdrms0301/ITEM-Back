@@ -21,6 +21,8 @@ public class MarketReview {
     private Long id;
 
     private Long rating;
+
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
     private LocalDateTime date;
 

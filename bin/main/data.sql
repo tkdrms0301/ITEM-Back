@@ -13,8 +13,6 @@ VALUES ('test address1', 'test6', '일반유저4_ID', '일반유저4_ID', '$2a$1
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test7', '일반유저5_ID', '일반유저5_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
 INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
-VALUES ('test address1', 'test8', '일반유저6_ID', '일반유저6_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 50000, 'MEMBER', '농협 123411');
-INSERT INTO member(address, email, name, nickname, password, phone_number, point, role_type, account)
 VALUES ('test address1', 'test0', '포인트관리_ID', '포인트관리_ID', '$2a$10$2GQ29M4weMNnaN3uCiSra.kkW1SLsDX5mPnDYAGYFFbHy1j7f0PfK', '010-5651-5957', 0, 'ADMIN', '농협 123411');
 
 
@@ -429,6 +427,8 @@ INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VA
 
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (1, 2, 1190000, '이 시대의 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '완본체','https://item0container.blob.core.windows.net/image/56fef2b9-e2c2-4741-ac14-25bfcffaf630_%EC%BB%B4%ED%84%B01.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/8684ab1c-6e4d-45f2-a63f-d9284046eb8b_%EC%BB%B4%EC%84%A41.jpg', 1);
+# INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
+
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (2, 2, 2300000, '이 시대의 두 번째로 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '2022 맥북에어 MLY33KH/A','https://item0container.blob.core.windows.net/image/dcfac119-d978-4477-a591-371075919cfb_%EC%BB%B42.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/38e2884e-8c95-45a3-b264-a63b085ac18d_%EC%BB%B4%EC%84%A42.jpg', 2);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (3, 2, 1500000, '이 시대의 세 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', '2023 맥북프로16 MNWA3KH/A','https://item0container.blob.core.windows.net/image/570c38da-3fbc-45d1-b114-ea08e4fbdc00_%EC%BB%B43.jpg' );
@@ -447,6 +447,7 @@ INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,d
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/bd3f1a8f-0cc3-475b-84b9-7e457297cc8c_%EC%BB%B4%EC%84%A49.jpg', 9);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (10, 2, 5420000, '이 시대의 열 번째로 최고의 컴퓨터','우체국 택배',2500 ,'컴퓨터', 'LG 875 게이밍울트라560X','https://item0container.blob.core.windows.net/image/3cdc3c9f-ef31-4517-8aa6-8595ad1971c7_%EC%BB%B410.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/3a74f00d-6c60-47d0-a743-b9c4fbf76c05_%EC%BB%B4%EC%84%A410.jpg', 10);
+
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (11, 2, 1190000, '이 시대의 최고의 노트북','대한통운',2500 ,'노트북', '삼성 갤럭시 북3 프로 NT940XFG-KC51E','https://item0container.blob.core.windows.net/image/8117f692-6082-4d22-8c94-e47133050cca_%EB%85%B81.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/b834dcdb-aa1e-48f2-8b0a-cbbfafd360a9_%EB%85%B8%EC%84%A41.jpg', 11);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (12, 2, 2300000, '이 시대의 두 번째로 최고의 노트북','대한통운',2500 ,'노트북', '삼성 갤럭시 북3 프로 NT960XFG-KC71G','https://item0container.blob.core.windows.net/image/2b0f9bed-242c-40e3-9871-b6fe1f7f3f60_%EB%85%B82.jpg' );
@@ -463,11 +464,6 @@ INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,d
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/846ea5d7-b992-438f-9a34-a14f1d4585fd_%EB%85%B8%EC%84%A47.jpg', 17);
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (18, 2, 980000, '이 시대의 여덟 번째로 최고의 노트북','대한통운',2500 ,'노트북', '2020 맥북에어 MGN93KH/A CTO','https://item0container.blob.core.windows.net/image/d3b596fa-0577-46d0-a2c7-f62b681c8f75_%EB%85%B88.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/486efafe-699f-4800-9837-8c64f7fdc177_%EB%85%B8%EC%84%A48.jpg', 18);
-
-INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name ) VALUES (1, 2, 100000, '상품설명입니다.','대한통운',2500 ,'종류', '상품이름');
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('배송도 빠르고 성능 좋네요', '2021-05-01 17:30:00', 4, 4, 1);
-INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 3, 5, 1);
 
 INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (26, 2, 1190000, '이 시대의 최고의 휴대폰','대한통운',2500 ,'휴대폰', '삼성전자 갤럭시S22 울트라','https://item0container.blob.core.windows.net/image/26956f2a-59de-4de9-940d-b736d1027d4f_%ED%8F%B01.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/4a9e85b3-2d60-4a97-bfd9-988c924efffa_%ED%8F%B0%EC%84%A41.jpg', 19);

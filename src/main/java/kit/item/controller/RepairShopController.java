@@ -197,18 +197,15 @@ public class RepairShopController {
         return repairShopService.findReservationHistoryMechanic(memberId);
     }
 
-    @PostMapping("/reservation/accept")
-    public boolean acceptReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-                                     @RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
-        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.acceptReservation(requestReservationStateUpdateDto.getReservationId(), memberId);
+    public boolean acceptReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.acceptReservation(repairShopId,requestReservationStateUpdateDto.getReservationId());
     }
 
     @PostMapping("/reservation/reject")
-    public boolean rejectReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,
-                                     @RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
-        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-        return repairShopService.rejectReservation(requestReservationStateUpdateDto.getReservationId(), memberId);
+    public boolean rejectReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
+        Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.rejectReservation(repairShopId,requestReservationStateUpdateDto.getReservationId());
     }
     @PostMapping("/reservation/cancel")
     public boolean cancelReservation(@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
@@ -262,9 +259,9 @@ public class RepairShopController {
     }
 
     @PostMapping("/estimate/responseRegist")
-    public boolean responseEstimate(@RequestBody RequestEstimateResponseDto requestEstimateResponseDto) {
-
-        return repairShopService.responseEstimate(requestEstimateResponseDto);
+    public boolean responseEstimate(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, @RequestBody RequestEstimateResponseDto requestEstimateResponseDto) {
+        Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        return repairShopService.responseEstimate(repairShopId,requestEstimateResponseDto);
     }
 
     @GetMapping("/report/info")
@@ -342,8 +339,9 @@ public class RepairShopController {
     }
 
     @DeleteMapping("/review/delete")
-    public ResponseEntity<MsgDto> deleteReview(Long reviewId) {
-        boolean result = reviewService.deleteReview(reviewId);
+    public ResponseEntity<MsgDto> deleteReview(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,Long reviewId) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean result = reviewService.deleteReview(memberId, reviewId);
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 삭제 성공", null), HttpStatus.OK);
         }

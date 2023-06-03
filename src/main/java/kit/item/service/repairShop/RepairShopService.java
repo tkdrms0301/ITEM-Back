@@ -702,10 +702,12 @@ public class RepairShopService {
         }
         return false;
     }
-    public boolean acceptReservation(Long reservationId, Long memberId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+
+    public boolean acceptReservation(Long repairShopId,Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findByIdAndRepairShopId(reservationId, repairShopId);
+
         if (reservation.isPresent()) {
-            if (!reservation.get().getRepairShop().getId().equals(memberId))
+            if (!reservation.get().getRepairShop().getId().equals(reservationId))
                 return false;
             reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
             reservationRepository.save(reservation.get());
@@ -832,10 +834,11 @@ public class RepairShopService {
         return false;
     }
 
-    public boolean rejectReservation(Long reservationId, Long memberId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+    public boolean rejectReservation(Long repairShopId, Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findByIdAndRepairShopId(reservationId, repairShopId);
+
         if (reservation.isPresent()) {
-            if (!reservation.get().getRepairShop().getId().equals(memberId))
+            if (!reservation.get().getRepairShop().getId().equals(reservationId))
                 return false;
 
             reservation.get().setState(ReservationStateType.REJECTED.getKrName());
@@ -1104,8 +1107,8 @@ public class RepairShopService {
         return responseEstimateHistoryDtos;
     }
 
-    public boolean responseEstimate(RequestEstimateResponseDto requestEstimateResponseDto) {
-        Optional<Estimate> estimate = estimateRepository.findById(requestEstimateResponseDto.getEstimateId());
+    public boolean responseEstimate(Long repairShopId, RequestEstimateResponseDto requestEstimateResponseDto) {
+        Optional<Estimate> estimate = estimateRepository.findByIdAndRepairShopId(requestEstimateResponseDto.getEstimateId(), repairShopId);
 
         if (estimate.isPresent()){
             Response estimateRes = Response.builder()

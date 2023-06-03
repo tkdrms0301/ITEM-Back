@@ -20,6 +20,6 @@ public class SaleProductInfoDto {
     Integer deliveryCost;
     String comment;
     List<String> imageUrls;
-    Long rating;
+    double rating;
     List<SaleProductReviewInfoDto> reviewList;
 }

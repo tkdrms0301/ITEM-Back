@@ -24,10 +24,6 @@ import kit.item.repository.member.MemberRepository;
 import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,8 +131,14 @@ public class MarketService {
         );
 
         //평균 리뷰 점수
-        Long avgRating = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().mapToLong(marketReview -> marketReview.getRating()).sum();
+        List<MarketReview> reviews = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId());
+        double avgRating = reviews.stream()
+                .mapToLong(MarketReview::getRating)
+                .average()
+                .orElse(0);
 
+// 평균 리뷰 점수를 출력합니다.
+        System.out.println("평균 리뷰 점수: " + avgRating);
         //상품 리스트에 추가
         SaleProductInfoDto saleProductInfoDto = SaleProductInfoDto.builder()
                 .id(saleProduct.getId())
@@ -209,8 +211,8 @@ public class MarketService {
         return true;
     }
 
-    public boolean deleteMarketReview(Long id) {
-        Optional<MarketReview> marketReview = marketReviewRepository.findById(id);
+    public boolean deleteMarketReview(Long memberId, Long id) {
+        Optional<MarketReview> marketReview = marketReviewRepository.findByIdAndMember_Id(id, memberId);
         if (marketReview.isPresent()){
             marketReviewRepository.delete(marketReview.get());
             return true;
@@ -247,5 +249,56 @@ public class MarketService {
             return true;
         }
         return false;
+    }
+
+    public List<SaleProductInfoDto> searchProducts(String keyword) {
+        List<SaleProduct> saleProductList = saleProductRepository.findByNameContaining(keyword);
+        List<SaleProductInfoDto> saleProductInfoDtoList = new ArrayList<>();
+        saleProductList.stream().forEach(
+                saleProduct -> {
+                    List<String> imgDetailUrlList = new ArrayList<>();
+                    saleProduct.getImageDetails().stream().forEach(
+                            imageDetail -> {
+                                imgDetailUrlList.add(imageDetail.getUrl());
+                            }
+                    );
+                    //리뷰 정보
+                    List<SaleProductReviewInfoDto> reviewList = new ArrayList<>();
+                    marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().forEach(
+                            marketReview -> {
+                                SaleProductReviewInfoDto saleProductReviewInfoDto = SaleProductReviewInfoDto.builder()
+                                        .id(marketReview.getId())
+                                        .ownerId(marketReview.getMember().getId())
+                                        .ownerName(marketReview.getMember().getNickname())
+                                        .date(marketReview.getDate())
+                                        .comment(marketReview.getComment())
+                                        .rating(marketReview.getRating())
+                                        .build();
+                                reviewList.add(saleProductReviewInfoDto);
+                            }
+                    );
+
+                    //평균 리뷰 점수
+                    Long avgRating = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().mapToLong(marketReview -> marketReview.getRating()).sum();
+
+                    //상품 리스트애 추가
+                    SaleProductInfoDto saleProductInfoDto = SaleProductInfoDto.builder()
+                            .id(saleProduct.getId())
+                            .name(saleProduct.getName())
+                            .thumbnailUrl(saleProduct.getThumbnailUrl())
+                            .price(saleProduct.getCost())
+                            .deliveryCompany(saleProduct.getDeliveryCompany())
+                            .deliveryCost(saleProduct.getDeliveryCost())
+                            .comment(saleProduct.getComment())
+                            .imageUrls(imgDetailUrlList)
+                            .rating(avgRating)
+                            .reviewList(reviewList)
+                            .build();
+
+                    saleProductInfoDtoList.add(saleProductInfoDto);
+                }
+        );
+        return saleProductInfoDtoList;
+
     }
 }

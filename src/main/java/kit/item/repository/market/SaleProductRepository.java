@@ -14,4 +14,5 @@ public interface SaleProductRepository extends JpaRepository<SaleProduct, Long> 
 
     List<SaleProduct> findByProduct_CategoryBrand_Category_Id(Long categoryId);
 
+    List<SaleProduct> findByNameContaining(String keyword);
 }

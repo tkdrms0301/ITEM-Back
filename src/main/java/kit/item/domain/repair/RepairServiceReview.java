@@ -6,6 +6,9 @@ import kit.item.domain.member.RepairShop;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,7 +38,7 @@ public class RepairServiceReview {
     @ToString.Exclude
     private RepairServiceReply repairServiceReply;
 
-    public void setRepairServiceReply(RepairServiceReply repairServiceReply) {
-        this.repairServiceReply = repairServiceReply;
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairServiceReview")
+    @ToString.Exclude
+    private List<RepairServiceReviewReport> repairServiceReviewReports = new ArrayList<>();
 }

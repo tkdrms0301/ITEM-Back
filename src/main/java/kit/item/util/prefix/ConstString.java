@@ -11,4 +11,7 @@ public abstract class ConstString {
     public static final String PRODUCT_PURCHASE = "제품 구매";
     public static final String REPAIR_SERVICE_PROVIDE = "정비 서비스 제공";
     public static final String REPAIR_SERVICE_USE = "정비 서비스 이용";
+
+    public static final String REPORT_REVIEW = "신고된 리뷰입니다.";
+    public static final String REPORT_REPLY = "신고된 답글입니다.";
 }

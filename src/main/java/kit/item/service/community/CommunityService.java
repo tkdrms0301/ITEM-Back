@@ -1,6 +1,8 @@
 package kit.item.service.community;
 
 import com.azure.core.annotation.ServiceClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kit.item.domain.it.Product;
 import kit.item.domain.member.Member;
 import kit.item.domain.post.*;
@@ -10,6 +12,7 @@ import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.request.community.RequestCreateCommentDto;
 import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
+import kit.item.dto.request.data_server.RequestPostDto;
 import kit.item.dto.response.community.*;
 import kit.item.repository.community.*;
 import kit.item.repository.it.ProductRepository;
@@ -111,12 +114,23 @@ public class CommunityService {
         if (isDupliPost(title, memberId)) {
             return false;
         }
-        String json = "{\"title\":\"" + title + "\",\"content\":\"" + content + "\",\"productId\":\"" + productId + "\"}";
-//        try {
-//            String res = HttpUtil.postJson(serverUrl+"/getCommunityData", json);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RequestPostDto requestPostDto = RequestPostDto.builder()
+                .content(content)
+                .productId(productId)
+                .build();
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(requestPostDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            String res = HttpUtil.postJson(serverUrl+"/keyword-extraction", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         Post post = Post.builder()
                 .title(title)
                 .content(content)

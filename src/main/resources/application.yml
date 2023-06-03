@@ -43,4 +43,4 @@ spring:
       filter:
         enabled: true
 
-serverUrl: https://f657-202-31-138-11.ngrok-free.app
+serverUrl: https://d565-202-31-138-11.ngrok-free.app

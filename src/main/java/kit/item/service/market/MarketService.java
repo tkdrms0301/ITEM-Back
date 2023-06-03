@@ -182,8 +182,8 @@ public class MarketService {
         return true;
     }
 
-    public boolean deleteMarketReview(Long id) {
-        Optional<MarketReview> marketReview = marketReviewRepository.findById(id);
+    public boolean deleteMarketReview(Long memberId, Long id) {
+        Optional<MarketReview> marketReview = marketReviewRepository.findByIdAndMember_Id(id, memberId);
         if (marketReview.isPresent()){
             marketReviewRepository.delete(marketReview.get());
             return true;
@@ -220,5 +220,56 @@ public class MarketService {
             return true;
         }
         return false;
+    }
+
+    public List<SaleProductInfoDto> searchProducts(String keyword) {
+        List<SaleProduct> saleProductList = saleProductRepository.findByNameContaining(keyword);
+        List<SaleProductInfoDto> saleProductInfoDtoList = new ArrayList<>();
+        saleProductList.stream().forEach(
+                saleProduct -> {
+                    List<String> imgDetailUrlList = new ArrayList<>();
+                    saleProduct.getImageDetails().stream().forEach(
+                            imageDetail -> {
+                                imgDetailUrlList.add(imageDetail.getUrl());
+                            }
+                    );
+                    //리뷰 정보
+                    List<SaleProductReviewInfoDto> reviewList = new ArrayList<>();
+                    marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().forEach(
+                            marketReview -> {
+                                SaleProductReviewInfoDto saleProductReviewInfoDto = SaleProductReviewInfoDto.builder()
+                                        .id(marketReview.getId())
+                                        .ownerId(marketReview.getMember().getId())
+                                        .ownerName(marketReview.getMember().getNickname())
+                                        .date(marketReview.getDate())
+                                        .comment(marketReview.getComment())
+                                        .rating(marketReview.getRating())
+                                        .build();
+                                reviewList.add(saleProductReviewInfoDto);
+                            }
+                    );
+
+                    //평균 리뷰 점수
+                    Long avgRating = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId()).stream().mapToLong(marketReview -> marketReview.getRating()).sum();
+
+                    //상품 리스트애 추가
+                    SaleProductInfoDto saleProductInfoDto = SaleProductInfoDto.builder()
+                            .id(saleProduct.getId())
+                            .name(saleProduct.getName())
+                            .thumbnailUrl(saleProduct.getThumbnailUrl())
+                            .price(saleProduct.getCost())
+                            .deliveryCompany(saleProduct.getDeliveryCompany())
+                            .deliveryCost(saleProduct.getDeliveryCost())
+                            .comment(saleProduct.getComment())
+                            .imageUrls(imgDetailUrlList)
+                            .rating(avgRating)
+                            .reviewList(reviewList)
+                            .build();
+
+                    saleProductInfoDtoList.add(saleProductInfoDto);
+                }
+        );
+        return saleProductInfoDtoList;
+
     }
 }

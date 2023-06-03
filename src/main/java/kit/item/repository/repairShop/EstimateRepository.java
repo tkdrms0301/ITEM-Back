@@ -5,9 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EstimateRepository extends JpaRepository<Estimate, Long> {
+
+    Optional<Estimate> findByIdAndRepairShopId(Long id, Long repairShopId);
 
     List<Estimate> findByMemberId(Long memberId);
 

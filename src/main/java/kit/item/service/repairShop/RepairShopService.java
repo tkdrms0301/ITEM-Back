@@ -1100,7 +1100,7 @@ public class RepairShopService {
     }
 
     public boolean responseEstimate(Long repairShopId, RequestEstimateResponseDto requestEstimateResponseDto) {
-        Optional<Estimate> estimate = estimateRepository.findByIdAAndRepairShopId(requestEstimateResponseDto.getEstimateId(), repairShopId);
+        Optional<Estimate> estimate = estimateRepository.findByIdAndRepairShopId(requestEstimateResponseDto.getEstimateId(), repairShopId);
 
         if (estimate.isPresent()){
             Response estimateRes = Response.builder()

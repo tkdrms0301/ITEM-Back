@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface EstimateRepository extends JpaRepository<Estimate, Long> {
 
-    Optional<Estimate> findByIdAAndRepairShopId(Long id, Long repairShopId);
+    Optional<Estimate> findByIdAndRepairShopId(Long id, Long repairShopId);
 
     List<Estimate> findByMemberId(Long memberId);
 

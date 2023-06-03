@@ -1,6 +1,9 @@
 package kit.item.controller;
 
 import kit.item.dto.common.MsgDto;
+import kit.item.dto.request.auth.RequestCompanyNumberCheckDto;
+import kit.item.dto.request.auth.RequestEmailCheckDto;
+import kit.item.dto.request.auth.RequestNicknameCheckDto;
 import kit.item.dto.request.auth.RequestPasswordCheckDto;
 import kit.item.dto.request.member.RequestUpdateMemberInfoDto;
 import kit.item.dto.response.member.ResponseUpdateMemberInfoDto;
@@ -55,18 +58,63 @@ public class MemberController {
         return new ResponseEntity<>(new MsgDto(false, "구독 실패", null), HttpStatus.OK);
     }
 
-    @GetMapping("/member")
-    public String member() {
-        return "member";
+    @PostMapping("/email-check")
+    public ResponseEntity<MsgDto> emailCheck(@RequestBody RequestEmailCheckDto requestEmailCheckDto) {
+        boolean isExistEmail = memberService.emailCheck(requestEmailCheckDto.getEmail());
+        if (!isExistEmail) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 이메일입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 이메일입니다", null));
     }
 
-    @GetMapping("/seller")
-    public String seller() {
-        return "seller";
+    @PostMapping("/nickname-check")
+    public ResponseEntity<MsgDto> nicknameCheck(@RequestBody RequestNicknameCheckDto requestNicknameCheckDto) {
+        boolean isExistNickname = memberService.nicknameCheck(requestNicknameCheckDto.getNickname());
+        if (!isExistNickname) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 닉네임입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 닉네임입니다", null));
     }
 
-    @GetMapping("/mechanic")
-    public String mechanic() {
-        return "mechanic";
+    @PostMapping("/company-number-check")
+    public ResponseEntity<MsgDto> companyNumberCheck(@RequestBody RequestCompanyNumberCheckDto requestCompanyNumberCheckDto) {
+        boolean isExistCompanyNumber = memberService.companyNumberCheck(requestCompanyNumberCheckDto.getCompanyNumber());
+        if (!isExistCompanyNumber) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 사업자 번호입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 사업자 번호입니다", null));
+    }
+
+    @PostMapping("/email-check-update")
+    public ResponseEntity<MsgDto> emailCheckUpdate(@RequestHeader(value = X_AUTH_TOKEN) String accessToken,
+                                                   @RequestBody RequestEmailCheckDto requestEmailCheckDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean isExistEmail = memberService.emailCheckUpdate(requestEmailCheckDto.getEmail(), memberId);
+        if (!isExistEmail) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 이메일입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 이메일입니다", null));
+    }
+
+    @PostMapping("/nickname-check-update")
+    public ResponseEntity<MsgDto> nicknameCheckUpdate(@RequestHeader(value = X_AUTH_TOKEN) String accessToken,
+                                                      @RequestBody RequestNicknameCheckDto requestNicknameCheckDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean isExistNickname = memberService.nicknameCheckUpdate(requestNicknameCheckDto.getNickname(), memberId);
+        if (!isExistNickname) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 닉네임입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 닉네임입니다", null));
+    }
+
+    @PostMapping("/company-number-check-update")
+    public ResponseEntity<MsgDto> companyNumberCheckUpdate(@RequestHeader(value = X_AUTH_TOKEN) String accessToken,
+                                                           @RequestBody RequestCompanyNumberCheckDto requestCompanyNumberCheckDto) {
+        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
+        boolean isExistCompanyNumber = memberService.companyNumberCheckUpdate(requestCompanyNumberCheckDto.getCompanyNumber(), memberId);
+        if (!isExistCompanyNumber) {
+            return ResponseEntity.ok(new MsgDto(true, "사용 가능한 사업자 번호입니다", null));
+        }
+        return ResponseEntity.ok(new MsgDto(false, "중복된 사업자 번호입니다", null));
     }
 }

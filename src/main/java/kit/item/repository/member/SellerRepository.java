@@ -30,4 +30,6 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
                            @Param("id") Long id);
 
     boolean existsByCompanyNumber(String companyNumber);
+
+    boolean existsByCompanyNumberAndIdNot(String companyNumber, Long sellerId);
 }

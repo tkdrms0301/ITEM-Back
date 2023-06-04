@@ -56,7 +56,7 @@ INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'ht
 INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/스위치허브.webp', true); # 21;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/모니터.webp', true); # 22;
 
-INSERT INTO brand(brand_name, is_finished) VALUES ('완본체', true); #1;
+INSERT INTO brand(brand_name, is_finished) VALUES ('조립PC', true); #1;
 INSERT INTO brand(brand_name, is_finished) VALUES ('삼성', false); #2;
 INSERT INTO brand(brand_name, is_finished) VALUES ('LG', false); #3;
 INSERT INTO brand(brand_name, is_finished) VALUES ('기가바이트', false); #4;
@@ -71,7 +71,7 @@ INSERT INTO brand(brand_name, is_finished) VALUES ('샤오미', false); #12;
 
 # 카테고리-브랜드;
 # 컴퓨터;
-INSERT INTO category_brand(brand_id, category_id) VALUES (1, 1); # 1 / 1 완본체 1 컴퓨터;
+INSERT INTO category_brand(brand_id, category_id) VALUES (1, 1); # 1 / 1 조립PC 1 컴퓨터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (2, 1); # 2 / 2 삼성 1 컴퓨터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (3, 1); # 3 / 3 LG 1 컴퓨터;
 INSERT INTO category_brand(brand_id, category_id) VALUES (4, 1); # 4 / 4 기가바이트 1 컴퓨터;
@@ -118,7 +118,7 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('조립PC', 1); # 1;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 1); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 1); # 3;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 1); # 4;
@@ -427,7 +427,7 @@ INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VA
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('고객의 개인정보와 기기 정보를 안전하게 보호해줘요', 5, 6, 3);
 INSERT INTO repair_service_review(content, rating, member_id, repair_shop_id) VALUES ('전자기기 정비소에서는 고장 진단과 수리 후에도 품질 보증을 제공해요', 5, 4, 3);
 
-INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (1, 2, 1190000, '이 시대의 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '완본체','https://item0container.blob.core.windows.net/image/56fef2b9-e2c2-4741-ac14-25bfcffaf630_%EC%BB%B4%ED%84%B01.jpg' );
+INSERT INTO sale_product(product_id, seller_id, cost, comment,delivery_company,delivery_cost,kind, name, thumbnail_url ) VALUES (1, 2, 1190000, '이 시대의 최고의 컴퓨터','대한통운',2500 ,'컴퓨터', '조립PC','https://item0container.blob.core.windows.net/image/56fef2b9-e2c2-4741-ac14-25bfcffaf630_%EC%BB%B4%ED%84%B01.jpg' );
 INSERT INTO product_image_detail(url, sale_product_id) VALUES ('https://item0container.blob.core.windows.net/image/8684ab1c-6e4d-45f2-a63f-d9284046eb8b_%EC%BB%B4%EC%84%A41.jpg', 1);
 # INSERT INTO market_review(comment, date, rating, member_id, sale_product_id) VALUES ('리뷰 내용입니다.', '2021-05-01 17:30:00', 5, 1, 1);
 

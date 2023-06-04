@@ -38,7 +38,7 @@ spring:
         format_sql: true
         show_sql: true
         use_sql_comments: true
-        highlight_sql : true
+        highlight_sql: true
     generate-ddl: true
   sql:
     init:

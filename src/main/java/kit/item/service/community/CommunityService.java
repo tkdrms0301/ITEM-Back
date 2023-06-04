@@ -339,6 +339,12 @@ public class CommunityService {
         if (post == null) {
             return false;
         }
+
+        PostReport report = postReportRepository.findByPostIdAndMemberId(postId, memberId);
+        if(report != null) {
+            return false;
+        }
+
         PostReport postReport = PostReport.builder()
                 .reason(requestReportDto.getReason())
                 .reportType(requestReportDto.getReportType())
@@ -357,6 +363,11 @@ public class CommunityService {
         if (comment == null) {
             return false;
         }
+        CommentReport report = commentReportRepository.findByCommentIdAndMemberId(commentId, memberId);
+        if(report != null) {
+            return false;
+        }
+
         CommentReport commentReport = CommentReport.builder()
                 .reason(requestReportDto.getReason())
                 .reportType(requestReportDto.getReportType())

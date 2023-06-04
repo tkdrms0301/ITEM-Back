@@ -56,7 +56,7 @@ INSERT INTO category(category_name, image_url, is_part) VALUES ('랜카드', 'ht
 INSERT INTO category(category_name, image_url, is_part) VALUES ('스위치허브', 'https://item0container.blob.core.windows.net/image/스위치허브.webp', true); # 21;
 INSERT INTO category(category_name, image_url, is_part) VALUES ('모니터', 'https://item0container.blob.core.windows.net/image/모니터.webp', true); # 22;
 
-INSERT INTO brand(brand_name, is_finished) VALUES ('완본체', true); #1;
+INSERT INTO brand(brand_name, is_finished) VALUES ('조립 PC', true); #1;
 INSERT INTO brand(brand_name, is_finished) VALUES ('삼성', false); #2;
 INSERT INTO brand(brand_name, is_finished) VALUES ('LG', false); #3;
 INSERT INTO brand(brand_name, is_finished) VALUES ('기가바이트', false); #4;
@@ -118,7 +118,7 @@ INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVA
 INSERT INTO subscription(end_date, member_id) values (DATE_ADD(CURDATE(),INTERVAL 7 DAY), 2);
 
 # 제품;
-INSERT INTO product(product_name, category_brand_id) VALUES ('완본체', 1); # 1;
+INSERT INTO product(product_name, category_brand_id) VALUES ('조립 PC', 1); # 1;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2022 맥북에어 MLY33KH/A', 1); # 2;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2023 맥북프로16 MNWA3KH/A', 1); # 3;
 INSERT INTO product(product_name, category_brand_id) VALUES ('2020 맥북에어 MGNA3KH/A', 1); # 4;
@@ -172,16 +172,10 @@ INSERT INTO product(product_name, category_brand_id) VALUES ('RTX 3070', 25); # 
 INSERT INTO product(product_name, category_brand_id) VALUES ('인텔 i7', 26); # 38 / 26 인텔 cpu;
 
 # IT 기기 관리;
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 2, 1, null);
 INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 3, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 2, 11, 4, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 1, 1, 1, 1, null);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 34, 1, null);
-
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 4);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 6, 6, 38, 1, 4);
-INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 37, 1, 5);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 3, 2, 29, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 4, 11, 44, 1, null);
+INSERT INTO it_device(directly_registered_name, category_id, brand_id, product_id, member_id, finished_it_device_id) VALUES (null, 5, 5, 47, 1, null);
 
 # 포인트 이용내역;
 set @now = '';

@@ -197,6 +197,7 @@ public class RepairShopController {
         return repairShopService.findReservationHistoryMechanic(memberId);
     }
 
+    @PostMapping("/reservation/accept")
     public boolean acceptReservation(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken,@RequestBody RequestReservationStateUpdateDto requestReservationStateUpdateDto) {
         Long repairShopId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         return repairShopService.acceptReservation(repairShopId,requestReservationStateUpdateDto.getReservationId());

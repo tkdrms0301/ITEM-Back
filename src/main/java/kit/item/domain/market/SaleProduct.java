@@ -25,7 +25,7 @@ public class SaleProduct {
     @Column(name = "delivery_cost")
     private Integer deliveryCost;
     @Column(name = "delivery_company")
-    private Integer deliveryCompany;
+    private String deliveryCompany;
     private String comment;
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;

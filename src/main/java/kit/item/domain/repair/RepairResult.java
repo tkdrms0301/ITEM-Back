@@ -1,9 +1,7 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +9,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity(name = "REPAIR_RESULT")
 @ToString(callSuper = true)
 public class RepairResult {
@@ -19,7 +19,6 @@ public class RepairResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "repair_result_id", nullable = false)
     private Long id;
-    private Long total;
     private String comment;
     private LocalDateTime date;
 

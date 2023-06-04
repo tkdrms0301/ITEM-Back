@@ -1,12 +1,17 @@
 package kit.item.domain.repair;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import kit.item.domain.member.RepairShop;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity(name = "REPAIR_SERVICE_REPLY")
 @ToString(callSuper = true)
 public class RepairServiceReply {
@@ -21,7 +26,11 @@ public class RepairServiceReply {
     @ToString.Exclude
     private RepairServiceReview repairServiceReview;
 
-    public void setRepairServiceReview(RepairServiceReview repairServiceReview) {
-        this.repairServiceReview = repairServiceReview;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repair_shop_id")
+    private RepairShop repairShop;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "repairServiceReply")
+    @ToString.Exclude
+    private List<RepairServiceReplyReport> repairServiceReplyReports = new ArrayList<>();
 }

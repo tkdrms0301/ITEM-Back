@@ -2,9 +2,7 @@ package kit.item.domain.market;
 
 import jakarta.persistence.*;
 import kit.item.domain.member.Member;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,13 +12,17 @@ import java.util.List;
 @NoArgsConstructor
 @Entity(name = "MARKET_REVIEW")
 @ToString(callSuper = true)
+@Builder
+@AllArgsConstructor
 public class MarketReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "market_review_id", nullable = false)
     private Long id;
 
-    private Integer rating;
+    private Long rating;
+
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
     private LocalDateTime date;
 
@@ -52,5 +54,17 @@ public class MarketReview {
 
     public void setSaleProduct(SaleProduct saleProduct) {
         this.saleProduct = saleProduct;
+    }
+
+    public void setRating(Long rating) {
+        this.rating = rating;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

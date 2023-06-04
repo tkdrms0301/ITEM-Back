@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostReportRepository extends JpaRepository<PostReport,Long> {
 
+    PostReport findByPostIdAndMemberId(Long postId, Long memberId);
 }

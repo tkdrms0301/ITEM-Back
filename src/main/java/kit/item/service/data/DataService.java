@@ -150,7 +150,7 @@ public class DataService {
         // words는 검색어들, products는 제품 id
         List<DataResultDto> datas = new ArrayList<>();
         List<DataResultDto> dataResultDtoList = null;
-        for (String word : wordList) {
+        for (String word : words) {
             dataResultDtoList = getData(word);
             for (DataResultDto dataResultDto : dataResultDtoList) {
                 if (!dataResultDto.check(datas)) {

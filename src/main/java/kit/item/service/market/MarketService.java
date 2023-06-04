@@ -179,14 +179,22 @@ public class MarketService {
                 .productId(saleProduct.getProduct().getId())
                 .review(requestMarketReviewCreateDto.getComment())
                 .build();
+        ObjectMapper objectMapperKeyword = new ObjectMapper();
+        RequestPostDto requestPostDto = RequestPostDto.builder()
+                .productId(saleProduct.getProduct().getId())
+                .content(requestMarketReviewCreateDto.getComment())
+                .build();
         String json = null;
+        String jsonReview = null;
         try {
             json = objectMapper.writeValueAsString(requestReviewDto);
+            jsonReview = objectMapperKeyword.writeValueAsString(requestPostDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         try {
-            String res = HttpUtil.postJson(serverUrl+"/sentiment-classification", json);
+            String res = HttpUtil.postJson(serverUrl + "/sentiment-classification", json);
+            String res2 = HttpUtil.postJson(serverUrl + "/keyword-extraction", jsonReview);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

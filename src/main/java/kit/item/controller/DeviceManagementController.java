@@ -99,15 +99,6 @@ public class DeviceManagementController {
         return new ResponseEntity<>(new MsgDto(false, "기기 등록 실패", null), HttpStatus.OK);
     }
 
-//    @PostMapping("/update-device")
-//    public ResponseEntity<MsgDto> updateDevice(@RequestHeader(value = X_AUTH_TOKEN) String accessToken, @RequestBody RequestUpdateDeviceDto requestUpdateDeviceDto) {
-//        Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-//        if(deviceManagementService.updateMyDevice(memberId, requestUpdateDeviceDto)) {
-//            return new ResponseEntity<>(new MsgDto(true, "기기 수정 성공", null), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(new MsgDto(false, "기기 수정 실패", null), HttpStatus.OK);
-//    }
-
     @PostMapping("/delete-device")
     public ResponseEntity<MsgDto> deleteDevice(@RequestHeader(value = X_AUTH_TOKEN) String accessToken, @RequestBody RequestDeleteDeviceDto requestDeleteDeviceDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));

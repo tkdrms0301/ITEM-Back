@@ -1,24 +1,17 @@
 package kit.item.service.data;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kit.item.domain.it.Product;
 import kit.item.dto.entity.data.*;
 import kit.item.dto.entity.device.BrandDto;
 import kit.item.dto.entity.device.CategoryDto;
 import kit.item.dto.entity.device.ProductDto;
-import kit.item.dto.request.data_server.RequestReviewDto;
 import kit.item.repository.data.DataRepository;
 import kit.item.repository.data.PosAndNegRepository;
 import kit.item.repository.it.CategoryBrandRepository;
 import kit.item.repository.it.CategoryRepository;
 import kit.item.repository.it.ProductRepository;
-import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,8 +37,6 @@ public class DataService {
     private final CategoryRepository categoryRepository;
     private final CategoryBrandRepository categoryBrandRepository;
 
-    @Value("${serverUrl}")
-    private String serverUrl;
     public DataResultDto getData(Long productId) {
         log.info("DeviceManagementService.getData productId");
         DataResultDto dataResultDto = new DataResultDto();
@@ -111,41 +102,6 @@ public class DataService {
     }
 
     public List<DataResultDto> getDataList(List<String> words, List<Long> productIds) {
-
-        List<String> wordList = new ArrayList<>();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        StringBuilder sb = new StringBuilder();
-        for (String word : words) {
-            sb.append(word).append("|");
-        }
-        String string = sb.toString();
-        
-        WordInputsDto wordInputsDto = WordInputsDto.builder()
-                .input(string)
-                .build();
-        String json = null;
-        try {
-            json = objectMapper.writeValueAsString(wordInputsDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            String res = HttpUtil.postJson(serverUrl+"/data-search", json);
-            try {
-                JSONArray jsonArray = new JSONArray(res);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    String item = jsonArray.getString(i);
-                    wordList.add(item);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
         log.info("DeviceManagementService.getDataList");
         // words는 검색어들, products는 제품 id
         List<DataResultDto> datas = new ArrayList<>();

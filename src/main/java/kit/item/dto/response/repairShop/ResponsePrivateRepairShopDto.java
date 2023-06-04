@@ -20,4 +20,5 @@ public class ResponsePrivateRepairShopDto {
     private String description;
     private List<RepairServiceDto> services;
     private String shopType;
+    private Long rating;
 }

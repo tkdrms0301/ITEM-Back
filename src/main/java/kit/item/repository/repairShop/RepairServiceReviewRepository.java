@@ -25,4 +25,6 @@ public interface RepairServiceReviewRepository extends JpaRepository<RepairServi
     Optional<RepairServiceReview> findById(long id);
 
     Optional<RepairServiceReview> findByIdAndMember_Id(Long id, Long memberId);
+
+    List<RepairServiceReview> findByRepairShop_Id(Long repairShopId);
 }

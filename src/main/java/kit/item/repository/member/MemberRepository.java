@@ -17,8 +17,9 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
 
-    @Query("select m from MEMBER m where m.email like :email")
+    //@Query("select m from MEMBER m where m.email like :email")
     boolean existsByEmail(String email);
+
     boolean existsByNickname(String nickname);
 
     boolean existsByEmailAndIdNot(String email, Long memberId);

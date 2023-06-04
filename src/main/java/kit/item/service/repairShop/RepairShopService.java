@@ -54,6 +54,7 @@ public class RepairShopService {
     private final EstimateRepository estimateRepository;
     private final EstimateImageRepository estimateImageRepository;
     private final ResponseRepository responseRepository;
+    private final RepairServiceReviewRepository repairServiceReviewRepository;
 
     private final RepairShopUtilService repairShopUtilService;
 
@@ -81,6 +82,13 @@ public class RepairShopService {
                                 .build());
             });
 
+            AtomicReference<Long> avgRating = new AtomicReference<>(0L);
+            AtomicInteger count = new AtomicInteger();
+            repairServiceReviewRepository.findByRepairShop_Id(repairShop.getId()).stream().forEach(repairServiceReview -> {
+                avgRating.set(avgRating.get() + repairServiceReview.getRating());
+                count.getAndIncrement();
+            });
+
             responsePrivateRepairShopDtos.add(ResponsePrivateRepairShopDto.builder()
                     .repairShopId(repairShop.getId())
                     .shopName(repairShop.getShopName())
@@ -89,6 +97,7 @@ public class RepairShopService {
                     .description(repairShop.getDescription())
                     .services(repairServiceDtos)
                     .shopType(repairShop.getRepairServiceType().name())
+                    .rating(avgRating.get()/count.get())
                     .build());
 
         });

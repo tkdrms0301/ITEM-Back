@@ -272,6 +272,7 @@ public class CommunityService {
         }
         Comment comment = Comment.builder()
                 .date(LocalDateTime.now())
+                .report(0L)
                 .content(requestCreateCommentDTO.getContent())
                 .member(
                         Member.builder()
@@ -301,6 +302,7 @@ public class CommunityService {
         }
         Comment replyComment = Comment.builder()
                 .date(LocalDateTime.now())
+                .report(0L)
                 .content(requestCreatePostDTO.getContent())
                 .member(
                         Member.builder()

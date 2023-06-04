@@ -107,12 +107,6 @@ public class CommunityService {
         if (isDupliPost(title, memberId)) {
             return false;
         }
-        String json = "{\"title\":\"" + title + "\",\"content\":\"" + content + "\",\"productId\":\"" + productId + "\"}";
-//        try {
-//            String res = HttpUtil.postJson("http://localhost:5000/getCommunityData", json);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         Post post = Post.builder()
                 .title(title)
                 .content(content)
@@ -254,6 +248,7 @@ public class CommunityService {
         }
         Comment comment = Comment.builder()
                 .date(LocalDateTime.now())
+                .report(0L)
                 .content(requestCreateCommentDTO.getContent())
                 .member(
                         Member.builder()
@@ -283,6 +278,7 @@ public class CommunityService {
         }
         Comment replyComment = Comment.builder()
                 .date(LocalDateTime.now())
+                .report(0L)
                 .content(requestCreatePostDTO.getContent())
                 .member(
                         Member.builder()

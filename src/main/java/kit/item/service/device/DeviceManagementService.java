@@ -2,12 +2,19 @@ package kit.item.service.device;
 
 import kit.item.domain.it.*;
 import kit.item.domain.member.Member;
+import kit.item.domain.repair.RepairService;
+import kit.item.domain.repair.Reservation;
 import kit.item.dto.entity.device.*;
 import kit.item.dto.request.device.RequestCreateDeviceDto;
 import kit.item.dto.request.device.RequestCreatePartDto;
 import kit.item.dto.request.device.RequestUpdateDeviceDto;
+import kit.item.enums.ReservationStateType;
 import kit.item.repository.it.*;
 import kit.item.repository.member.MemberRepository;
+import kit.item.repository.repairShop.RepairServiceReservationRepository;
+import kit.item.repository.repairShop.ReservationRepository;
+import kit.item.service.repairShop.RepairShopService;
+import kit.item.service.repairShop.RepairShopUtilService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,7 +34,10 @@ public class DeviceManagementService {
     private final ProductRepository productRepository;
     private final CategoryBrandRepository categoryBrandRepository;
     private final ItDeviceRepository itDeviceRepository;
+    private final ReservationRepository reservationRepository;
+    private final RepairShopUtilService repairShopUtilService;
     private final MemberRepository memberRepository;
+    private final RepairServiceReservationRepository repairServiceReservationRepository;
 
     // category - completion 완제품(컴퓨터, 노트북, 스마트폰, 태블릿)
     public List<CategoryDto> getCompletionCategoryList() {
@@ -164,6 +174,20 @@ public class DeviceManagementService {
         }
         if (itDevice.get().getFinishedProduct() != null) {
             itDeviceRepository.deletePartProductsByFinishedProductId(memberId, itDevice.get().getId());
+        }
+        List<Reservation> itDevices = reservationRepository.findByItDeviceId(deviceId);
+        if (!itDevices.isEmpty()) {
+            for (Reservation reservationByItDevice : itDevices) {
+                if (reservationByItDevice.getState().equals(ReservationStateType.ACCEPTED.getKrName())) {
+                    Optional<Reservation> reservation = reservationRepository.findById(reservationByItDevice.getId());
+                    if (reservation.isPresent()) {
+                        //예약 취소 시 멤버에게 포인트 반환
+                        repairShopUtilService.returnPointByReservation(reservation.get().getId());
+                        repairServiceReservationRepository.deleteByReservation(reservation.get());
+                        reservationRepository.delete(reservation.get());
+                    }
+                }
+            }
         }
         itDeviceRepository.delete(itDevice.get());
         return true;

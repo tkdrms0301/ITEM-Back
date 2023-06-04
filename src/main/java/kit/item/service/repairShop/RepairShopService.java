@@ -55,6 +55,8 @@ public class RepairShopService {
     private final EstimateImageRepository estimateImageRepository;
     private final ResponseRepository responseRepository;
 
+    private final RepairShopUtilService repairShopUtilService;
+
     @Autowired
     private AzureBlobService azureBlobAdapter;
 
@@ -777,62 +779,7 @@ public class RepairShopService {
         return false;
     }
 
-    public boolean returnPointByReservation(Long reservationId) {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-        if (reservation.isPresent()) {
 
-            //포인트 획득, 포인트 히스토리
-            AtomicLong totalPrice = new AtomicLong(0);
-            Member consumer = reservation.get().getMember();
-            List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
-
-
-            StringBuilder serviceNames = new StringBuilder();
-            AtomicInteger count = new AtomicInteger(0);
-
-            repairServiceReservations.stream().forEach(repairServiceReservation -> {
-                        totalPrice.addAndGet(repairServiceReservation.getRepairService().getPrice());
-                        count.incrementAndGet();
-                        if (count.get() < 2)
-                            serviceNames.append(repairServiceReservation.getRepairService().getServiceName());
-                    }
-            );
-
-            String finalServiceNames = serviceNames.toString();
-
-                //소비자
-                //포인트 획득
-                consumer.setPoint(consumer.getPoint() + totalPrice.get());
-                memberRepository.save(consumer);
-
-                //포인트 히스토리
-                RequestCreatePointHistoryDto consumerPointHistory = RequestCreatePointHistoryDto.builder()
-                        .serviceName(finalServiceNames)
-                        .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
-                        .point(totalPrice.get())
-                        .date(LocalDateTime.now()).build();
-                pointService.createHistory(consumer.getId(), consumerPointHistory);
-
-
-            Optional<Member> admin = memberRepository.findByEmail("test0");
-
-            //ADMIN
-            //포인트 차감
-            admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
-            memberRepository.save(admin.get());
-
-            //포인트 히스토리
-            RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
-                    .serviceName(finalServiceNames)
-                    .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
-                    .point(-totalPrice.get())
-                    .date(LocalDateTime.now()).build();
-            pointService.createHistory(admin.get().getId(), adminPointHistory);
-
-            return true;
-        }
-        return false;
-    }
 
     public boolean rejectReservation(Long repairShopId, Long reservationId) {
         Optional<Reservation> reservation = reservationRepository.findByIdAndRepairShopId(reservationId, repairShopId);
@@ -845,7 +792,7 @@ public class RepairShopService {
             reservationRepository.save(reservation.get());
 
             //예약 거절 시 멤버에게 포인트 반환
-            returnPointByReservation(reservationId);
+            repairShopUtilService.returnPointByReservation(reservationId);
 
             return true;
         }
@@ -857,7 +804,7 @@ public class RepairShopService {
         if (reservation.isPresent()) {
 
             //예약 취소 시 멤버에게 포인트 반환
-            returnPointByReservation(reservationId);
+            repairShopUtilService.returnPointByReservation(reservationId);
 
             repairServiceReservationRepository.deleteByReservation(reservation.get());
 

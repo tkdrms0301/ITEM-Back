@@ -97,7 +97,7 @@ public class RepairShopService {
                     .description(repairShop.getDescription())
                     .services(repairServiceDtos)
                     .shopType(repairShop.getRepairServiceType().name())
-                    .rating(avgRating.get()/count.get())
+                    .rating(count.get() != 0 ? avgRating.get()/count.get(): 0)
                     .build());
 
         });

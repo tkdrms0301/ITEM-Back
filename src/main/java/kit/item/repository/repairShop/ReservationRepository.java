@@ -37,4 +37,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
 
     List<Reservation> findByRepairShopId(Long repairShopId);
+
+    @Query("select r from RESERVATION r where r.itDevice.id=:deviceId")
+    List<Reservation> findByItDeviceId(@Param(value = "deviceId") Long deviceId);
 }

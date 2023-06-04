@@ -1,6 +1,8 @@
 package kit.item.service.community;
 
 import com.azure.core.annotation.ServiceClient;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kit.item.domain.it.Product;
 import kit.item.domain.member.Member;
 import kit.item.domain.post.*;
@@ -10,6 +12,7 @@ import kit.item.dto.entity.community.PostDto;
 import kit.item.dto.request.community.RequestCreateCommentDto;
 import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
+import kit.item.dto.request.data_server.RequestPostDto;
 import kit.item.dto.response.community.*;
 import kit.item.repository.community.*;
 import kit.item.repository.it.ProductRepository;
@@ -17,6 +20,7 @@ import kit.item.repository.member.MemberRepository;
 import kit.item.util.http.HttpUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +48,9 @@ public class CommunityService {
     private final PostImageRepository postImageRepository;
 
     private final MemberRepository memberRepository;
+
+    @Value("${serverUrl}")
+    private String serverUrl;
 
     public ResponsePostListDto getPostsList(int page) {
         List<PostDto> posts = getPosts(page, PAGE_SIZE);
@@ -106,6 +113,23 @@ public class CommunityService {
         List<String> images = requestCreatePostDTO.getImages();
         if (isDupliPost(title, memberId)) {
             return false;
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        RequestPostDto requestPostDto = RequestPostDto.builder()
+                .content(content)
+                .productId(productId)
+                .build();
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(requestPostDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            String res = HttpUtil.postJson(serverUrl+"/keyword-extraction", json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         Post post = Post.builder()
                 .title(title)

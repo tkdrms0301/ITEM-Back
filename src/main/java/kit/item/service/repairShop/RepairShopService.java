@@ -715,7 +715,7 @@ public class RepairShopService {
         Optional<Reservation> reservation = reservationRepository.findByIdAndRepairShopId(reservationId, repairShopId);
 
         if (reservation.isPresent()) {
-            if (!reservation.get().getRepairShop().getId().equals(reservationId))
+            if (!reservation.get().getRepairShop().getId().equals(repairShopId))
                 return false;
             reservation.get().setState(ReservationStateType.ACCEPTED.getKrName());
             reservationRepository.save(reservation.get());
@@ -791,7 +791,7 @@ public class RepairShopService {
         Optional<Reservation> reservation = reservationRepository.findByIdAndRepairShopId(reservationId, repairShopId);
 
         if (reservation.isPresent()) {
-            if (!reservation.get().getRepairShop().getId().equals(reservationId))
+            if (!reservation.get().getRepairShop().getId().equals(repairShopId))
                 return false;
 
             reservation.get().setState(ReservationStateType.REJECTED.getKrName());

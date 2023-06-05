@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static kit.item.util.prefix.ConstData.REPORT_COUNT;
@@ -47,10 +48,9 @@ public class ReviewService {
         if (member.isEmpty()) {
             return null;
         }
-//        if (repairServiceReviewRepository.existsByMemberIdAndRepairShopId(memberId, requestReviewCreateDto.getRepairShopId())) {
-//            return false;
-//        }
-        // 정비 예약한 결과 date + 3일 이내로 리뷰 작성 가능하도록
+        if (repairShop.get().getId().equals(memberId)) {
+            return null;
+        }
         RepairServiceReview repairServiceReview = RepairServiceReview.builder()
                 .content(requestReviewCreateDto.getContent())
                 .rating(requestReviewCreateDto.getRating())
@@ -136,7 +136,15 @@ public class ReviewService {
         }
         RepairServiceReply repairServiceReply = repairServiceReview.get().getRepairServiceReply();
         if (repairServiceReply != null) {
+            List<RepairServiceReplyReport> replyReports = repairServiceReplyReportRepository.findAllByRepairServiceReplyId(repairServiceReply.getId());
+            if (!replyReports.isEmpty()) {
+                repairServiceReplyReportRepository.deleteAll(replyReports);
+            }
             repairServiceReplyRepository.delete(repairServiceReply);
+        }
+        List<RepairServiceReviewReport> repairServiceReviewReports = repairServiceReviewReportRepository.findAllByRepairServiceReviewId(reviewId);
+        if (!repairServiceReviewReports.isEmpty()) {
+            repairServiceReviewReportRepository.deleteAll(repairServiceReviewReports);
         }
         repairServiceReviewRepository.delete(repairServiceReview.get());
         return true;
@@ -149,6 +157,10 @@ public class ReviewService {
         }
         Optional<RepairShop> repairShop = repairShopRepository.findById(memberId);
         if (repairShop.isEmpty()) {
+            return null;
+        }
+        Optional<RepairServiceReply> reply = repairServiceReplyRepository.findByRepairServiceReviewId(requestReplyCreateDto.getReviewId());
+        if (reply.isPresent()) {
             return null;
         }
         RepairServiceReply repairServiceReply = RepairServiceReply.builder()
@@ -207,6 +219,10 @@ public class ReviewService {
         }
         if (!repairServiceReply.get().getRepairShop().getId().equals(memberId)) {
             return false;
+        }
+        List<RepairServiceReplyReport> replyReports = repairServiceReplyReportRepository.findAllByRepairServiceReplyId(repairServiceReply.get().getId());
+        if (!replyReports.isEmpty()) {
+            repairServiceReplyReportRepository.deleteAll(replyReports);
         }
         repairServiceReplyRepository.delete(repairServiceReply.get());
         return true;

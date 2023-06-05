@@ -53,13 +53,10 @@ public class MarketService {
 
     //카테고리 id로 찾기
     public List<SaleProductInfoDto> findByCategory(Long categoryId) {
-
         List<SaleProductInfoDto> saleProductInfoDtoList = new ArrayList<>();
         List<SaleProduct> saleProducts = saleProductRepository.findByProduct_CategoryBrand_Category_Id(categoryId);
-        System.out.println("saleProducts = " + saleProducts);
         saleProducts.stream().forEach(
                 saleProduct -> {
-                    System.out.println("saleProduct = " + saleProduct);
                     List<String> imgDetailUrlList = new ArrayList<>();
                     saleProduct.getImageDetails().stream().forEach(
                             imageDetail -> {
@@ -137,8 +134,7 @@ public class MarketService {
                 .average()
                 .orElse(0);
 
-// 평균 리뷰 점수를 출력합니다.
-        System.out.println("평균 리뷰 점수: " + avgRating);
+        // 평균 리뷰 점수를 출력합니다.
         //상품 리스트에 추가
         SaleProductInfoDto saleProductInfoDto = SaleProductInfoDto.builder()
                 .id(saleProduct.getId())

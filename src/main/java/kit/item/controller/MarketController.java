@@ -67,10 +67,6 @@ public class MarketController {
                                 @RequestBody RequestReportDto requestReportDto,
                                 @RequestHeader(value = "X-AUTH-TOKEN") String accessToken) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
-        System.out.println("requestReportDto = " + requestReportDto.getReason());
-        System.out.println("requestReportDto = " + requestReportDto.getReportType());
-
         return ResponseEntity.ok(new MsgDto(true, "",marketService.reportMarketReview(memberId, requestReportDto)));
     }
 

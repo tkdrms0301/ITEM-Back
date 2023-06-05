@@ -29,8 +29,6 @@ public class PointController {
     @GetMapping("/history/date")
     public ResponseEntity<MsgDto> getPointHistory(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, RequestGetPointHistoryDateDto requestGetPointHistoryDateDto) {
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
-
-        System.out.println("requestGetPointHistoryDateDto = " + requestGetPointHistoryDateDto.getStartDate());
         LocalDateTime startDate = LocalDateTime.parse(requestGetPointHistoryDateDto.getStartDate())
                 .withHour(00)
                 .withMinute(00)

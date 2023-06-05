@@ -384,9 +384,6 @@ public class RepairShopService {
     @NotNull
     private List<RepairServiceReservation> getRepairServiceReservations(RequestReservationDto requestReservationDto) {
         List<RepairServiceReservation> repairServiceReservations = new ArrayList<>();
-
-        System.out.println("requestReservationDto = " + requestReservationDto.getServices());
-
         requestReservationDto.getServices().stream().forEach(service -> {
             List<RepairService> byServiceNameAndRepairShopId = repairShopServiceRepository.findByServiceNameAndRepairShopId(service.getServiceName(), requestReservationDto.getRepairShopId());
 

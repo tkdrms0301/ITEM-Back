@@ -356,7 +356,7 @@ public class RepairShopController {
         if(result) {
             return new ResponseEntity<>(new MsgDto(true, "리뷰 신고 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "리뷰 신고 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "중복된 리뷰 신고", null), HttpStatus.OK);
     }
 
     @PostMapping("/reply/create")
@@ -367,7 +367,7 @@ public class RepairShopController {
         if(repairServiceReviewDto != null) {
             return new ResponseEntity<>(new MsgDto(true, "답글 생성 성공", repairServiceReviewDto), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "답글 생성 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "중복된 답글 생성", null), HttpStatus.OK);
     }
 
     @PutMapping("/reply/update")
@@ -385,7 +385,6 @@ public class RepairShopController {
 
     @DeleteMapping("/reply/delete")
     public ResponseEntity<MsgDto> deleteReply(@RequestHeader(value = "X-AUTH-TOKEN") String accessToken, Long replyId) {
-        System.out.println("replyId = " + replyId);
         Long memberId = Long.valueOf(tokenProvider.getId(tokenProvider.resolveToken(accessToken)));
         if(reviewService.deleteReply(replyId, memberId)) {
             return new ResponseEntity<>(new MsgDto(true, "답글 삭제 성공", null), HttpStatus.OK);
@@ -400,7 +399,7 @@ public class RepairShopController {
         if(reviewService.createReplyReport(requestReplyReportDto, memberId)) {
             return new ResponseEntity<>(new MsgDto(true, "답글 신고 성공", null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new MsgDto(false, "답글 신고 실패", null), HttpStatus.OK);
+        return new ResponseEntity<>(new MsgDto(false, "중복된 답글 신고", null), HttpStatus.OK);
     }
 }
 

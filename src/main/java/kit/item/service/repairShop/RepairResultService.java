@@ -93,15 +93,15 @@ public class RepairResultService {
 
             try {
                 if (checkInputImageByHash(requestRepairResultCreateDto.getReportBeforeImgs(), requestRepairResultCreateDto.getReportAfterImgs())) {
-                    throw new DuplicateHashValueException("중복된 이미지가 존재합니다.");
+                    return false;
                 }
 
                 if (checkImageByHash(requestRepairResultCreateDto.getReportBeforeImgs())) {
-                    throw new DuplicateHashValueException("중복된 이미지가 존재합니다.");
+                    return false;
                 }
 
                 if (checkImageByHash(requestRepairResultCreateDto.getReportAfterImgs())) {
-                    throw new DuplicateHashValueException("중복된 이미지가 존재합니다.");
+                    return false;
                 }
 
                 repairResultBeforeImages = saveRepairResultImages(requestRepairResultCreateDto.getReportBeforeImgs(), true);

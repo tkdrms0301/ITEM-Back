@@ -134,8 +134,8 @@ public class CommunityService {
             throw new RuntimeException(e);
         }
         try {
-            String res = HttpUtil.postJson(serverUrl+"/keyword-extraction", json);
-            String res2 = HttpUtil.postJson(serverUrl+ "/sentiment-analysis", json2);
+            String res = HttpUtil.postJson(serverUrl+ "/keyword-extraction", json);
+            String res2 = HttpUtil.postJson(serverUrl+ "/sentiment-classification", json2);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

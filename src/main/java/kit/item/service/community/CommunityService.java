@@ -465,7 +465,7 @@ public class CommunityService {
             return null;
         }
         return ResponseMyInfoDto.builder()
-                .nickname(member.getName())
+                .nickname(member.getNickname())
                 .postCount(postRepository.countAllByMemberId(member.getId()))
                 .commentCount(commentRepository.countAllByMemberId(member.getId()))
                 .build();

@@ -276,15 +276,11 @@ public class RepairShopController {
 
     @RequestMapping(value = "/report/create", method=RequestMethod.POST, consumes="multipart/form-data")
     public ResponseEntity<MsgDto> createRepairResultReport(RequestRepairResultCreateDto requestRepairResultCreateDto) {
-        try {
-            boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
-            if(result) {
-                return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", result), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(new MsgDto(false, "보고서 생성 실패", result), HttpStatus.OK);
-        } catch (DuplicateHashValueException e) {
-            return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", false), HttpStatus.OK);
+        boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
+        if(result) {
+            return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", result), HttpStatus.OK);
         }
+        return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", false), HttpStatus.OK);
     }
 
     @GetMapping("/report")

@@ -266,7 +266,8 @@ public class DeviceManagementService {
             if (components.isEmpty()) {
                 deviceDto.setComponents(new ArrayList<>());
             }
-            deviceDto.setComponents(components);
+            selectDevices.addAll(components);
+            deviceDto.setComponents(new ArrayList<>());
         }
         return selectDevices;
     }

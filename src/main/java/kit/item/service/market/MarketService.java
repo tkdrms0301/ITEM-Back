@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +74,7 @@ public class MarketService {
                                         .ownerName(marketReview.getMember().getNickname())
                                         .date(marketReview.getDate())
                                         .comment(marketReview.getComment())
-                                        .rating(marketReview.getRating())
+                                        .rating(Math.round(marketReview.getRating() * 10) / 10.0)
                                         .build();
                                 reviewList.add(saleProductReviewInfoDto);
                             }
@@ -121,7 +122,9 @@ public class MarketService {
                             .ownerName(marketReview.getMember().getNickname())
                             .date(marketReview.getDate())
                             .comment(marketReview.getComment())
-                            .rating(marketReview.getRating())
+                            .rating(
+                                    Math.round(marketReview.getRating() * 10) / 10.0
+                            )
                             .build();
                     reviewList.add(saleProductReviewInfoDto);
                 }
@@ -279,9 +282,9 @@ public class MarketService {
                                         .ownerName(marketReview.getMember().getNickname())
                                         .date(marketReview.getDate())
                                         .comment(marketReview.getComment())
-                                        .rating(marketReview.getRating())
+                                        .rating(Math.round(marketReview.getRating() * 10) / 10.0)
                                         .build();
-                                reviewList.add(saleProductReviewInfoDto);
+                                reviewList.add(0 , saleProductReviewInfoDto);
                             }
                     );
 

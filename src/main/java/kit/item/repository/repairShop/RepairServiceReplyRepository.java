@@ -12,8 +12,5 @@ import java.util.Optional;
 public interface RepairServiceReplyRepository extends JpaRepository<RepairServiceReply, Long> {
     boolean existsByRepairShopIdAndId(Long shopId, Long reviewId);
 
-    @Query("select new kit.item.dto.entity.repairShop.RepairServiceReplyDto(r.id, r.content) " +
-            "from REPAIR_SERVICE_REPLY r " +
-            "where r.id = :reviewId")
-    RepairServiceReplyDto findByReviewId(Long reviewId);
+    Optional<RepairServiceReply> findByRepairServiceReviewId(Long reviewId);
 }

@@ -106,7 +106,6 @@ public class CommunityService {
     }
 
     public Boolean createPost(RequestCreatePostDto requestCreatePostDTO, Long memberId) {
-        System.out.println("requestCreatePostDTO.getTitle() = " + requestCreatePostDTO.getTitle());
         String title = requestCreatePostDTO.getTitle();
         String content = requestCreatePostDTO.getContent();
         Long productId = requestCreatePostDTO.getProductId();
@@ -149,7 +148,6 @@ public class CommunityService {
         if(images != null) {
             List<PostImage> postImages = new ArrayList<>();
             for (String image : images) {
-                System.out.println("image = " + image);
                 PostImage postImage = PostImage.builder()
                         .url(image)
                         .build();
@@ -200,7 +198,6 @@ public class CommunityService {
         if(requestCreatePostDTO.getImages()!= null) {
             List<PostImage> postImages = new ArrayList<>();
             for (String image : requestCreatePostDTO.getImages()) {
-                System.out.println("image = " + image);
                 PostImage postImage = PostImage.builder()
                         .url(image)
                         .build();

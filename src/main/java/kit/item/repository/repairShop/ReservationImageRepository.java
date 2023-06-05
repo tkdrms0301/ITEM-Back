@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ReservationImageRepository extends JpaRepository<ReservationImage, Long> {
     void deleteByReservation(Reservation reservation);
+
+    void deleteAllByReservation(Reservation reservation);
 }

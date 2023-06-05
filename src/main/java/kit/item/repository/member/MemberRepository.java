@@ -5,6 +5,7 @@ import kit.item.dto.entity.member.MechanicInfoDto;
 import kit.item.dto.entity.member.MemberInfoDto;
 import kit.item.dto.entity.member.MemberLoginInfoDto;
 import kit.item.dto.entity.member.SellerInfoDto;
+import kit.item.enums.RoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,9 @@ import java.util.Optional;
 
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
+    Optional<Member> findByRoleType(RoleType roleType);
+
     Optional<Member> findByEmail(String email);
 
     //@Query("select m from MEMBER m where m.email like :email")

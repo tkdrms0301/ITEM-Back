@@ -12,6 +12,7 @@ import kit.item.dto.response.repairShop.*;
 import kit.item.enums.EstimateStateType;
 import kit.item.enums.PointUsageType;
 import kit.item.enums.ReservationStateType;
+import kit.item.enums.RoleType;
 import kit.item.repository.it.ItDeviceRepository;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.repairShop.*;
@@ -687,7 +688,8 @@ public class RepairShopService {
 
                 //ADMIN계정
                 //포인트 얻음
-                Optional<Member> admin = memberRepository.findByEmail("test0");
+                Optional<Member> admin = memberRepository.findByRoleType(RoleType.ADMIN);
+
                 if (admin.isPresent()){
                     admin.get().setPoint(admin.get().getPoint() + totalPrice.get());
 
@@ -732,7 +734,7 @@ public class RepairShopService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
 
-            Optional<Member> admin = memberRepository.findByEmail("test0");
+            Optional<Member> admin = memberRepository.findByRoleType(RoleType.ADMIN);
 
             AtomicLong totalPrice = new AtomicLong(0);
             List<RepairServiceReservation> repairServiceReservations = reservation.get().getRepairServiceReservations();
@@ -753,16 +755,19 @@ public class RepairShopService {
 
             //ADMIN
             //포인트 차감
-            admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
-            memberRepository.save(admin.get());
+            if (admin.isPresent()){
+                admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
+                memberRepository.save(admin.get());
 
-            //포인트 히스토리
-            RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
-                    .serviceName(finalServiceNames)
-                    .serviceType(PointUsageType.REPAIR_SERVICE_USE.getKrName())
-                    .point(-totalPrice.get())
-                    .date(LocalDateTime.now()).build();
-            pointService.createHistory(admin.get().getId(), adminPointHistory);
+                //포인트 히스토리
+                RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
+                        .serviceName(finalServiceNames)
+                        .serviceType(PointUsageType.REPAIR_SERVICE_USE.getKrName())
+                        .point(-totalPrice.get())
+                        .date(LocalDateTime.now()).build();
+                pointService.createHistory(admin.get().getId(), adminPointHistory);
+            }
+
 
             //정비소
             //포인트 얻음
@@ -811,6 +816,8 @@ public class RepairShopService {
 
             //예약 취소 시 멤버에게 포인트 반환
             repairShopUtilService.returnPointByReservation(reservationId);
+
+            reservationImageRepository.deleteAllByReservation(reservation.get());
 
             repairServiceReservationRepository.deleteByReservation(reservation.get());
 

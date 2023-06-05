@@ -260,15 +260,17 @@ public class DeviceManagementService {
     public List<DeviceDto> getDeviceListRegardlessCategory(Long memberId) {
         log.info("DeviceManagementService.getDeviceList");
         List<DeviceDto> selectDevices = itDeviceRepository.findDeviceByMemberId(memberId);
+        List<DeviceDto> addComponents = new ArrayList<>();
         for (DeviceDto deviceDto : selectDevices) {
             List<DeviceDto> components = itDeviceRepository.findSelectComponentByMemberIdAndComponentProductId(memberId, deviceDto.getId());
 
             if (components.isEmpty()) {
                 deviceDto.setComponents(new ArrayList<>());
             }
-            selectDevices.addAll(components);
-            deviceDto.setComponents(new ArrayList<>());
+            addComponents.addAll(components);
+            deviceDto.setComponents(components);
         }
+        selectDevices.addAll(addComponents);
         return selectDevices;
     }
 }

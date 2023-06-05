@@ -19,5 +19,5 @@ public class SaleProductReviewInfoDto {
     String ownerName;
     LocalDateTime date;
     String comment;
-    Double rating;
+    Long rating;
 }

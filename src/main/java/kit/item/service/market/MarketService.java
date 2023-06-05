@@ -74,7 +74,7 @@ public class MarketService {
                                         .ownerName(marketReview.getMember().getNickname())
                                         .date(marketReview.getDate())
                                         .comment(marketReview.getComment())
-                                        .rating(Math.round(marketReview.getRating() * 10) / 10.0)
+                                        .rating(marketReview.getRating())
                                         .build();
                                 reviewList.add(saleProductReviewInfoDto);
                             }
@@ -122,9 +122,7 @@ public class MarketService {
                             .ownerName(marketReview.getMember().getNickname())
                             .date(marketReview.getDate())
                             .comment(marketReview.getComment())
-                            .rating(
-                                    Math.round(marketReview.getRating() * 10) / 10.0
-                            )
+                            .rating(marketReview.getRating())
                             .build();
                     reviewList.add(saleProductReviewInfoDto);
                 }
@@ -132,10 +130,10 @@ public class MarketService {
 
         //평균 리뷰 점수
         List<MarketReview> reviews = marketReviewRepository.findBySaleProduct_Id(saleProduct.getId());
-        double avgRating = reviews.stream()
+        double avgRating = Math.round(reviews.stream()
                 .mapToLong(MarketReview::getRating)
                 .average()
-                .orElse(0);
+                .orElse(0) * 10) / 10.0;
 
         // 평균 리뷰 점수를 출력합니다.
         //상품 리스트에 추가
@@ -282,7 +280,7 @@ public class MarketService {
                                         .ownerName(marketReview.getMember().getNickname())
                                         .date(marketReview.getDate())
                                         .comment(marketReview.getComment())
-                                        .rating(Math.round(marketReview.getRating() * 10) / 10.0)
+                                        .rating(marketReview.getRating())
                                         .build();
                                 reviewList.add(0 , saleProductReviewInfoDto);
                             }

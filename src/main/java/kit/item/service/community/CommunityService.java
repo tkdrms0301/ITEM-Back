@@ -13,6 +13,7 @@ import kit.item.dto.request.community.RequestCreateCommentDto;
 import kit.item.dto.request.community.RequestCreatePostDto;
 import kit.item.dto.request.community.RequestReportDto;
 import kit.item.dto.request.data_server.RequestPostDto;
+import kit.item.dto.request.data_server.RequestReviewDto;
 import kit.item.dto.response.community.*;
 import kit.item.repository.community.*;
 import kit.item.repository.it.ProductRepository;
@@ -119,14 +120,22 @@ public class CommunityService {
                 .content(content)
                 .productId(productId)
                 .build();
+        ObjectMapper objectMapperPost = new ObjectMapper();
+        RequestReviewDto requestReviewDto = RequestReviewDto.builder()
+                .review(content)
+                .productId(productId)
+                .build();
         String json = null;
+        String json2 = null;
         try {
             json = objectMapper.writeValueAsString(requestPostDto);
+            json2 = objectMapperPost.writeValueAsString(requestReviewDto);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         try {
-            String res = HttpUtil.postJson(serverUrl+"/keyword-extraction", json);
+            String res = HttpUtil.postJson(serverUrl+ "/keyword-extraction", json);
+            String res2 = HttpUtil.postJson(serverUrl+ "/sentiment-classification", json2);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

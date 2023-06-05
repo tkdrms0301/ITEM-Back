@@ -1,6 +1,7 @@
 package kit.item.dto.entity.market;
 
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,5 +19,5 @@ public class SaleProductReviewInfoDto {
     String ownerName;
     LocalDateTime date;
     String comment;
-    Long rating;
+    Double rating;
 }

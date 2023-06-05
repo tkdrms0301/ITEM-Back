@@ -5,6 +5,7 @@ import kit.item.domain.repair.RepairServiceReservation;
 import kit.item.domain.repair.Reservation;
 import kit.item.dto.request.point.RequestCreatePointHistoryDto;
 import kit.item.enums.PointUsageType;
+import kit.item.enums.RoleType;
 import kit.item.repository.it.ItDeviceRepository;
 import kit.item.repository.member.MemberRepository;
 import kit.item.repository.repairShop.*;
@@ -67,20 +68,22 @@ public class RepairShopUtilService {
             pointService.createHistory(consumer.getId(), consumerPointHistory);
 
 
-            Optional<Member> admin = memberRepository.findByEmail("test0");
+            Optional<Member> admin = memberRepository.findByRoleType(RoleType.ADMIN);
 
             //ADMIN
             //포인트 차감
-            admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
-            memberRepository.save(admin.get());
+            if(admin.isPresent()){
+                admin.get().setPoint(admin.get().getPoint() - totalPrice.get());
+                memberRepository.save(admin.get());
 
-            //포인트 히스토리
-            RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
-                    .serviceName(finalServiceNames)
-                    .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
-                    .point(-totalPrice.get())
-                    .date(LocalDateTime.now()).build();
-            pointService.createHistory(admin.get().getId(), adminPointHistory);
+                //포인트 히스토리
+                RequestCreatePointHistoryDto adminPointHistory = RequestCreatePointHistoryDto.builder()
+                        .serviceName(finalServiceNames)
+                        .serviceType(PointUsageType.RESERVATION_RETURN.getKrName())
+                        .point(-totalPrice.get())
+                        .date(LocalDateTime.now()).build();
+                pointService.createHistory(admin.get().getId(), adminPointHistory);
+            }
 
             return true;
         }

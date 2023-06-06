@@ -75,54 +75,54 @@ public class RepairResultService {
         return null;
     }
 
-    public boolean createRepairResult(RequestRepairResultCreateDto requestRepairResultCreateDto) throws DuplicateHashValueException {
+    public boolean createRepairResult(RequestRepairResultCreateDto requestRepairResultCreateDto) {
+        if (requestRepairResultCreateDto.getReportBeforeImgs() == null ||
+                requestRepairResultCreateDto.getReportAfterImgs() == null ||
+                requestRepairResultCreateDto.getReportResultComment().equals("")) {
+            return false;
+        }
         Optional<Reservation> reservation = reservationRepository.findById(requestRepairResultCreateDto.getReservationId());
         if (reservation.isPresent()) {
-
-            reservation.get().setState(ReservationStateType.COMPLETED.getKrName());
-            reservationRepository.save(reservation.get());
+            try {
+                if (checkInputImageByHash(requestRepairResultCreateDto.getReportBeforeImgs(), requestRepairResultCreateDto.getReportAfterImgs())) {
+                    return false;
+                }
+                if (checkImageByHash(requestRepairResultCreateDto.getReportBeforeImgs())) {
+                    return false;
+                }
+                if (checkImageByHash(requestRepairResultCreateDto.getReportAfterImgs())) {
+                    return false;
+                }
+            } catch (IOException e) {
+                log.info("파일 업로드 실패");
+            } catch (NoSuchAlgorithmException e) {
+                log.info("해시 알고리즘 실패");
+            }
 
             RepairResult repairResult = RepairResult.builder()
                     .comment(requestRepairResultCreateDto.getReportResultComment())
                     .date(LocalDateTime.now())
                     .reservation(reservation.get())
                     .build();
-            repairResultRepository.save(repairResult);
+
             List<RepairResultImage> repairResultBeforeImages = null;
             List<RepairResultImage> repairResultAfterImages = null;
+            repairResultBeforeImages = saveRepairResultImages(requestRepairResultCreateDto.getReportBeforeImgs(), true);
+            repairResultAfterImages = saveRepairResultImages(requestRepairResultCreateDto.getReportAfterImgs(), false);
 
-            try {
-                if (checkInputImageByHash(requestRepairResultCreateDto.getReportBeforeImgs(), requestRepairResultCreateDto.getReportAfterImgs())) {
-                    return false;
+            reservation.get().setState(ReservationStateType.COMPLETED.getKrName());
+            reservationRepository.save(reservation.get());
+            RepairResult save = repairResultRepository.save(repairResult);
+            repairResultBeforeImages.forEach(repairResultImage -> {
+                repairResultImage.setRepairResult(save);
+                repairResultImageRepository.save(repairResultImage);
                 }
-
-                if (checkImageByHash(requestRepairResultCreateDto.getReportBeforeImgs())) {
-                    return false;
+            );
+            repairResultAfterImages.forEach(repairResultImage -> {
+                repairResultImage.setRepairResult(save);
+                repairResultImageRepository.save(repairResultImage);
                 }
-
-                if (checkImageByHash(requestRepairResultCreateDto.getReportAfterImgs())) {
-                    return false;
-                }
-
-                repairResultBeforeImages = saveRepairResultImages(requestRepairResultCreateDto.getReportBeforeImgs(), true);
-                repairResultAfterImages = saveRepairResultImages(requestRepairResultCreateDto.getReportAfterImgs(), false);
-
-                repairResultBeforeImages.forEach(repairResultImage -> {
-                    repairResultImage.setRepairResult(repairResult);
-                    repairResultImageRepository.save(repairResultImage);
-                    }
-                );
-
-                repairResultAfterImages.forEach(repairResultImage -> {
-                    repairResultImage.setRepairResult(repairResult);
-                    repairResultImageRepository.save(repairResultImage);
-                    }
-                );
-            } catch (IOException e) {
-                log.info("파일 업로드 실패");
-            } catch (NoSuchAlgorithmException e) {
-                log.info("해시 알고리즘 실패");
-            }
+            );
             return true;
         }
         return false;

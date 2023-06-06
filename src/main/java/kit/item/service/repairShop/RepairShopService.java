@@ -377,9 +377,8 @@ public class RepairShopService {
                     throw new RuntimeException(e);
                 }
             });
-            return reservationImages;
         }
-        return null;
+        return reservationImages;
     }
 
     @NotNull

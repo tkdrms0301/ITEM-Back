@@ -278,7 +278,7 @@ public class RepairShopController {
     public ResponseEntity<MsgDto> createRepairResultReport(RequestRepairResultCreateDto requestRepairResultCreateDto) {
         boolean result = repairResultService.createRepairResult(requestRepairResultCreateDto);
         if(result) {
-            return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", result), HttpStatus.OK);
+            return new ResponseEntity<>(new MsgDto(true, "보고서 생성 성공", true), HttpStatus.OK);
         }
         return new ResponseEntity<>(new MsgDto(false, "중복된 사진 게재", false), HttpStatus.OK);
     }
